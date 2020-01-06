@@ -3,6 +3,9 @@ import * as express from 'express';
 import * as createError from 'http-errors';
 import * as morgan from 'morgan'
 
+import logger from './plugins/logger'
+
+logger.info('App is Running');
 import { LOG_FORMAT } from './constants'
 
 const app = express();
