@@ -1,5 +1,5 @@
-import * as winston from 'winston'
-import * as root from 'app-root-path'
+import * as root from 'app-root-path';
+import * as winston from 'winston';
 import * as DailyRotateFile from 'winston-daily-rotate-file';
 
 const { createLogger, format, transports } = winston;
@@ -22,6 +22,13 @@ const logger = createLogger({
       dirname: `${root}/logs/`,
       utc: true,
       level: 'info'
+    }),
+    new DailyRotateFile({
+      datePattern: 'YYYY-MM-DD',
+      filename: '%DATE%.err.log',
+      dirname: `${root}/logs/`,
+      utc: true,
+      level: 'error'
     })
   ],
   // exceptionHandlers: [
