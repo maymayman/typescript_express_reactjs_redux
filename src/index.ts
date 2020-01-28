@@ -4,7 +4,19 @@ import * as createError from 'http-errors';
 import * as morgan from 'morgan'
 
 import logger from './plugins/logger'
-import checkRouter from './routes/heath-check';
+import UserRouter from './routes/User';
+import sequelize from './database/connection';
+
+const database = async() =>{
+  await sequelize.sync({force:false});
+  sequelize.authenticate().then(()=>{
+    console.log("database Connectioned!!!");
+  }).catch(err=>{
+    logger.error(err);
+  })
+}
+database();
+
 
 logger.info('App is Running');
 import { LOG_FORMAT } from './constants'
@@ -32,7 +44,7 @@ app.use(cors(options));
 app.options("*", cors(options));
 
 app.get('/', (req: express.Request, res: express.Response) => res.json({ heathCheck: true }))
-app.use('/user',checkRouter);
+app.use('/user',UserRouter);
 // catch 404 and forward to error handler
 app.use((req: express.Request, res: express.Response, next) => next(createError(404)));
 
