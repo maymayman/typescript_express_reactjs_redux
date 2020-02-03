@@ -5,17 +5,23 @@ import * as morgan from 'morgan'
 
 import logger from './plugins/logger'
 import UserRouter from './routes/User';
-import sequelize from './database/connection';
 
-const database = async() =>{
-  await sequelize.sync({force:false});
-  sequelize.authenticate().then(()=>{
-    console.log("database Connectioned!!!");
-  }).catch(err=>{
-    logger.error(err);
-  })
-}
-database();
+import importsql from './migration/migration';
+
+importsql;
+
+
+// import sequelize from './database/connection';
+
+// const database = async() =>{
+//   await sequelize.sync({force:false});
+//   sequelize.authenticate().then(()=>{
+//     console.log("database Connectioned!!!");
+//   }).catch(err=>{
+//     logger.error(err);
+//   })
+// }
+// database();
 
 
 logger.info('App is Running');
