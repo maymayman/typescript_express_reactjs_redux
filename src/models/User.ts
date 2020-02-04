@@ -5,7 +5,6 @@ import { Column,  Model, Table, PrimaryKey, AutoIncrement, AllowNull, Unique, Da
 })
 export class Users extends Model<Users>{
 
-
     @PrimaryKey
     @AutoIncrement
     @AllowNull(false)

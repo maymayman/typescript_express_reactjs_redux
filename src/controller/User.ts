@@ -7,35 +7,35 @@ export default {
         try{
             const username :string =req.body.username;
             const password :string =req.body.password ;
-            let errMessage :string ='';
+             let errMessage :string ='';
             if(!username || !password){
                 errMessage ="Missing or Invalid username or password";
-                return res.json({
+                    return res.json({
                     code :400,
                     data : null ,
                     err :errMessage
-                })
+                    })
             }
             const User = await Users.findOne({where:{username}});
             if(!User){
                 errMessage ='wrong username or not resigter';
-                return res.json({
+                 return res.json({
                     code :400,
                     data :null,
                     err :errMessage
                 })
             }
-            if(User.password != password){
+            if(User.password !== password){
                 errMessage = ' Invalid password';
-                return res.send(errMessage);
+                 return res.send(errMessage);
             }
-            return res.send("WellCome User "+User.username);
+             return res.send("WellCome User "+User.username);
     }
         catch(err){
             console.log(err);
-            return
+             return
         }; 
     }
 }
-export const sum = (a:number , b :number) => {return a+b}
+export const sum = (a:number , b :number) => { return a+b}
 // heloo work 

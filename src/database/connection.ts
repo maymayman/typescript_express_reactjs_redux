@@ -6,9 +6,7 @@ import {Users} from '../models/User';
         dialect: 'mysql',
         username: 'thong',
         password: '1',
-        storage: ':memory:',
-
-
+        storage: ':memory:'
 });
 
 sequelize.addModels([Users]);
