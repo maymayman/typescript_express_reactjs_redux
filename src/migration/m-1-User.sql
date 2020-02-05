@@ -1,17 +1,16 @@
 use sys;
 
 create table Users (
-    username VARCHAR(255) NOT NULL,
-    password VARCHAR(200) NOT NULL
+    id int NOT NULL AUTO_INCREMENT ,
+    username VARCHAR(255) NOT NULL UNIQUE ,
+    password VARCHAR(200) NOT NULL,
+    phone int NOT NULL ,
+    created_at varchar(255) ,
+    updated_at varchar(255) ,
+    deleted_at varchar(255) ,
+    PRIMARY KEY (id)
 );
 
-CREATE TABLE Persons (
-    Personid int NOT NULL AUTO_INCREMENT,
-    LastName varchar(255) NOT NULL,
-    FirstName varchar(255),
-    Age int,
-    PRIMARY KEY (Personid)
-);
 
-INSERT INTO Users (username,password)
-VALUES ('phanthong','thong123');
+INSERT INTO Users (username,password,phone)
+VALUES ('phanthong','thong123','0123456556');

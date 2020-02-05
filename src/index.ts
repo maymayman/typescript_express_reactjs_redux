@@ -36,6 +36,7 @@ app.use(cors(options));
 // add your routes
 
 // enable pre-flight
+
 app.options('*', cors(options));
 
 app.get('/', (req: express.Request, res: express.Response) =>

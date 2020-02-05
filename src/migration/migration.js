@@ -9,8 +9,7 @@ const mydb_importer = mysql_import.config({
     onerror: err=>console.log(err.message)
 });
 
-const fileSQL = path.join(__dirname,'m-1-User.sql')
-console.log(fileSQL);
+const fileSQL = path.join(__dirname,'m-1-User.sql');
 const imp = async ()=>{
     await mydb_importer.import(fileSQL).then(e =>{
         console.log('it worked');
