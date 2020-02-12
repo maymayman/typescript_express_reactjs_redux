@@ -7,8 +7,9 @@ import {Users} from '../models/User';
         username: 'thong',
         password: '1',
         storage: ':memory:',
-
-
+        define: {
+                timestamps: false
+            }
 });
 
 sequelize.addModels([Users]);

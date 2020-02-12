@@ -1,8 +1,8 @@
 import { Request, Response } from 'express'
 import { Users} from '../models/User';
+import * as bcrypt from 'bcrypt';
 
 export default {
-    
     login :async (req :Request ,res:Response) => {
         try{
             const username :string =req.body.username;
@@ -25,17 +25,16 @@ export default {
                     err :errMessage
                 })
             }
-            if(User.password != password){
+            const checkPassword :boolean = await bcrypt.compareSync(password,User.password);
+            if(!checkPassword){
                 errMessage = ' Invalid password';
                 return res.send(errMessage);
             }
-            return res.send("WellCome User "+User.username);
-    }
+            return res.json(User);
+    }             
         catch(err){
             console.log(err);
             return
         }; 
     }
 }
-export const sum = (a:number , b :number) => {return a+b}
-// heloo work 

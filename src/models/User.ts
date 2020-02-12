@@ -5,7 +5,6 @@ import { Column,  Model, Table, PrimaryKey, AutoIncrement, AllowNull, Unique, Da
 })
 export class Users extends Model<Users>{
 
-
     @PrimaryKey
     @AutoIncrement
     @AllowNull(false)
@@ -21,4 +20,13 @@ export class Users extends Model<Users>{
     @Column(DataType.TEXT)
     password :string;
     
+    @AllowNull(false)
+    @Column(DataType.INTEGER)
+    phone : number ;
+
+    @Column(DataType.DATE)
+    updated_at:Date;
+
+    @Column(DataType.DATE)
+    deleted_at:Date;
 }
