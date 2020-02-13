@@ -3,11 +3,21 @@ import * as express from 'express';
 import * as createError from 'http-errors';
 import * as morgan from 'morgan';
 
-import logger from './plugins/logger';
-import checkRouter from './routes/heath-check';
+import logger from './plugins/logger'
+import UserRouter from './routes/User';
+import sequelize from './database/connection';
 
-logger.info('App is Running');
-import { LOG_FORMAT } from './constants';
+const database = async() =>{
+  await sequelize.sync({force:false});
+  sequelize.authenticate().then(()=>{
+    console.log("database Connectioned!!!");
+  }).catch(err=>{
+    logger.error(err);
+  })
+}
+database();
+
+import { LOG_FORMAT } from './constants'
 
 const app = express();
 
@@ -37,13 +47,8 @@ app.use(cors(options));
 
 // enable pre-flight
 
-app.options('*', cors(options));
-
-app.get('/', (req: express.Request, res: express.Response) =>
-  res.json({ heathCheck: true })
-);
-app.use('/user', checkRouter);
-
+app.get('/', (req: express.Request, res: express.Response) => res.json({ heathCheck: true }))
+app.use('/user',UserRouter);
 // catch 404 and forward to error handler
 app.use((req: express.Request, res: express.Response, next) =>
   next(createError(404))

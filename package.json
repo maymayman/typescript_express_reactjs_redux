@@ -5,7 +5,10 @@
   "main": "index.ts",
   "scripts": {
     "test": "TZ=Asia/Ho_Chi_Minh jest",
+<<<<<<< HEAD
     "test:cov": "TZ=Asia/Ho_Chi_Minh jest --coverage",
+=======
+>>>>>>> 715bb2a... feat: add register
     "start": "nodemon build/index.js",
     "build": "tsc --project tsconfig.json",
     "typecheck": "npx tsc --project tsconfig.json --noEmit --skipLibCheck",
@@ -22,9 +25,12 @@
     "@types/express": "^4.17.1",
     "@types/mysql-import": "^2.0.0",
     "app-root-path": "3.0.0",
+    "bcrypt": "^3.0.8",
     "cors": "^2.8.5",
-    "express": "^4.16.4",
     "morgan": "1.9.1",
+    "mysql2": "^2.1.0",
+    "sequelize": "^5.21.3",
+    "sequelize-typescript": "^1.1.0",
     "swagger-ui-express": "^4.0.2",
     "winston": "3.2.1",
     "winston-daily-rotate-file": "4.4.1"
@@ -40,6 +46,7 @@
     "ts-jest": "^24.3.0",
     "tslint": "^5.20.1",
     "tslint-config-airbnb": "5.11.0",
+<<<<<<< HEAD
     "tslint-config-prettier": "^1.18.0",
     "typescript": "^3.7.4",
     "prettier": "^1.19.1",
@@ -59,5 +66,9 @@
       "npm run prettier",
       "git add *"
     ]
+=======
+    "tslint-config-prettier": "1.15.0",
+    "typescript": "^3.7.4"
+>>>>>>> 715bb2a... feat: add register
   }
 }
