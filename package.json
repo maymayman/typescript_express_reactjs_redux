@@ -12,7 +12,8 @@
     "prettier": "prettier --single-quote --write '{src,__test__}/**/*.{ts,js,json}'",
     "dev": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' index.ts --verbose",
     "lint": "npx tslint --project tsconfig.json --config tslint.json './**/*.{ts,tsx}'",
-    "lint:fix": " npx tslint --fix --project tsconfig.json --config tslint.json './**/*.{ts,tsx}'"
+    "lint:fix": " npx tslint --fix --project tsconfig.json --config tslint.json './**/*.{ts,tsx}'",
+    "migration": "node ./src/migration/migration"
   },
   "author": "",
   "license": "ISC",
