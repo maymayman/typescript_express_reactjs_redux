@@ -52,7 +52,7 @@
     }
   },
   "lint-staged": {
-    "{src,seeders,MockData,jobs}/**/*.{ts,tsx}": [
+    "{src,__test__}/**/*.{ts,tsx}": [
       "npm run prettier",
       "npm run lint:fix",
       "git add *"
