@@ -1,5 +1,5 @@
 const LOG_FORMATS = [
-  '[:date[iso]]', 
+  '[:date[iso]]',
   ':http-version',
   ':method',
   ':url',
