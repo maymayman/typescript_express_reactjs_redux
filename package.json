@@ -55,7 +55,7 @@
     "{src,seeders,MockData,jobs}/**/*.{ts,tsx}": [
       "npm run prettier",
       "npm run lint:fix",
-      "git add"
+      "git add *"
     ]
   }
 }
