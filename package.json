@@ -53,8 +53,8 @@
   },
   "lint-staged": {
     "{src,__test__}/**/*.{ts,tsx}": [
-      "npm run prettier",
       "npm run lint:fix",
+      "npm run prettier",
       "git add *"
     ]
   }
