@@ -1,6 +1,6 @@
 use sys;
 
-create table Users (
+CREATE TABLE IF NOT EXISTS Users (
     id int NOT NULL AUTO_INCREMENT ,
     username VARCHAR(255) NOT NULL UNIQUE ,
     password VARCHAR(200) NOT NULL,
