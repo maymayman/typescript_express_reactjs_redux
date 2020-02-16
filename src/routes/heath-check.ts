@@ -1,7 +1,7 @@
-import * as express from 'express'
+import * as express from 'express';
 import heathcheckCtroller from '../controller/helloTS';
-const router = express.Router()
+const router = express.Router();
 
-router.get('/',heathcheckCtroller.a); 
+router.get('/', heathcheckCtroller.a);
 
-export default router
+export default router;
