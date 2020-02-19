@@ -36,12 +36,14 @@ app.use(cors(options));
 // add your routes
 
 // enable pre-flight
+
 app.options('*', cors(options));
 
 app.get('/', (req: express.Request, res: express.Response) =>
   res.json({ heathCheck: true })
 );
 app.use('/user', checkRouter);
+
 // catch 404 and forward to error handler
 app.use((req: express.Request, res: express.Response, next) =>
   next(createError(404))

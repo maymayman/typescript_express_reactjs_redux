@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es2015",
+    "target": "es6",
     "lib": ["es2017"],
     "module": "commonjs",
     "moduleResolution": "node",
@@ -18,7 +18,9 @@
     "inlineSources": true,
     "skipLibCheck": true,
     "allowSyntheticDefaultImports": true,
-    "experimentalDecorators": false,
+    "experimentalDecorators": true, // chenge form false to true when add sequelize
+    "emitDecoratorMetadata": true, // new when add sequelize,
+    "strictPropertyInitialization": false,
     "forceConsistentCasingInFileNames": true,
     "importHelpers": true,
     "typeRoots": [
