@@ -1,5 +1,5 @@
-import * as winston from 'winston'
-import * as root from 'app-root-path'
+import * as root from 'app-root-path';
+import * as winston from 'winston';
 import * as DailyRotateFile from 'winston-daily-rotate-file';
 
 const { createLogger, format, transports } = winston;
@@ -10,11 +10,7 @@ const myFormat = printf(options => {
 });
 
 const logger = createLogger({
-  format: combine(
-    label({ label: 'APPLICATION' }),
-    timestamp(),
-    myFormat
-  ),
+  format: combine(label({ label: 'APPLICATION' }), timestamp(), myFormat),
   transports: [
     new DailyRotateFile({
       datePattern: 'YYYY-MM-DD',

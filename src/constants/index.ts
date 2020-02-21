@@ -1,4 +1,4 @@
-const LOG_FORMATS = [
+const MORGAN_LOG_FORMATS = [
   '[:date[iso]]',
   ':http-version',
   ':method',
@@ -8,4 +8,4 @@ const LOG_FORMATS = [
   ':response-time ms'
 ];
 
-export const LOG_FORMAT = LOG_FORMATS.join(' ');
+export const MORGAN_LOG_FORMAT = MORGAN_LOG_FORMATS.join(' ');

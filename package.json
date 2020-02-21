@@ -5,10 +5,7 @@
   "main": "index.ts",
   "scripts": {
     "test": "TZ=Asia/Ho_Chi_Minh jest",
-<<<<<<< HEAD
     "test:cov": "TZ=Asia/Ho_Chi_Minh jest --coverage",
-=======
->>>>>>> 715bb2a... feat: add register
     "start": "nodemon build/index.js",
     "build": "tsc --project tsconfig.json",
     "typecheck": "npx tsc --project tsconfig.json --noEmit --skipLibCheck",
@@ -21,9 +18,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@types/app-root-path": "^1.2.4",
-    "@types/express": "^4.17.1",
-    "@types/mysql-import": "^2.0.0",
+    "lodash": "^4.17.15",
+    "express": "^4.17.1",
+    "http-errors": "^1.7.3",
     "app-root-path": "3.0.0",
     "bcrypt": "^3.0.8",
     "cors": "^2.8.5",
@@ -36,9 +33,14 @@
     "winston-daily-rotate-file": "4.4.1"
   },
   "devDependencies": {
+    "@types/lodash": "^4.14.149",
+    "@types/app-root-path": "^1.2.4",
+    "@types/express": "^4.17.1",
     "@types/cors": "^2.8.6",
+    "@types/mysql-import": "^2.0.0",
     "@types/jest": "^24.0.25",
     "@types/node": "12.11.6",
+    "mysql-import": "^3.0.6",
     "concurrently": "^2.2.0",
     "jest": "^24.9.0",
     "jest-cli": "^24.9.0",
@@ -46,7 +48,6 @@
     "ts-jest": "^24.3.0",
     "tslint": "^5.20.1",
     "tslint-config-airbnb": "5.11.0",
-<<<<<<< HEAD
     "tslint-config-prettier": "^1.18.0",
     "typescript": "^3.7.4",
     "prettier": "^1.19.1",
@@ -56,19 +57,14 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged && npm run typecheck && npm run test:cov",
+      "pre-commit": "npm run lint:fix && lint-staged && npm run typecheck && npm run test:cov",
       "commit-msg": "validate-commit-msg"
     }
   },
   "lint-staged": {
     "{src,__test__}/**/*.{ts,tsx}": [
-      "npm run lint:fix",
       "npm run prettier",
       "git add *"
     ]
-=======
-    "tslint-config-prettier": "1.15.0",
-    "typescript": "^3.7.4"
->>>>>>> 715bb2a... feat: add register
   }
 }

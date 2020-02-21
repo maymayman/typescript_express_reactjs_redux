@@ -1,40 +1,62 @@
-import { Column,  Model, Table, PrimaryKey, AutoIncrement, AllowNull, Unique, DataType, BeforeCreate } from 'sequelize-typescript';
 import * as bcrypt from 'bcrypt';
+import {
+  AllowNull,
+  AutoIncrement,
+  BeforeCreate,
+  BeforeUpdate,
+  Column,
+  DataType,
+  Model,
+  PrimaryKey,
+  Table,
+  Unique
+} from 'sequelize-typescript';
 
-@Table({
-    tableName:'Users'
-})
-export class Users extends Model<Users>{
+@Table({ tableName: 'users' })
+export class Users extends Model<Users> {
+  @PrimaryKey
+  @AutoIncrement
+  @AllowNull(false)
+  @Column(DataType.BIGINT)
+  id: number;
 
-    @PrimaryKey
-    @AutoIncrement
-    @AllowNull(false)
-    @Column(DataType.INTEGER)
-    id: number;
+  @Unique
+  @AllowNull(false)
+  @Column(DataType.STRING)
+  username: string;
 
-    @Unique
-    @AllowNull(false)
-    @Column(DataType.STRING)
-    username :string;
+  @AllowNull(false)
+  @Column(DataType.TEXT)
+  password: string;
 
-    @AllowNull(false)
-    @Column(DataType.TEXT)
-    password :string;
-    
-    @AllowNull(false)
-    @Column(DataType.INTEGER)
-    phone : number ;
+  @AllowNull(false)
+  @Column(DataType.STRING)
+  phone: string;
 
-    @Column(DataType.DATE)
-    updated_at:Date;
+  @Column(DataType.DATE)
+  /* tslint:disable-next-line:variable-name */
+  created_at: Date;
 
-    @Column(DataType.DATE)
-    deleted_at:Date;
+  @Column(DataType.DATE)
+  /* tslint:disable-next-line:variable-name */
+  updated_at: Date;
 
-    @BeforeCreate
-    static async Bcryptpassword(instance: Users){
+  @Column(DataType.DATE)
+  /* tslint:disable-next-line:variable-name */
+  deleted_at: Date;
+
+  @BeforeCreate
+  @BeforeUpdate
+  static async beforeSaveInstance(instance: Users) {
+    try {
+      if (instance.changed('password')) {
         const salt = await bcrypt.genSaltSync(10);
         const hash = await bcrypt.hashSync(instance.password, salt);
+
         instance.password = hash;
+      }
+    } catch (error) {
+      throw error;
     }
+  }
 }

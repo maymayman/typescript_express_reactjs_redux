@@ -1,7 +1,10 @@
-import * as express from 'express'
-import userController from '../controller/User';
-const router = express.Router()
+import * as express from 'express';
+import controller from '../controllers/User';
+import { asyncController } from '../plugins/utility';
 
-router.post('/register',userController.register); 
+const router = express.Router();
+const { post } = controller;
 
-export default router
+router.post('/', asyncController(post));
+
+export default router;
