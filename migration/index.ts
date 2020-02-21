@@ -2,7 +2,7 @@ import * as minimist from 'minimist';
 import * as mysqlImport from 'mysql-import';
 import * as path from 'path';
 
-import logger from '../plugins/logger';
+import logger from '../src/plugins/logger';
 
 const migrateArgs = minimist(process.argv.slice(2));
 const host = process.env.MY_SQL_HOST || 'localhost';

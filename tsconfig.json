@@ -33,6 +33,7 @@
   ],
   "include": [
     "index.ts",
+    "migration/*.ts"
   ],
   "exclude": [
     "node_modules"
