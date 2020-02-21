@@ -3,15 +3,13 @@ import * as express from 'express';
 import * as createError from 'http-errors';
 import * as morgan from 'morgan';
 
-import logger from './plugins/logger';
-import checkRouter from './routes/heath-check';
-
-logger.info('App is Running');
-import { LOG_FORMAT } from './constants';
+import { MORGAN_LOG_FORMAT } from './constants';
+import heathCheckRouter from './routes/heath-check';
+import UserRouter from './routes/User';
 
 const app = express();
 
-app.use(morgan(LOG_FORMAT));
+app.use(morgan(MORGAN_LOG_FORMAT));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
@@ -36,28 +34,35 @@ app.use(cors(options));
 // add your routes
 
 // enable pre-flight
+// heathCheck
+app.get('/heath-check', heathCheckRouter);
 
-app.options('*', cors(options));
-
-app.get('/', (req: express.Request, res: express.Response) =>
-  res.json({ heathCheck: true })
+app.get('/', (_req: express.Request, res: express.Response) =>
+  res.send('Permission denied')
 );
-app.use('/user', checkRouter);
-
+app.use('/users', UserRouter);
 // catch 404 and forward to error handler
-app.use((req: express.Request, res: express.Response, next) =>
-  next(createError(404))
+app.use(
+  (_req: express.Request, _res: express.Response, next: express.NextFunction) =>
+    next(createError(404))
 );
 
 // error handler
-app.use((err, req: express.Request, res: express.Response, next) => {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+app.use(
+  (
+    err,
+    req: express.Request,
+    res: express.Response,
+    _next: express.NextFunction
+  ) => {
+    // set locals, only providing error in development
+    res.locals.message = err.message;
+    res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-  // render the error page
-  res.status(err.status || 500);
-  res.json(err);
-});
+    // render the error page
+    res.status(err.status || 500);
+    res.json(err);
+  }
+);
 
 export default app;

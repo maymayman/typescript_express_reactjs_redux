@@ -27,11 +27,6 @@ const logger = createLogger({
       level: 'error'
     })
   ]
-  // exceptionHandlers: [
-  //   new transports.File({
-  //     filename: 'exceptions.log'
-  //   })
-  // ]
 });
 
 logger.add(
