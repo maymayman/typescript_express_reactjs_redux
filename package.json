@@ -57,13 +57,15 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm run lint:fix && lint-staged && npm run typecheck && npm run test:cov",
+      "pre-commit": "npm run lint:fix && lint-staged",
       "commit-msg": "validate-commit-msg"
     }
   },
   "lint-staged": {
     "{src,__test__}/**/*.{ts,tsx}": [
       "npm run prettier",
+      "npm run typecheck",
+      "npm run test:cov",
       "git add *"
     ]
   }
