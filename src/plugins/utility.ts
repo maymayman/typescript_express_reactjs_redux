@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import * as createError from 'http-errors';
-import isString from 'lodash/isString';
+import * as _ from 'lodash';
 
 export const asyncController = fn => (
   req: Request,
@@ -8,7 +8,7 @@ export const asyncController = fn => (
   next: NextFunction
 ) => {
   Promise.resolve(fn(req, res, next)).catch(err => {
-    const message = isString(err) ? err : err.message;
+    const message = _.isString(err) ? err : err.message;
     const error = !err.status
       ? new createError.InternalServerError(message)
       : err;
