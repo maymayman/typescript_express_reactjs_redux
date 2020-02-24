@@ -21,7 +21,7 @@
       true,
       "ignore-parameters"
     ],
-    "early-exit": true,
+    "early-exit": false,
     "no-collapsible-if": true,
     "no-unnecessary-else": true,
     "no-return-undefined": true,

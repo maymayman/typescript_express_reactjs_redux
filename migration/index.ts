@@ -26,9 +26,9 @@ const up = async (paths: string[]): Promise<boolean> => {
   for (const element of paths) {
     await importer
       .import(element)
-      .then(() => logger.info(`Migration ${element} successful.`))
+      .then(() => logger.info(`[Migration] ${element} successful.`))
       .catch(error => {
-        logger.error(`Migration ${element} error: ${error}`);
+        logger.error(`[Migration] ${element} error: ${error}`);
       });
   }
 
