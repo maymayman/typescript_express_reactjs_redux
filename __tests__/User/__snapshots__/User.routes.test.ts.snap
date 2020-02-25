@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`POST /users POST /users - create user validate username 1`] = `"{\\"message\\":\\"\\\\\\"username\\\\\\" is required\\"}"`;
