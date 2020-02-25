@@ -50,4 +50,4 @@ const migratetions = new Map([
 
 const migratetion = migratetions.get(`${migrateArgs.n}`) as any;
 
-migratetion.call(this);
+migratetion.call();

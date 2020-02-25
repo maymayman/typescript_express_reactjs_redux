@@ -22,6 +22,57 @@ const {
   USER_DUPLICATE_PHONE
 } = ERROR_CODES;
 
+const duplicateFields = {
+  username: {
+    field: 'username',
+    error: HTTP_ERRORS[USER_DUPLICATE_USERNAME].MESSAGE
+  },
+  email: {
+    field: 'email',
+    error: HTTP_ERRORS[USER_DUPLICATE_EMAIL].MESSAGE
+  },
+  phone: {
+    field: 'phone',
+    error: HTTP_ERRORS[USER_DUPLICATE_PHONE].MESSAGE
+  }
+};
+
+interface IUserFieldValidateDup {
+  instance: Users;
+  field: 'username' | 'email' | 'phone';
+  error: string;
+}
+
+const validateDuplicate = async (
+  options: IUserFieldValidateDup
+): Promise<void> => {
+  const { instance, field, error } = options;
+
+  if (instance.previous(field) !== instance[field]) {
+    const query = { where: { [field]: instance[field] } };
+    const user = await Users.findOne(query);
+
+    if (user) throw new BadRequest(error);
+  }
+
+  return;
+};
+
+const validateDuplicateFields = async (instance: Users): Promise<void> => {
+  try {
+    const keys = Object.keys(duplicateFields);
+    for (const key of keys) {
+      const { field, error } = duplicateFields[key];
+
+      if (instance.changed(field)) {
+        await validateDuplicate({ instance, field, error });
+      }
+    }
+  } catch (error) {
+    throw error;
+  }
+};
+
 @Table({ tableName: 'users' })
 export class Users extends Model<Users> {
   @PrimaryKey
@@ -58,6 +109,8 @@ export class Users extends Model<Users> {
   @BeforeCreate
   @BeforeUpdate
   static async beforeSaveInstance(instance: Users) {
+    await validateDuplicateFields(instance);
+
     if (instance.changed('password')) {
       const salt = await bcrypt.genSaltSync(10);
       const hash = await bcrypt.hashSync(instance.password, salt);
@@ -72,59 +125,10 @@ export class Users extends Model<Users> {
 
     instance.set('updated_at', now);
     instance.set('created_at', now);
-
-    const [userWithUsername, userWithEmail, userWithPhone] = await Promise.all([
-      Users.findOne({ where: { username: instance.username } }),
-      Users.findOne({ where: { email: instance.email } }),
-      Users.findOne({ where: { phone: instance.phone } })
-    ]);
-
-    if (userWithUsername) {
-      throw new BadRequest(HTTP_ERRORS[USER_DUPLICATE_USERNAME].MESSAGE);
-    }
-    if (userWithEmail) {
-      throw new BadRequest(HTTP_ERRORS[USER_DUPLICATE_EMAIL].MESSAGE);
-    }
-    if (userWithPhone) {
-      throw new BadRequest(HTTP_ERRORS[USER_DUPLICATE_PHONE].MESSAGE);
-    }
   }
 
   @BeforeUpdate
   static async beforeUpdateInstance(instance: Users) {
     instance.set('updated_at', new Date());
-    /** validate username */
-    if (
-      instance.changed('username') &&
-      instance.previous('username') !== instance.username
-    ) {
-      const user = await Users.findOne({
-        where: { username: instance.username }
-      });
-
-      if (user) {
-        throw new BadRequest(HTTP_ERRORS[USER_DUPLICATE_USERNAME].MESSAGE);
-      }
-    }
-
-    /** validate email */
-    if (
-      instance.changed('email') &&
-      instance.previous('email') !== instance.email
-    ) {
-      const user = await Users.findOne({ where: { email: instance.email } });
-
-      if (user) throw new BadRequest(HTTP_ERRORS[USER_DUPLICATE_EMAIL].MESSAGE);
-    }
-
-    /** validate phone */
-    if (
-      instance.changed('phone') &&
-      instance.previous('phone') !== instance.phone
-    ) {
-      const user = await Users.findOne({ where: { phone: instance.phone } });
-
-      if (user) throw new BadRequest(HTTP_ERRORS[USER_DUPLICATE_PHONE].MESSAGE);
-    }
   }
 }
