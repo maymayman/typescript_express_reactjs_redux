@@ -11,7 +11,7 @@ const database = process.env.MY_SQL_DATABASE_NAME || 'stock_develop';
 const dialect = (process.env.SQL_DIALECT as Dialect) || 'mysql';
 const port = process.env.MY_SQL_PORT
   ? parseInt(process.env.MY_SQL_PORT, 10)
-  : 3307;
+  : 3306;
 
 const sequelize = new Sequelize({
   host,

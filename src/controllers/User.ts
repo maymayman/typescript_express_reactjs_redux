@@ -27,5 +27,19 @@ export default {
     const result = await user.save();
 
     return res.json(result);
+  },
+  get: async (req: Request, res: Response) => {
+    const id = req.params.id;
+    const user = await Users.findByPk(id);
+
+    if (!user) {
+      throw new createError.NotFound(
+        HTTP_ERRORS[ERROR_CODES.USER_NOT_FOUND].MESSAGE
+      );
+    }
+
+    user.password = undefined;
+
+    return res.json(user);
   }
 };

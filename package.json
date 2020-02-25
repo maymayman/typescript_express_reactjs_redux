@@ -13,7 +13,7 @@
     "dev": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' index.ts --verbose",
     "lint": "npx tslint --project tsconfig.json --config tslint.json './**/*.{ts,tsx}'",
     "lint:fix": " npx tslint --fix --project tsconfig.json --config tslint.json './**/*.{ts,tsx}'",
-    "migration:up": "node ./build/migration/index.js -n up"
+    "migration:up": "ts-node ./migration/index.ts -n up"
   },
   "author": "",
   "license": "ISC",
