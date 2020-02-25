@@ -48,7 +48,7 @@ const validateDuplicate = async (
 ): Promise<void> => {
   const { instance, field, error } = options;
 
-  if (instance.previous(field) !== instance[field]) {
+  if (instance.changed(field) && instance.previous(field) !== instance[field]) {
     const query = { where: { [field]: instance[field] } };
     const user = await Users.findOne(query);
 
@@ -61,13 +61,13 @@ const validateDuplicate = async (
 const validateDuplicateFields = async (instance: Users): Promise<void> => {
   try {
     const keys = Object.keys(duplicateFields);
+
     for (const key of keys) {
       const { field, error } = duplicateFields[key];
-
-      if (instance.changed(field)) {
-        await validateDuplicate({ instance, field, error });
-      }
+      await validateDuplicate({ instance, field, error });
     }
+
+    return;
   } catch (error) {
     throw error;
   }
