@@ -3,7 +3,7 @@ import * as createError from 'http-errors';
 import * as Joi from 'joi';
 import * as _ from 'lodash';
 
-interface IValidationPost {
+interface IValidations {
   schema?: Joi.ObjectSchema;
   data: object;
 }
@@ -12,38 +12,48 @@ const schemasValidation = {
   post: Joi.object({
     username: Joi.string().required(),
     phone: Joi.string().required(),
-    password: Joi.string().required()
+    password: Joi.string().required(),
+    email: Joi.string().required()
+  }),
+  put: Joi.object({
+    username: Joi.string().optional(),
+    phone: Joi.string().optional(),
+    password: Joi.string().optional(),
+    email: Joi.string().optional()
   })
 };
 
-const validations = {
-  post: (options: IValidationPost): void => {
-    const { schema, data } = options;
+const validation = (options: IValidations): void => {
+  const { schema, data } = options;
 
-    if (!schema) return;
+  if (!schema) return;
 
-    const { error } = Joi.validate(data, schema);
+  const { error } = Joi.validate(data, schema);
 
-    if (error) {
-      const errorMess = _.get(error, 'details[0].message', 'Bad Request!');
-      throw new createError.BadRequest(errorMess);
-    }
-
-    return;
+  if (error) {
+    const errorMess = _.get(error, 'details[0].message', 'Bad Request!');
+    throw new createError.BadRequest(errorMess);
   }
+
+  return;
 };
 
-export default {
-  post: async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const schema = schemasValidation.post;
-      const data = req.body;
+export default async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const method = req.method;
+    const body = req.body;
+    // const params = req.params;
+    // const query = req.query;
 
-      validations.post({ schema, data });
+    const validations = {
+      POST: validation({ schema: schemasValidation.post, data: body }),
+      PUT: validation({ schema: schemasValidation.put, data: body })
+    };
 
-      next();
-    } catch (error) {
-      throw error;
-    }
+    validations[method].call();
+
+    next();
+  } catch (error) {
+    throw error;
   }
 };

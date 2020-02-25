@@ -7,13 +7,13 @@
     "test": "TZ=Asia/Ho_Chi_Minh jest",
     "test:cov": "TZ=Asia/Ho_Chi_Minh jest --coverage",
     "start": "nodemon build/index.js",
-    "build": "tsc --project tsconfig.json",
+    "build": "rm -rf build && tsc --project tsconfig.json && copyfiles migration/**/*.sql build/",
     "typecheck": "npx tsc --project tsconfig.json --noEmit --skipLibCheck",
     "prettier": "prettier --single-quote --write '{src,__test__}/**/*.{ts,js,json}'",
     "dev": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' index.ts --verbose",
     "lint": "npx tslint --project tsconfig.json --config tslint.json './**/*.{ts,tsx}'",
     "lint:fix": " npx tslint --fix --project tsconfig.json --config tslint.json './**/*.{ts,tsx}'",
-    "migration:up": "ts-node ./src/migration/index.ts -n up"
+    "migration:up": "node ./build/migration/index.js -n up"
   },
   "author": "",
   "license": "ISC",
@@ -55,7 +55,8 @@
     "prettier": "^1.19.1",
     "husky": "^4.2.3",
     "lint-staged": "7.3.0",
-    "validate-commit": "^3.4.0"
+    "validate-commit": "^3.4.0",
+    "copyfiles": "^2.2.0"
   },
   "husky": {
     "hooks": {

@@ -4,6 +4,7 @@ import * as createError from 'http-errors';
 import * as morgan from 'morgan';
 
 import { MORGAN_LOG_FORMAT } from './constants';
+import logger from './plugins/logger';
 import heathCheckRouter from './routes/heath-check';
 import UserRouter from './routes/User';
 
@@ -55,6 +56,7 @@ app.use(
     res: express.Response,
     _next: express.NextFunction
   ) => {
+    logger.error(err.stack);
     // set locals, only providing error in development
     res.locals.message = err.message;
     res.locals.error = req.app.get('env') === 'development' ? err : {};
