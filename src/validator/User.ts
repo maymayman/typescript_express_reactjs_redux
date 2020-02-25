@@ -46,8 +46,8 @@ export default async (req: Request, res: Response, next: NextFunction) => {
     // const query = req.query;
 
     const validations = {
-      POST: validation({ schema: schemasValidation.post, data: body }),
-      PUT: validation({ schema: schemasValidation.put, data: body })
+      POST: () => validation({ schema: schemasValidation.post, data: body }),
+      PUT: () => validation({ schema: schemasValidation.put, data: body })
     };
 
     validations[method].call();
