@@ -11,7 +11,7 @@ const password = process.env.MY_SQL_PASSWORD || 'my-secret-pw';
 const database = process.env.MY_SQL_DATABASE_NAME || 'stock_develop';
 const port = process.env.MY_SQL_PORT
   ? parseInt(process.env.MY_SQL_PORT, 10)
-  : 3307;
+  : 3306;
 
 const importer = mysqlImport.config({
   host,

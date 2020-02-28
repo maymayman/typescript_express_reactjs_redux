@@ -42,6 +42,7 @@ export default async (req: Request, res: Response, next: NextFunction) => {
   try {
     const method = req.method;
     const body = req.body;
+    // const id = req.params;
     // const params = req.params;
     // const query = req.query;
 
@@ -50,7 +51,9 @@ export default async (req: Request, res: Response, next: NextFunction) => {
       PUT: () => validation({ schema: schemasValidation.put, data: body })
     };
 
-    validations[method].call();
+    if (validations[method]) {
+      validations[method].call();
+    }
 
     next();
   } catch (error) {

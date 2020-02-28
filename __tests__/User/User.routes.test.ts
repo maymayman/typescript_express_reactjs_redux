@@ -3,35 +3,52 @@ import * as supertest from 'supertest';
 import app from '../../src';
 
 const request = supertest(app);
-jest.mock('../../src/models', () => ({
+jest.mock('../../src/models/', () => ({
   default: {
     Users: class {
-      public save;
+      //public save;
+      public save = jest.fn().mockResolvedValueOnce({
+        id: 1,
+        username: 'duc789',
+        password: '12345678',
+        phone: '093094192',
+        email: 'abc12@gmail.com',
+        updated_at: "2020-02-25T13:00:59.256Z",
+        created_at: "2020-02-25T13:00:59.256Z"
+      });
+      static findByPk = jest.fn().mockResolvedValue({
+        id: 1,
+        username: 'duc789',
+        password: '12345678',
+        phone: '093094192',
+        email: 'abc12@gmail.com',
+        updated_at: "2020-02-25T13:00:59.256Z",
+        created_at: "2020-02-25T13:00:59.256Z"
+      });
       constructor() {
-        this.save = jest.fn();
-        (this.save as jest.Mock).mockResolvedValueOnce({
-          id: 1,
-          username: 'duc789',
-          password: '12345678',
-          phone: '093094192',
-          email: 'abc12@gmail.com',
-          updated_at: "2020-02-25T13:00:59.256Z",
-          created_at: "2020-02-25T13:00:59.256Z"
-        })
+        // this.save = jest.fn();
+        // (this.save as jest.Mock).mockResolvedValueOnce({
+        //   id: 1,
+        //   username: 'duc789',
+        //   password: '12345678',
+        //   phone: '093094192',
+        //   email: 'abc12@gmail.com',
+        //   updated_at: "2020-02-25T13:00:59.256Z",
+        //   created_at: "2020-02-25T13:00:59.256Z"
+        // })
       } 
     }
   }
 }));
 
-beforeEach(() => {
-  // Clear all instances and calls to constructor and all methods:
+afterAll(() => {
   jest.resetAllMocks();
 });
 
 describe('Test the root path', () => {
   it('It should response the GET method', async () => {
     const result = await request.get('/');
-    
+
     expect(result.status).toEqual(200);
   });
 });
@@ -67,3 +84,20 @@ describe('POST /users', () => {
     expect(result.body.email).toEqual(userInfo.email);
   });
 });
+
+describe('GET /users',()=>{
+  it('GET /users/:id - get user by id is success',async () =>{
+    const result = await request.get('/users/1');
+
+    expect(result.status).toEqual(200);
+    expect(result.body).toEqual({
+      id: 1,
+      username: 'duc789',
+      password: '12345678',
+      phone: '093094192',
+      email: 'abc12@gmail.com',
+      updated_at: "2020-02-25T13:00:59.256Z",
+      created_at: "2020-02-25T13:00:59.256Z"
+    })
+  })
+})
