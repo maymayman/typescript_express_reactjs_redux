@@ -38,8 +38,6 @@ export default {
       );
     }
 
-    user.password = undefined;
-
     return res.json(user);
   }
 };

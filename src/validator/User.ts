@@ -20,9 +20,6 @@ const schemasValidation = {
     phone: Joi.string().optional(),
     password: Joi.string().optional(),
     email: Joi.string().optional()
-  }),
-  get: Joi.object({
-    id: Joi.string().required()
   })
 };
 
@@ -45,17 +42,18 @@ export default async (req: Request, res: Response, next: NextFunction) => {
   try {
     const method = req.method;
     const body = req.body;
-    const id = req.params;
+    // const id = req.params;
     // const params = req.params;
     // const query = req.query;
 
     const validations = {
       POST: () => validation({ schema: schemasValidation.post, data: body }),
-      PUT: () => validation({ schema: schemasValidation.put, data: body }),
-      GET: () => validation({ schema: schemasValidation.get, data: id })
+      PUT: () => validation({ schema: schemasValidation.put, data: body })
     };
 
-    validations[method].call();
+    if (validations[method]) {
+      validations[method].call();
+    }
 
     next();
   } catch (error) {
