@@ -39,5 +39,19 @@ export default {
     }
 
     return res.json(user);
+  },
+  Delete: async (req: Request, res: Response) => {
+    const id = req.params.id;
+    const user = await Users.findByPk(id);
+
+    if (!user) {
+      throw new createError.NotFound(
+        HTTP_ERRORS[ERROR_CODES.USER_NOT_FOUND].MESSAGE
+      );
+    }
+
+    await Users.destroy({ where: { id } });
+
+    return res.json(user);
   }
 };

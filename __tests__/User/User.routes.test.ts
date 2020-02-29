@@ -25,6 +25,7 @@ jest.mock('../../src/models/', () => ({
         updated_at: "2020-02-25T13:00:59.256Z",
         created_at: "2020-02-25T13:00:59.256Z"
       });
+      static destroy = jest.fn().mockResolvedValue(1);
       constructor() {
         // this.save = jest.fn();
         // (this.save as jest.Mock).mockResolvedValueOnce({
@@ -88,7 +89,7 @@ describe('POST /users', () => {
 describe('GET /users',()=>{
   it('GET /users/:id - get user by id is success',async () =>{
     const result = await request.get('/users/1');
-
+    
     expect(result.status).toEqual(200);
     expect(result.body).toEqual({
       id: 1,
@@ -99,5 +100,22 @@ describe('GET /users',()=>{
       updated_at: "2020-02-25T13:00:59.256Z",
       created_at: "2020-02-25T13:00:59.256Z"
     })
+  })
+});
+describe('DELETE /user',()=>{
+  it('DELETE /user/:id - delete user by id is success',async ()=>{
+    const result = await request.delete('/users/1');
+     
+    expect(result.status).toEqual(200);
+    expect(result.body).toEqual({
+      id: 1,
+      username: 'duc789',
+      password: '12345678',
+      phone: '093094192',
+      email: 'abc12@gmail.com',
+      updated_at: "2020-02-25T13:00:59.256Z",
+      created_at: "2020-02-25T13:00:59.256Z"
+    })
+    
   })
 })
