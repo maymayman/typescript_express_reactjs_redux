@@ -2,12 +2,23 @@
 import * as supertest from 'supertest';
 import app from '../../src';
 
+const successUserData = {
+  id: 1,
+  username: 'duc789',
+  password: '12345678',
+  phone: '093094192',
+  email: 'abc12@gmail.com',
+  updated_at: "2020-02-25T13:00:59.256Z",
+  created_at: "2020-02-25T13:00:59.256Z"
+};
+
 const request = supertest(app);
 jest.mock('../../src/models/', () => ({
   default: {
     Users: class {
       //public save;
-      public save = jest.fn().mockResolvedValueOnce({
+      public save = jest.fn().mockResolvedValueOnce({ ...successUserData });
+      static findByPk = jest.fn().mockResolvedValueOnce({
         id: 1,
         username: 'duc789',
         password: '12345678',
@@ -15,17 +26,25 @@ jest.mock('../../src/models/', () => ({
         email: 'abc12@gmail.com',
         updated_at: "2020-02-25T13:00:59.256Z",
         created_at: "2020-02-25T13:00:59.256Z"
-      });
-      static findByPk = jest.fn().mockResolvedValue({
+      }).mockResolvedValueOnce({
         id: 1,
         username: 'duc789',
         password: '12345678',
         phone: '093094192',
         email: 'abc12@gmail.com',
         updated_at: "2020-02-25T13:00:59.256Z",
-        created_at: "2020-02-25T13:00:59.256Z"
+        created_at: "2020-02-25T13:00:59.256Z",
+        destroy: jest.fn().mockResolvedValueOnce({
+          id: 1,
+          username: 'duc789',
+          password: '12345678',
+          phone: '093094192',
+          email: 'abc12@gmail.com',
+          updated_at: "2020-02-25T13:00:59.256Z",
+          created_at: "2020-02-25T13:00:59.256Z"
+        })
       });
-      static destroy = jest.fn().mockResolvedValue(1);
+      //static destroy = jest.fn().mockResolvedValue(1);
       constructor() {
         // this.save = jest.fn();
         // (this.save as jest.Mock).mockResolvedValueOnce({
@@ -91,15 +110,7 @@ describe('GET /users',()=>{
     const result = await request.get('/users/1');
     
     expect(result.status).toEqual(200);
-    expect(result.body).toEqual({
-      id: 1,
-      username: 'duc789',
-      password: '12345678',
-      phone: '093094192',
-      email: 'abc12@gmail.com',
-      updated_at: "2020-02-25T13:00:59.256Z",
-      created_at: "2020-02-25T13:00:59.256Z"
-    })
+    expect(result.body).toEqual({ ...successUserData })
   })
 });
 describe('DELETE /user',()=>{
@@ -107,15 +118,6 @@ describe('DELETE /user',()=>{
     const result = await request.delete('/users/1');
      
     expect(result.status).toEqual(200);
-    expect(result.body).toEqual({
-      id: 1,
-      username: 'duc789',
-      password: '12345678',
-      phone: '093094192',
-      email: 'abc12@gmail.com',
-      updated_at: "2020-02-25T13:00:59.256Z",
-      created_at: "2020-02-25T13:00:59.256Z"
-    })
-    
+    expect(result.body).toEqual({ ...successUserData })
   })
 })

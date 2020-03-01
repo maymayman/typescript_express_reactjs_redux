@@ -40,7 +40,7 @@ export default {
 
     return res.json(user);
   },
-  Delete: async (req: Request, res: Response) => {
+  destroy: async (req: Request, res: Response) => {
     const id = req.params.id;
     const user = await Users.findByPk(id);
 
@@ -50,8 +50,8 @@ export default {
       );
     }
 
-    await Users.destroy({ where: { id } });
+    const result = await user.destroy();
 
-    return res.json(user);
+    return res.json(result);
   }
 };
