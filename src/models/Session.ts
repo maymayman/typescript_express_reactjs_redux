@@ -15,6 +15,7 @@ import { Users } from './User';
 
 @Table({ tableName: 'sessions' })
 export class Sessions extends Model<Sessions> {
+
   @PrimaryKey
   @AutoIncrement
   @AllowNull(false)
@@ -23,7 +24,7 @@ export class Sessions extends Model<Sessions> {
 
   @AllowNull(false)
   @Column(DataType.STRING)
-  session: string;
+  token: string;
 
   @ForeignKey(() => Users)
   @Column
@@ -54,6 +55,7 @@ export class Sessions extends Model<Sessions> {
 
   @BeforeCreate
   @BeforeUpdate
+
   static async beforeCreateInstance(instance: Sessions) {
     const now = new Date();
 

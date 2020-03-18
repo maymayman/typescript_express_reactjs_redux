@@ -1,20 +1,22 @@
+import * as bcrypt from 'bcrypt';
 import { Request, Response } from 'express';
 import * as createError from 'http-errors';
 
 import * as jwt from 'jsonwebtoken';
 import * as Models from '../models';
-import { Users } from '../models/User';
-
 import { ERROR_CODES, HTTP_ERRORS } from '../constants';
 
 // const Users = Models.default.Users;
 const Sessions = Models.default.Sessions;
 const SECRET_KEY = process.env.SECRET_KEY || 'My_secret_key';
 const EXPIRE_TOKEN_TIME = process.env.EXPIRE_TOKEN_TIME || '7 days';
+const Users = Models.default.Users;
+const Session = Models.default.Session;
 
 export default {
   login: async (req: Request, res: Response) => {
     const { username, password } = req.body;
+
     const user = await Users.findOne({
       where: { username },
       attributes: ['username', 'password', 'id']
@@ -25,14 +27,23 @@ export default {
         HTTP_ERRORS[ERROR_CODES.USER_NOT_FOUND].MESSAGE
       );
     }
+
     await Users.comparePassword(user.password, password);
+    const match = await bcrypt.compareSync(password, user.password);
+
+    if (!match) {
+      throw new createError.BadRequest(
+        HTTP_ERRORS[ERROR_CODES.USER_DOES_NOT_MATCH_PASSWORD].MESSAGE
+      );
+    }
 
     user.password = undefined;
-    const userPayload = { id: user.id };
-    const token = await jwt.sign(userPayload, SECRET_KEY, {
-      expiresIn: EXPIRE_TOKEN_TIME
+    const JsonUser = JSON.parse(JSON.stringify(user));
+    const key = 'My_secret_key';
+    const token = await jwt.sign(JsonUser, key, {
+      expiresIn: 60 * 60 * 24 * 7
     });
-    const session = new Sessions({ session: token, user_id: user.id });
+    const session = new Session({ token, user_id: user.id });
 
     await session.save();
 
@@ -42,7 +53,7 @@ export default {
     const USER_ID = req.params.userId;
 
     const now = new Date();
-    const sessionByUserID = await Sessions.findOne({
+    const sessionByUserID = await Session.findOne({
       where: { user_id: USER_ID }
     });
 
