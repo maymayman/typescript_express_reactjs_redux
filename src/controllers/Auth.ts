@@ -37,5 +37,23 @@ export default {
     await session.save();
 
     return res.json({ token, user });
+  },
+  logout: async (req: Request, res: Response) => {
+    const USER_ID = req.params.userId;
+
+    const now = new Date();
+    const sessionByUserID = await Sessions.findOne({
+      where: { user_id: USER_ID }
+    });
+
+    if (!sessionByUserID) {
+      throw new createError.BadRequest(
+        HTTP_ERRORS[ERROR_CODES.SESSION_NOT_FOUND].MESSAGE
+      );
+    }
+    await sessionByUserID.set({ expried_at: now });
+    const result = await sessionByUserID.save();
+
+    return res.json(result);
   }
 };

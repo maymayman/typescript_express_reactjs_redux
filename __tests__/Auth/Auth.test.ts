@@ -46,7 +46,32 @@ jest.mock('../../src/models/',()=>({
         user_id: 1,
         expried_at: '2020-02-25T13:00:59.256Z',
         updated_at: "2020-02-25T13:00:59.256Z",
-        created_at: "2020-02-25T13:00:59.256Z"});
+        created_at: "2020-02-25T13:00:59.256Z"
+      });
+      static findOne = jest.fn().mockResolvedValueOnce({
+        id: 1,
+        token: '1231231ads',
+        user_id: 1,
+        expried_at: '2020-02-25T13:00:59.256Z',
+        updated_at: "2020-02-25T13:00:59.256Z",
+        created_at: "2020-02-25T13:00:59.256Z",
+        set : jest.fn().mockResolvedValueOnce({
+            id: 1,
+            token: '1231231ads',
+            user_id: 1,
+            expried_at: '2020-02-25T13:00:59.256Z',
+            updated_at: "2020-02-25T13:00:59.256Z",
+            created_at: "2020-02-25T13:00:59.256Z",
+          }),
+        save : jest.fn().mockResolvedValueOnce({
+            id: 1,
+            token: '1231231ads',
+            user_id: 1,
+            expried_at: '2020-02-25T13:00:59.256Z',
+            updated_at: "2020-02-25T13:00:59.256Z",
+            created_at: "2020-02-25T13:00:59.256Z",
+          })  
+      }).mockResolvedValueOnce(null)
         constructor() {
         } 
     }
@@ -96,5 +121,25 @@ afterAll(() => {
       expect(result.status).toEqual(200);
       expect(result.body.token).toEqual('1231231ads');
       expect(result.body.user.id).toEqual(1);
+    })
+  })
+  describe('PUT LOGOUT -  auth/logout ',()=>{
+    it('PUT LOGOUT - logout is success ',async ()=>{
+        const result = await request.put('/auth/logout/1');
+
+        expect(result.status).toEqual(200);
+        expect(result.body).toEqual({
+            id: 1,
+            token: '1231231ads',
+            user_id: 1,
+            expried_at: '2020-02-25T13:00:59.256Z',
+            updated_at: "2020-02-25T13:00:59.256Z",
+            created_at: "2020-02-25T13:00:59.256Z",
+        })
+    })
+    it('PUT LOGOUT - logout failed', async ()=>{
+        const result = await request.put('/auth/logout/2');
+
+        expect(result.status).toEqual(400);
     })
   })
