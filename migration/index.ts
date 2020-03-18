@@ -36,7 +36,8 @@ const up = async (paths: string[]): Promise<boolean> => {
 };
 
 const M_01_USER = path.join(__dirname, 'up', 'm-1-User.sql');
-const migratePaths = [M_01_USER];
+const M_03_SESSIOM = path.join(__dirname,'up','m-3-Session.sql');
+const migratePaths = [M_01_USER,M_03_SESSIOM];
 
 const migratetions = new Map([
   ['up', () => up(migratePaths)],
