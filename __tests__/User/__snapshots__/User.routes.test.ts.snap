@@ -1,3 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`POST /users POST /users - create user validate username 1`] = `"{\\"message\\":\\"\\\\\\"username\\\\\\" is required\\"}"`;
+
+exports[`PUT /user/:id PUT /users/:id - body not allow validation 1`] = `"{\\"message\\":\\"\\\\\\"username\\\\\\" is not allowed to be empty\\"}"`;
