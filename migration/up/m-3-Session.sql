@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS session_users (
     id BIGINT NOT NULL AUTO_INCREMENT,
-    token LONGTEXT NOT NULL,
+    session LONGTEXT NOT NULL,
     user_id BIGINT NOT NULL ,
     device VARCHAR(255) ,
     device_id BIGINT ,
