@@ -39,7 +39,7 @@ jest.mock('../../src/models/User', () => ({
 );
 jest.mock('../../src/models/',()=>({
   default:{
-    Session:class{
+    Sessions:class{
       public save = jest.fn().mockResolvedValueOnce({
         id: 1,
         token: '1231231ads',

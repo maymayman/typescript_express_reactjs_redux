@@ -13,8 +13,8 @@ import {
 } from 'sequelize-typescript';
 import { Users } from './User';
 
-@Table({ tableName: 'session_users' })
-export class Session extends Model<Session> {
+@Table({ tableName: 'sessions' })
+export class Sessions extends Model<Sessions> {
   @PrimaryKey
   @AutoIncrement
   @AllowNull(false)
@@ -23,7 +23,7 @@ export class Session extends Model<Session> {
 
   @AllowNull(false)
   @Column(DataType.STRING)
-  token: string;
+  session: string;
 
   @ForeignKey(() => Users)
   @Column
@@ -36,9 +36,9 @@ export class Session extends Model<Session> {
   @Column(DataType.STRING)
   device: string;
 
-  @Column(DataType.BIGINT)
+  @Column(DataType.STRING)
   /* tslint:disable-next-line:variable-name */
-  device_id: number;
+  device_id: string;
 
   @Column(DataType.DATE)
   /* tslint:disable-next-line:variable-name */
@@ -54,7 +54,7 @@ export class Session extends Model<Session> {
 
   @BeforeCreate
   @BeforeUpdate
-  static async beforeCreateInstance(instance: Session) {
+  static async beforeCreateInstance(instance: Sessions) {
     const now = new Date();
 
     instance.set('updated_at', now);
@@ -62,7 +62,7 @@ export class Session extends Model<Session> {
   }
 
   @BeforeCreate
-  static async createExpriedAt(instance: Session) {
+  static async createExpriedAt(instance: Sessions) {
     const now = new Date();
     const week = now.setDate(now.getDate() + 7);
 

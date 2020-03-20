@@ -8,7 +8,7 @@ import { Users } from '../models/User';
 import { ERROR_CODES, HTTP_ERRORS } from '../constants';
 
 // const Users = Models.default.Users;
-const Session = Models.default.Session;
+const Sessions = Models.default.Sessions;
 
 export default {
   login: async (req: Request, res: Response) => {
@@ -27,11 +27,15 @@ export default {
     await Users.comparePassword(user.password, password);
 
     user.password = undefined;
-    const key = 'My_secret_key';
-    const token = await jwt.sign(JSON.parse(JSON.stringify(user)), key, {
-      expiresIn: '7 days'
-    });
-    const session = new Session({ token, user_id: user.id });
+    const secretKey = process.env.SECRET_KEY || 'My_secret_key';
+    const token = await jwt.sign(
+      JSON.parse(JSON.stringify({ id: user.id })),
+      secretKey,
+      {
+        expiresIn: '7 days'
+      }
+    );
+    const session = new Sessions({ session: token, user_id: user.id });
 
     await session.save();
 
