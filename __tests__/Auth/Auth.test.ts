@@ -11,8 +11,7 @@ jest.mock('jsonwebtoken',()=>({
     sign : jest.fn().mockResolvedValueOnce('1231231ads')
     })
 )
-jest.mock('../../src/models/', () => ({
-    default: {
+jest.mock('../../src/models/User', () => ({
       Users: class {
          static findOne = jest.fn().mockResolvedValueOnce(null).
          mockResolvedValueOnce({
@@ -31,23 +30,28 @@ jest.mock('../../src/models/', () => ({
           email: 'abc12@gmail.com',
           updated_at: "2020-02-25T13:00:59.256Z",
           created_at: "2020-02-25T13:00:59.256Z"
-         })
+         });
+         static comparePassword = jest.fn().mockRejectedValueOnce({ status:400}).mockResolvedValueOnce(true);
         constructor() {
         } 
-      },
-      Session:class{
-        public save = jest.fn().mockResolvedValueOnce({
-          id: 1,
-          token: '1231231ads',
-          user_id: 1,
-          expried_at: '2020-02-25T13:00:59.256Z',
-          updated_at: "2020-02-25T13:00:59.256Z",
-          created_at: "2020-02-25T13:00:59.256Z"});
       }
-    }
   })
 );
-
+jest.mock('../../src/models/',()=>({
+  default:{
+    Session:class{
+      public save = jest.fn().mockResolvedValueOnce({
+        id: 1,
+        token: '1231231ads',
+        user_id: 1,
+        expried_at: '2020-02-25T13:00:59.256Z',
+        updated_at: "2020-02-25T13:00:59.256Z",
+        created_at: "2020-02-25T13:00:59.256Z"});
+        constructor() {
+        } 
+    }
+  }
+}))
 afterAll(() => {
     jest.resetAllMocks();
   });
