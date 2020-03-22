@@ -1,49 +1,39 @@
-import * as bcrypt from 'bcrypt';
 import { Request, Response } from 'express';
 import * as createError from 'http-errors';
 
 import * as jwt from 'jsonwebtoken';
-import * as Models from '../models';
 import { ERROR_CODES, HTTP_ERRORS } from '../constants';
+import * as Models from '../models';
+import { Users } from '../models/User';
 
 // const Users = Models.default.Users;
 const Sessions = Models.default.Sessions;
 const SECRET_KEY = process.env.SECRET_KEY || 'My_secret_key';
 const EXPIRE_TOKEN_TIME = process.env.EXPIRE_TOKEN_TIME || '7 days';
-const Users = Models.default.Users;
-const Session = Models.default.Session;
+const { USER_NOT_FOUND } = ERROR_CODES;
 
 export default {
   login: async (req: Request, res: Response) => {
     const { username, password } = req.body;
-
     const user = await Users.findOne({
       where: { username },
       attributes: ['username', 'password', 'id']
     });
 
     if (!user) {
-      throw new createError.NotFound(
-        HTTP_ERRORS[ERROR_CODES.USER_NOT_FOUND].MESSAGE
-      );
+      const error = HTTP_ERRORS[USER_NOT_FOUND].MESSAGE;
+
+      throw new createError.NotFound(error);
     }
 
     await Users.comparePassword(user.password, password);
-    const match = await bcrypt.compareSync(password, user.password);
-
-    if (!match) {
-      throw new createError.BadRequest(
-        HTTP_ERRORS[ERROR_CODES.USER_DOES_NOT_MATCH_PASSWORD].MESSAGE
-      );
-    }
 
     user.password = undefined;
-    const JsonUser = JSON.parse(JSON.stringify(user));
-    const key = 'My_secret_key';
-    const token = await jwt.sign(JsonUser, key, {
-      expiresIn: 60 * 60 * 24 * 7
+    const jsonUser = JSON.parse(JSON.stringify({ id: user.id }));
+    const token = await jwt.sign(jsonUser, SECRET_KEY, {
+      expiresIn: EXPIRE_TOKEN_TIME
     });
-    const session = new Session({ token, user_id: user.id });
+    const session = new Sessions({ session: token, user_id: user.id });
 
     await session.save();
 
@@ -53,17 +43,17 @@ export default {
     const USER_ID = req.params.userId;
 
     const now = new Date();
-    const sessionByUserID = await Session.findOne({
+    const sessionByUserId = await Sessions.findOne({
       where: { user_id: USER_ID }
     });
 
-    if (!sessionByUserID) {
+    if (!sessionByUserId) {
       throw new createError.BadRequest(
         HTTP_ERRORS[ERROR_CODES.SESSION_NOT_FOUND].MESSAGE
       );
     }
-    await sessionByUserID.set({ expried_at: now });
-    const result = await sessionByUserID.save();
+    await sessionByUserId.set({ expried_at: now });
+    const result = await sessionByUserId.save();
 
     return res.json(result);
   }

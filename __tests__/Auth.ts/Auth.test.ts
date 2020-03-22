@@ -11,66 +11,71 @@ jest.mock('jsonwebtoken',()=>({
     sign : jest.fn().mockResolvedValueOnce('1231231ads')
     })
 )
-jest.mock('../../src/models/', () => ({
-    default: {
-      Users: class {
-         static findOne = jest.fn().mockResolvedValueOnce(null).
-         mockResolvedValueOnce({
-          id: 1,
-          username: 'duc789',
-          password: '12345678',
-          phone: '093094192',
-          email: 'abc12@gmail.com',
-          updated_at: "2020-02-25T13:00:59.256Z",
-          created_at: "2020-02-25T13:00:59.256Z"
-         }).mockResolvedValueOnce({
-          id: 1,
-          username: 'duc789',
-          password: '12345678',
-          phone: '093094192',
-          email: 'abc12@gmail.com',
-          updated_at: "2020-02-25T13:00:59.256Z",
-          created_at: "2020-02-25T13:00:59.256Z"
-         })
-        constructor() {
-        } 
-      },
-      Session:class{
-        public save = jest.fn().mockResolvedValueOnce({
+jest.mock('../../src/models/User', () => ({
+  Users: class {
+     static findOne = jest.fn().mockResolvedValueOnce(null).
+     mockResolvedValueOnce({
+      id: 1,
+      username: 'duc789',
+      password: '12345678',
+      phone: '093094192',
+      email: 'abc12@gmail.com',
+      updated_at: "2020-02-25T13:00:59.256Z",
+      created_at: "2020-02-25T13:00:59.256Z"
+     }).mockResolvedValueOnce({
+      id: 1,
+      username: 'duc789',
+      password: '12345678',
+      phone: '093094192',
+      email: 'abc12@gmail.com',
+      updated_at: "2020-02-25T13:00:59.256Z",
+      created_at: "2020-02-25T13:00:59.256Z"
+     });
+     static comparePassword = jest.fn().mockRejectedValueOnce({ status:400}).mockResolvedValueOnce(true);
+    constructor() {
+    } 
+  }
+})
+);
+jest.mock('../../src/models/',()=>({
+default:{
+Sessions:class{
+  public save = jest.fn().mockResolvedValueOnce({
+    id: 1,
+    token: '1231231ads',
+    user_id: 1,
+    expried_at: '2020-02-25T13:00:59.256Z',
+    updated_at: "2020-02-25T13:00:59.256Z",
+    created_at: "2020-02-25T13:00:59.256Z"})
+  static findOne = jest.fn().mockResolvedValueOnce({
+      id: 1,
+      token: '1231231ads',
+      user_id: 1,
+      expried_at: '2020-02-25T13:00:59.256Z',
+      updated_at: "2020-02-25T13:00:59.256Z",
+      created_at: "2020-02-25T13:00:59.256Z",
+      set : jest.fn().mockResolvedValueOnce({
           id: 1,
           token: '1231231ads',
           user_id: 1,
           expried_at: '2020-02-25T13:00:59.256Z',
           updated_at: "2020-02-25T13:00:59.256Z",
-          created_at: "2020-02-25T13:00:59.256Z"})
-        static findOne = jest.fn().mockResolvedValueOnce({
-            id: 1,
-            token: '1231231ads',
-            user_id: 1,
-            expried_at: '2020-02-25T13:00:59.256Z',
-            updated_at: "2020-02-25T13:00:59.256Z",
-            created_at: "2020-02-25T13:00:59.256Z",
-            set : jest.fn().mockResolvedValueOnce({
-                id: 1,
-                token: '1231231ads',
-                user_id: 1,
-                expried_at: '2020-02-25T13:00:59.256Z',
-                updated_at: "2020-02-25T13:00:59.256Z",
-                created_at: "2020-02-25T13:00:59.256Z",
-            }),
-            save : jest.fn().mockResolvedValueOnce({
-                id: 1,
-                token: '1231231ads',
-                user_id: 1,
-                expried_at: '2020-02-25T13:00:59.256Z',
-                updated_at: "2020-02-25T13:00:59.256Z",
-                created_at: "2020-02-25T13:00:59.256Z",
-            })  
-        }).mockResolvedValueOnce(null)
-      }
-    }
-  })
-);
+          created_at: "2020-02-25T13:00:59.256Z",
+      }),
+      save : jest.fn().mockResolvedValueOnce({
+          id: 1,
+          token: '1231231ads',
+          user_id: 1,
+          expried_at: '2020-02-25T13:00:59.256Z',
+          updated_at: "2020-02-25T13:00:59.256Z",
+          created_at: "2020-02-25T13:00:59.256Z",
+      })  
+  }).mockResolvedValueOnce(null)
+    constructor() {
+    } 
+}
+}
+}))
 
 afterAll(() => {
     jest.resetAllMocks();
@@ -119,7 +124,7 @@ afterAll(() => {
     })
   })
   describe('PUT LOGOUT -  auth/logout ',()=>{
-    it('PUT LOGIN - logout is success ',async ()=>{
+    it('PUT LOGOUT - logout is success ',async ()=>{
         const result = await request.put('/auth/logout/1');
 
         expect(result.status).toEqual(200);
@@ -132,7 +137,7 @@ afterAll(() => {
             created_at: "2020-02-25T13:00:59.256Z",
         })
     })
-    it('PUT LOGIN - logout failed', async ()=>{
+    it('PUT LOGOUT - logout failed', async ()=>{
         const result = await request.put('/auth/logout/2');
 
         expect(result.status).toEqual(400);
