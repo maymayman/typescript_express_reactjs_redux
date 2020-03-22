@@ -43,6 +43,10 @@ describe('POST Session',()=>{
         }
 
         const result = await request.post('/sessions').send(sessions);
+<<<<<<< HEAD
+=======
+        console.log(result.body);
+>>>>>>> ccb0787... feat: post session
         expect(result.status).toEqual(200);
         expect(result.body).toEqual({
             id: 20,
