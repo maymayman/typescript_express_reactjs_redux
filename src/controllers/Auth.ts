@@ -13,7 +13,6 @@ const Sessions = Models.default.Sessions;
 export default {
   login: async (req: Request, res: Response) => {
     const { username, password } = req.body;
-
     const user = await Users.findOne({
       where: { username },
       attributes: ['username', 'password', 'id']
@@ -28,13 +27,8 @@ export default {
 
     user.password = undefined;
     const secretKey = process.env.SECRET_KEY || 'My_secret_key';
-    const token = await jwt.sign(
-      JSON.parse(JSON.stringify({ id: user.id })),
-      secretKey,
-      {
-        expiresIn: '7 days'
-      }
-    );
+    const JsonUser = JSON.parse(JSON.stringify({ id: user.id }));
+    const token = await jwt.sign(JsonUser, secretKey, { expiresIn: '7 days' });
     const session = new Sessions({ session: token, user_id: user.id });
 
     await session.save();
