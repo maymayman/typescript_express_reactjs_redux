@@ -70,7 +70,7 @@ export class Sessions extends Model<Sessions> {
   }
 
   @BeforeUpdate
-  static async beforeUpdateInstance(instance: Users) {
+  static async beforeUpdateInstance(instance: Sessions) {
     instance.set('updated_at', new Date());
   }
 }
