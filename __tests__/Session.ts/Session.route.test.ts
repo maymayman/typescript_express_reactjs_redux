@@ -43,7 +43,6 @@ describe('POST Session',()=>{
         }
 
         const result = await request.post('/sessions').send(sessions);
-        console.log(result.body);
         expect(result.status).toEqual(200);
         expect(result.body).toEqual({
             id: 20,
