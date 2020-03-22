@@ -24,10 +24,9 @@ jest.mock('../../src/models/User', () => ({
           created_at: "2020-02-25T13:00:59.256Z"
          }).mockResolvedValueOnce({
           id: 1,
-          username: 'duc789',
-          password: '12345678',
-          phone: '093094192',
-          email: 'abc12@gmail.com',
+          token: '1231231ads',
+          user_id: 1,
+          expried_at: '2020-02-25T13:00:59.256Z',
           updated_at: "2020-02-25T13:00:59.256Z",
           created_at: "2020-02-25T13:00:59.256Z"
          });
