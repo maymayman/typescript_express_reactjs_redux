@@ -137,7 +137,7 @@ export class Users extends Model<Users> {
 
     if (!match) {
       throw new createError.BadRequest(
-        HTTP_ERRORS[ERROR_CODES.USER_DOES_NOT_MATCH_PASSWORD].MESSAGE
+        HTTP_ERRORS[ERROR_CODES.INVALID_PASSWORD].MESSAGE
       );
     }
 

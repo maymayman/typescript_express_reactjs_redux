@@ -9,6 +9,8 @@ import { ERROR_CODES, HTTP_ERRORS } from '../constants';
 
 // const Users = Models.default.Users;
 const Sessions = Models.default.Sessions;
+const SECRET_KEY = process.env.SECRET_KEY || 'My_secret_key';
+const EXPIRE_TOKEN_TIME = process.env.EXPIRE_TOKEN_TIME || '7 days';
 
 export default {
   login: async (req: Request, res: Response) => {
@@ -26,9 +28,10 @@ export default {
     await Users.comparePassword(user.password, password);
 
     user.password = undefined;
-    const secretKey = process.env.SECRET_KEY || 'My_secret_key';
-    const JsonUser = JSON.parse(JSON.stringify({ id: user.id }));
-    const token = await jwt.sign(JsonUser, secretKey, { expiresIn: '7 days' });
+    const userPayload = { id: user.id };
+    const token = await jwt.sign(userPayload, SECRET_KEY, {
+      expiresIn: EXPIRE_TOKEN_TIME
+    });
     const session = new Sessions({ session: token, user_id: user.id });
 
     await session.save();
