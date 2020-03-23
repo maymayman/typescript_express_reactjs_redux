@@ -1,9 +1,9 @@
-CREATE TABLE IF NOT EXISTS session_users (
+CREATE TABLE IF NOT EXISTS sessions (
     id BIGINT NOT NULL AUTO_INCREMENT,
     session LONGTEXT NOT NULL,
     user_id BIGINT NOT NULL ,
     device VARCHAR(255) ,
-    device_id BIGINT ,
+    device_id VARCHAR(200) ,
     expried_at DATETIME ,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,

@@ -186,7 +186,7 @@ describe('DELETE /user', ()=>{
     expect(result.status).toEqual(404);
   });
 });
-describe('PUT /user/:id',async ()=>{  
+describe('PUT /user/:id', ()=>{  
    it('PUT /user/:id - update user by id is success',async ()=>{
     const userInfo = {
       username: 'duc789',

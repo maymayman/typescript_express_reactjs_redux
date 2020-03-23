@@ -131,4 +131,16 @@ export class Users extends Model<Users> {
   static async beforeUpdateInstance(instance: Users) {
     instance.set('updated_at', new Date());
   }
+
+  static comparePassword = async (hash: string, password: string) => {
+    const match = await bcrypt.compareSync(password, hash);
+
+    if (!match) {
+      throw new createError.BadRequest(
+        HTTP_ERRORS[ERROR_CODES.INVALID_PASSWORD].MESSAGE
+      );
+    }
+
+    return true;
+  };
 }
