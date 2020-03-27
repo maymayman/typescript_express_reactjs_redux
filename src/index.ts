@@ -7,6 +7,7 @@ import { MORGAN_LOG_FORMAT } from './constants';
 import logger from './plugins/logger';
 import AuthRouter from './routes/Auth';
 import heathCheckRouter from './routes/heath-check';
+import SessionRouter from './routes/Session';
 import UserRouter from './routes/User';
 
 const app = express();
@@ -44,6 +45,8 @@ app.get('/', (_req: express.Request, res: express.Response) =>
 );
 app.use('/users', UserRouter);
 app.use('/auth', AuthRouter);
+// Session
+app.use('/sessions', SessionRouter);
 // catch 404 and forward to error handler
 app.use(
   (_req: express.Request, _res: express.Response, next: express.NextFunction) =>
