@@ -1,8 +1,6 @@
-import { NextFunction, Request, Response } from 'express';
 import * as Joi from 'joi';
-import { validator } from './util';
 
-const schemasValidation = {
+export const schemasValidationUser = {
   POST: Joi.object({
     username: Joi.string().required(),
     phone: Joi.string().required(),
@@ -15,18 +13,4 @@ const schemasValidation = {
     password: Joi.string().optional(),
     email: Joi.string().optional()
   })
-};
-
-export default async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const method = req.method;
-    const body = req.body;
-    const schemaValidator: Joi.ObjectSchema = schemasValidation[method];
-
-    await validator(schemaValidator, body, method);
-
-    next();
-  } catch (error) {
-    throw error;
-  }
 };
