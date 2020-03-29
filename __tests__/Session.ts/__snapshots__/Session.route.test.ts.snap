@@ -1,3 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`POST Session POST /sessions create session valide user_id 1`] = `"{\\"message\\":\\"\\\\\\"user_id\\\\\\" is required\\"}"`;
+
+exports[`PUT Session PUT /sessions update session with id invalide 1`] = `"{\\"message\\":\\"Internal Server Error\\"}"`;

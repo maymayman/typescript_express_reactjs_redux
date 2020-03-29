@@ -21,7 +21,50 @@ jest.mock('../../src/models/', () => ({
             session: "TOKEN_SS",
             updated_at: "2020-03-22T09:01:39.910Z",
             created_at: "2020-03-22T09:01:39.910Z",
-            expried_at: "2020-03-29T09:01:39.910Z"
+            expried_at: "2020-03-29T09:01:39.910Z",
+            set: jest.fn().mockResolvedValueOnce({
+                id: 20,
+                user_id: 2,
+                session: "NEW_TOKEN",
+                updated_at: "2020-03-22T09:01:39.910Z",
+                created_at: "2020-03-22T09:01:39.910Z",
+                expried_at: "2020-03-29T09:01:39.910Z",
+            }),
+            save: jest.fn().mockResolvedValueOnce({
+                id: 20,
+                user_id: 2,
+                session: "NEW_TOKEN",
+                updated_at: "2020-03-22T09:01:39.910Z",
+                created_at: "2020-03-22T09:01:39.910Z",
+                expried_at: "2020-03-29T09:01:39.910Z",
+            })
+        }).mockRejectedValueOnce({
+            InternalServerError:'Cannot add or update a child row: a foreign key constraint fails'
+        })
+        .mockResolvedValueOnce(null)
+        .mockResolvedValueOnce({
+            id: 20,
+            user_id: 2,
+            session: "TOKEN_SS",
+            updated_at: "2020-03-22T09:01:39.910Z",
+            created_at: "2020-03-22T09:01:39.910Z",
+            expried_at: "2020-03-29T09:01:39.910Z",
+            set: jest.fn().mockResolvedValueOnce({
+                id: 20,
+                user_id: 2,
+                session: "NEW_TOKEN",
+                updated_at: "2020-03-22T09:01:39.910Z",
+                created_at: "2020-03-22T09:01:39.910Z",
+                expried_at: "2020-03-29T09:01:39.910Z",
+            }),
+            save: jest.fn().mockResolvedValueOnce({
+                id: 20,
+                user_id: 2,
+                session: "NEW_TOKEN",
+                updated_at: "2020-03-22T09:01:39.910Z",
+                created_at: "2020-03-22T09:01:39.910Z",
+                expried_at: "2020-03-29T09:01:39.910Z",
+            })
         })
         constructor() {
         } 
@@ -83,3 +126,43 @@ describe("GET SESSIONS",()=>{
         })
     })
 })
+describe('PUT Session',()=>{
+    it('PUT /sessions update session with id invalide',async ()=>{
+        const sessions ={
+            user_id:"15" 
+        }
+        const result = await request.put('/sessions/1').send(sessions)
+
+        expect(result.status).toEqual(500);
+        if(result.error){
+            expect(result.error.text).toMatchSnapshot();
+        }
+    })
+    it('PUT /sessions update session but session id not found',async ()=>{
+        const sessions = {
+            user_id:"1",
+            session:"TOKEN_SS"
+        }
+        const result = await request.put('/sessions/17').send(sessions);
+
+        expect(result.status).toEqual(404);
+    })
+    it('PUT /sessions update session is success', async ()=>{
+        const sessions = {
+            user_id:"1",
+            session:"TOKEN_SS"
+        }
+
+        const result = await request.put('/sessions/1').send(sessions);
+
+        expect(result.status).toEqual(200);
+        expect(result.body).toEqual({
+            id: 20,
+            user_id: 2,
+            session: "NEW_TOKEN",
+            updated_at: "2020-03-22T09:01:39.910Z",
+            created_at: "2020-03-22T09:01:39.910Z",
+            expried_at: "2020-03-29T09:01:39.910Z"
+        })
+    })
+}) 
