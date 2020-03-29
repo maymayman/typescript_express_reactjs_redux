@@ -106,6 +106,7 @@ describe('POST Session',()=>{
         })
     });
 })
+
 describe("GET SESSIONS",()=>{
     it('GET /session/:id get session but that null or not found',async ()=>{
         const result = await request.get('/sessions/10');
@@ -126,13 +127,13 @@ describe("GET SESSIONS",()=>{
         })
     })
 })
+
 describe('PUT Session',()=>{
     it('PUT /sessions update session with id invalide',async ()=>{
         const sessions ={
             user_id:"15" 
         }
-        const result = await request.put('/sessions/1').send(sessions)
-
+        const result = await request.put('/sessions/1').send(sessions);
         expect(result.status).toEqual(500);
         if(result.error){
             expect(result.error.text).toMatchSnapshot();
@@ -166,3 +167,4 @@ describe('PUT Session',()=>{
         })
     })
 }) 
+
