@@ -14,6 +14,15 @@ jest.mock('../../src/models/', () => ({
             created_at: "2020-03-22T09:01:39.910Z",
             expried_at: "2020-03-29T09:01:39.910Z"
         });
+        static findByPk = jest.fn().mockResolvedValueOnce(null)
+        .mockResolvedValueOnce({
+            id: 20,
+            user_id: 2,
+            session: "TOKEN_SS",
+            updated_at: "2020-03-22T09:01:39.910Z",
+            created_at: "2020-03-22T09:01:39.910Z",
+            expried_at: "2020-03-29T09:01:39.910Z"
+        })
         constructor() {
         } 
       }
@@ -53,4 +62,24 @@ describe('POST Session',()=>{
             expried_at: "2020-03-29T09:01:39.910Z"
         })
     });
+})
+describe("GET SESSIONS",()=>{
+    it('GET /session/:id get session but that null or not found',async ()=>{
+        const result = await request.get('/sessions/10');
+
+        expect(result.status).toEqual(404);
+    });
+    it('GET /session/:id get session is success',async ()=>{
+        const result = await request.get('/sessions/20');
+
+        expect(result.status).toEqual(200);
+        expect(result.body).toEqual({
+            id: 20,
+            user_id: 2,
+            session: "TOKEN_SS",
+            updated_at: "2020-03-22T09:01:39.910Z",
+            created_at: "2020-03-22T09:01:39.910Z",
+            expried_at: "2020-03-29T09:01:39.910Z"
+        })
+    })
 })
