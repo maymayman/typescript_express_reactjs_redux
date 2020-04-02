@@ -22,6 +22,22 @@ jest.mock('../../src/models/', () => ({
             updated_at: "2020-03-22T09:01:39.910Z",
             created_at: "2020-03-22T09:01:39.910Z",
             expried_at: "2020-03-29T09:01:39.910Z"
+        }).mockResolvedValueOnce(null)
+        .mockResolvedValueOnce({
+            id: 20,
+            user_id: 2,
+            session: "TOKEN_SS",
+            updated_at: "2020-03-22T09:01:39.910Z",
+            created_at: "2020-03-22T09:01:39.910Z",
+            expried_at: "2020-03-29T09:01:39.910Z",
+            destroy: jest.fn().mockResolvedValueOnce({
+                id: 20,
+                user_id: 2,
+                session: "TOKEN_SS",
+                updated_at: "2020-03-22T09:01:39.910Z",
+                created_at: "2020-03-22T09:01:39.910Z",
+                expried_at: "2020-03-29T09:01:39.910Z",
+            })
         })
         constructor() {
         } 
@@ -80,6 +96,26 @@ describe("GET SESSIONS",()=>{
             updated_at: "2020-03-22T09:01:39.910Z",
             created_at: "2020-03-22T09:01:39.910Z",
             expried_at: "2020-03-29T09:01:39.910Z"
+        })
+    })
+})
+describe("DELETE SESSIONS",()=>{
+    it('DELETE /session/:id - not found user',async ()=>{
+        const result = await request.delete('/sessions/1');
+
+        expect(result.status).toEqual(404);
+    });
+    it('DELETE /session/:id - delete user is success',async ()=>{
+        const result = await request.delete('/sessions/2');
+
+        expect(result.status).toEqual(200);
+        expect(result.body).toEqual({
+            id: 20,
+            user_id: 2,
+            session: "TOKEN_SS",
+            updated_at: "2020-03-22T09:01:39.910Z",
+            created_at: "2020-03-22T09:01:39.910Z",
+            expried_at: "2020-03-29T09:01:39.910Z",
         })
     })
 })

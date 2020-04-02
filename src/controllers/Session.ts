@@ -24,5 +24,19 @@ export default {
     }
 
     return res.json(session);
+  },
+  destroy: async (req: Request, res: Response) => {
+    const id = req.params.id;
+    const session = await Sessions.findByPk(id);
+
+    if (!session) {
+      throw new createError.NotFound(
+        HTTP_ERRORS[ERROR_CODES.SESSION_NOT_FOUND].MESSAGE
+      );
+    }
+
+    const result = await session.destroy();
+
+    return res.json(result);
   }
 };
