@@ -3,6 +3,7 @@ import * as createError from 'http-errors';
 import * as Joi from 'joi';
 import * as _ from 'lodash';
 import { schemasValidationSession } from './Session';
+import { schemasValidationStock } from './Stock';
 import { schemasValidationUser } from './User';
 interface IValidations {
   schema?: Joi.ObjectSchema;
@@ -11,7 +12,8 @@ interface IValidations {
 
 const schemasValidation = {
   users: schemasValidationUser,
-  sessions: schemasValidationSession
+  sessions: schemasValidationSession,
+  stocks: schemasValidationStock
 };
 
 const validation = (options: IValidations): void => {
