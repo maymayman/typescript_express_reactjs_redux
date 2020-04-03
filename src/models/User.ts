@@ -14,8 +14,8 @@ import {
 } from 'sequelize-typescript';
 
 import { ERROR_CODES, HTTP_ERRORS } from '../constants';
+import { validateDuplicateFields } from './index';
 
-const { BadRequest } = createError;
 const {
   USER_DUPLICATE_USERNAME,
   USER_DUPLICATE_EMAIL,
@@ -37,41 +37,11 @@ const duplicateFields = {
   }
 };
 
-interface IUserFieldValidateDup {
-  instance: Users;
-  field: 'username' | 'email' | 'phone';
-  error: string;
-}
-
-const validateDuplicate = async (
-  options: IUserFieldValidateDup
-): Promise<void> => {
-  const { instance, field, error } = options;
-
-  if (instance.changed(field) && instance.previous(field) !== instance[field]) {
-    const query = { where: { [field]: instance[field] } };
-    const user = await Users.findOne(query);
-
-    if (user) throw new BadRequest(error);
-  }
-
-  return;
-};
-
-const validateDuplicateFields = async (instance: Users): Promise<void> => {
-  try {
-    const keys = Object.keys(duplicateFields);
-
-    for (const key of keys) {
-      const { field, error } = duplicateFields[key];
-      await validateDuplicate({ instance, field, error });
-    }
-
-    return;
-  } catch (error) {
-    throw error;
-  }
-};
+// interface IUserFieldValidateDup {
+//   instance: any;
+//   field: 'username' | 'email' | 'phone';
+//   error: string;
+// }
 
 @Table({ tableName: 'users' })
 export class Users extends Model<Users> {
@@ -109,7 +79,7 @@ export class Users extends Model<Users> {
   @BeforeCreate
   @BeforeUpdate
   static async beforeSaveInstance(instance: Users) {
-    await validateDuplicateFields(instance);
+    await validateDuplicateFields(instance, Users, duplicateFields);
 
     if (instance.changed('password')) {
       const salt = await bcrypt.genSaltSync(10);

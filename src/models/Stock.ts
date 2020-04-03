@@ -1,4 +1,3 @@
-import * as createError from 'http-errors';
 import {
   AllowNull,
   AutoIncrement,
@@ -12,8 +11,8 @@ import {
   Unique
 } from 'sequelize-typescript';
 import { ERROR_CODES, HTTP_ERRORS } from '../constants';
+import { validateDuplicateFields } from './index';
 
-const { BadRequest } = createError;
 const { STOCK_DUPLICATE_CODE } = ERROR_CODES;
 
 const duplicateFields = {
@@ -23,40 +22,11 @@ const duplicateFields = {
   }
 };
 
-interface IStockFieldValidateDup {
-  instance: Stocks;
-  field: 'stock_code';
-  error: string;
-}
-
-const validateDuplicate = async (
-  options: IStockFieldValidateDup
-): Promise<void> => {
-  const { instance, field, error } = options;
-  if (instance.changed(field) && instance.previous(field) !== instance[field]) {
-    const query = { where: { [field]: instance[field] } };
-    const stock = await Stocks.findOne(query);
-
-    if (stock) throw new BadRequest(error);
-  }
-
-  return;
-};
-
-const validateDuplicateFields = async (instance: Stocks): Promise<void> => {
-  try {
-    const keys = Object.keys(duplicateFields);
-
-    for (const key of keys) {
-      const { field, error } = duplicateFields[key];
-      await validateDuplicate({ instance, field, error });
-    }
-
-    return;
-  } catch (error) {
-    throw error;
-  }
-};
+// interface IStockFieldValidateDup {
+//   instance: Stocks;
+//   field: 'stock_code';
+//   error: string;
+// }
 
 @Table({ tableName: 'stock' })
 export class Stocks extends Model<Stocks> {
@@ -101,7 +71,7 @@ export class Stocks extends Model<Stocks> {
   @BeforeCreate
   @BeforeUpdate
   static async beforeSaveInstance(instance: Stocks) {
-    await validateDuplicateFields(instance);
+    await validateDuplicateFields(instance, Stocks, duplicateFields);
   }
 
   @BeforeUpdate
