@@ -1,4 +1,3 @@
-import * as createError from 'http-errors';
 import { Dialect } from 'sequelize';
 import { Sequelize } from 'sequelize-typescript';
 import { Sessions } from './Session';
@@ -6,7 +5,6 @@ import { Stocks } from './Stock';
 import { Users } from './User';
 
 import logger from '../plugins/logger';
-const { BadRequest } = createError;
 
 const host = process.env.MY_SQL_HOST || 'localhost';
 const username = process.env.MY_SQL_USER || 'root';
@@ -39,37 +37,5 @@ sequelize
   .catch(err => {
     logger.error(`Connect Database Failed: ${err}`);
   });
-
-const validateDuplicate = async (options, _this): Promise<void> => {
-  const { instance, field, error } = options;
-
-  if (instance.changed(field) && instance.previous(field) !== instance[field]) {
-    const query = { where: { [field]: instance[field] } };
-    const user = await _this.findOne(query);
-
-    if (user) throw new BadRequest(error);
-  }
-
-  return;
-};
-
-export const validateDuplicateFields = async (
-  instance: any,
-  _this,
-  duplicateFields
-): Promise<void> => {
-  try {
-    const keys = Object.keys(duplicateFields);
-
-    for (const key of keys) {
-      const { field, error } = duplicateFields[key];
-      await validateDuplicate({ instance, field, error }, _this);
-    }
-
-    return;
-  } catch (error) {
-    throw error;
-  }
-};
 
 export default sequelize.models;
