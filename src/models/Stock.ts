@@ -22,12 +22,6 @@ const duplicateFields = {
   }
 };
 
-// interface IStockFieldValidateDup {
-//   instance: Stocks;
-//   field: 'stock_code';
-//   error: string;
-// }
-
 @Table({ tableName: 'stock' })
 export class Stocks extends Model<Stocks> {
   @PrimaryKey
