@@ -48,9 +48,9 @@ const validateDuplicate = async (
   const { instance, field, error } = options;
   if (instance.changed(field) && instance.previous(field) !== instance[field]) {
     const query = { where: { [field]: instance[field] } };
-    const stock = await Users.findOne(query);
+    const user = await Users.findOne(query);
 
-    if (stock) throw new BadRequest(error);
+    if (user) throw new BadRequest(error);
   }
 
   return;
