@@ -37,17 +37,15 @@ const duplicateFields = {
   }
 };
 
-interface IUserFieldValidateDup {
+export interface IUserFieldValidateDup {
   instance: Users;
   field: 'username' | 'email' | 'phone';
   error: string;
 }
-
 const validateDuplicate = async (
   options: IUserFieldValidateDup
 ): Promise<void> => {
   const { instance, field, error } = options;
-
   if (instance.changed(field) && instance.previous(field) !== instance[field]) {
     const query = { where: { [field]: instance[field] } };
     const user = await Users.findOne(query);
