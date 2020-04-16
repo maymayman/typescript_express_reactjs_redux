@@ -11,6 +11,11 @@ jest.mock('../../src/models/', () => ({
             stock_name:"viettel",
             stock_price:100.11
         });
+        static findByPk = jest.fn().mockResolvedValueOnce({
+            stock_code:"132a3",
+            stock_name:"viettel",
+            stock_price:100.11
+        }).mockResolvedValueOnce(null);
         constructor() {
         } 
       }
@@ -48,5 +53,18 @@ describe('POST STOCK',()=>{
             stock_name:"viettel",
             stock_price:100.11
         })
+    })
+})
+describe('GET /stocks/id ',()=>{
+    it('GET /stocks/id - find stock by id is success',async ()=>{
+        const result = await request.get('/stocks/2');
+
+        expect(result.status).toEqual(200);
+        expect(result.body.stock_code).toEqual('132a3');
+    })
+    it('GET stocks/id - get stock by id but not found', async ()=>{
+        const result = await request.get('/stocks/1');
+
+        expect(result.status).toEqual(404);
     })
 })
