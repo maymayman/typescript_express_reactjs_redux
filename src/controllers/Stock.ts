@@ -37,5 +37,17 @@ export default {
     const result = await stock.save();
 
     return res.json(result);
+  },
+  destroy: async (req: Request, res: Response) => {
+    const stock = await Stocks.findByPk(req.params.id);
+
+    if (!stock) {
+      throw new createError.NotFound(
+        HTTP_ERRORS[ERROR_CODES.STOCK_NOT_FOUND].MESSAGE
+      );
+    }
+    const result = await stock.destroy();
+
+    return res.json(result);
   }
 };

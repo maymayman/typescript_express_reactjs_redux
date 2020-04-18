@@ -8,7 +8,6 @@ const successStockData={
     stock_code:"VT1",
     stock_price:1000,
 };
-
 jest.mock('../../src/models/', () => ({
     default: {
       Stocks: class {
@@ -36,6 +35,16 @@ jest.mock('../../src/models/', () => ({
                 stock_code:"VT1",
                 stock_price:1000
              }),
+        }).mockResolvedValueOnce(null)
+        .mockResolvedValueOnce({
+            stock_name:"VTbank",
+            stock_code:"VT1",
+            stock_price:1000,
+            destroy: jest.fn().mockResolvedValueOnce( {
+                stock_name:"VTbank",
+                stock_code:"VT1",
+                stock_price:1000
+            })
         }).mockResolvedValueOnce(null);;
         constructor() {
         } 
@@ -107,6 +116,18 @@ describe('PUT STOCK',()=>{
             stock_price:1000
         }
         const result = await request.put('/stocks/5').send(stock);
+        expect(result.status).toEqual(404);
+    })
+})
+describe("DELETE /stocks/:id",()=>{
+    it('DELETE /stocks/:id - destroy stock by id is success', async()=>{
+        const result = await request.delete('/stocks/3');
+
+        expect(result.status).toEqual(200);
+        expect(result.body).toEqual({...successStockData});
+    });
+    it('DELETE /stocks/:id - destroy stock by id but not found', async ()=>{
+        const result = await request.delete('/stocks/3');
         expect(result.status).toEqual(404);
     })
 })
