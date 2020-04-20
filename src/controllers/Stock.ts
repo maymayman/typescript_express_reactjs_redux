@@ -23,5 +23,19 @@ export default {
     }
 
     return res.json(stock);
+  },
+  put: async (req: Request, res: Response) => {
+    const stock = await Stocks.findByPk(req.params.id);
+
+    if (!stock) {
+      throw new createError.NotFound(
+        HTTP_ERRORS[ERROR_CODES.STOCK_NOT_FOUND].MESSAGE
+      );
+    }
+
+    stock.set(req.body);
+    const result = await stock.save();
+
+    return res.json(result);
   }
 };
