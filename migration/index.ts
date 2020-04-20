@@ -38,7 +38,8 @@ const up = async (paths: string[]): Promise<boolean> => {
 const M_01_USER = path.join(__dirname, 'up', 'm-1-User.sql');
 const M_02_STOCK = path.join(__dirname,'up','m-2-Stock.sql');
 const M_03_SESSIOM = path.join(__dirname,'up','m-3-Session.sql');
-const migratePaths = [M_01_USER,M_03_SESSIOM,M_02_STOCK];
+const M_04_STOCK_DAILY_PRICE = path.join(__dirname,'up','m-4-Stock-daily-prices.sql');
+const migratePaths = [M_01_USER,M_03_SESSIOM,M_02_STOCK,M_04_STOCK_DAILY_PRICE];
 
 const migratetions = new Map([
   ['up', () => up(migratePaths)],

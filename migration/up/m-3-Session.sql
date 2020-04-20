@@ -9,4 +9,4 @@ CREATE TABLE IF NOT EXISTS sessions (
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
     CONSTRAINT fk_table_user FOREIGN KEY (user_id) REFERENCES users(id)
-)
+);
