@@ -77,7 +77,7 @@ export class Stocks extends Model<Stocks> {
   stock_name: string;
 
   @AllowNull(false)
-  @Column(DataType.FLOAT)
+  @Column(DataType.DECIMAL(19, 4))
   /* tslint:disable-next-line:variable-name */
   stock_price: number;
 
