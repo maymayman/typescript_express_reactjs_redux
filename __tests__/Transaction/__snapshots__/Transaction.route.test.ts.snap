@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`POST /transactions  POST /transactions - create transaction validate close_price not be number 1`] = `"{\\"message\\":\\"\\\\\\"open_price\\\\\\" must be a number\\"}"`;
