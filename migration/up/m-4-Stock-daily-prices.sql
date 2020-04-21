@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS stock_daily_prices (
+CREATE TABLE IF NOT EXISTS transactions (
     id BIGINT NOT NULL AUTO_INCREMENT ,
     stock_id BIGINT NOT NULL  ,
     close_price decimal(19,4) NOT NULL ,
