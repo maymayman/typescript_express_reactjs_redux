@@ -19,8 +19,8 @@ import { Stocks } from './Stock';
 const { BadRequest } = createError;
 
 const {
-  STOCK_DAILY_PRICES_DUPLICATE_STOCK_ID,
-  STOCK_DAILY_PRICES_DUPLICATE_EXCHANGE_DATE
+  TRANSACTION_DUPLICATE_EXCHANGE_DATE,
+  TRANSACTION_DUPLICATE_STOCK_ID
 } = ERROR_CODES;
 
 interface IDailyStockPricesFieldValidateDup {
@@ -31,11 +31,11 @@ interface IDailyStockPricesFieldValidateDup {
 const duplicateFields = {
   stock_id: {
     field: 'stock_id',
-    error: HTTP_ERRORS[STOCK_DAILY_PRICES_DUPLICATE_STOCK_ID].MESSAGE
+    error: HTTP_ERRORS[TRANSACTION_DUPLICATE_STOCK_ID].MESSAGE
   },
   exchange_date: {
     field: 'exchange_date',
-    error: HTTP_ERRORS[STOCK_DAILY_PRICES_DUPLICATE_EXCHANGE_DATE].MESSAGE
+    error: HTTP_ERRORS[TRANSACTION_DUPLICATE_EXCHANGE_DATE].MESSAGE
   }
 };
 
