@@ -48,10 +48,10 @@ export const HTTP_ERRORS = {
   },
   [ERROR_CODES.TRANSACTION_DUPLICATE_STOCK_ID]: {
     CODE: ERROR_CODES.TRANSACTION_DUPLICATE_STOCK_ID,
-    MESSAGE: 'Stock Daily Prices Duplicate stock_id.'
+    MESSAGE: 'Transaction Duplicate stock_id.'
   },
   [ERROR_CODES.TRANSACTION_DUPLICATE_EXCHANGE_DATE]: {
     CODE: ERROR_CODES.TRANSACTION_DUPLICATE_EXCHANGE_DATE,
-    MESSAGE: 'Stock Daily Prices Duplicate exchange_date.'
+    MESSAGE: 'Transaction Duplicate exchange_date.'
   }
 };
