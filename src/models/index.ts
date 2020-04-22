@@ -2,6 +2,7 @@ import { Dialect } from 'sequelize';
 import { Sequelize } from 'sequelize-typescript';
 import { Sessions } from './Session';
 import { Stocks } from './Stock';
+import { Transactions } from './Transaction';
 import { Users } from './User';
 
 import logger from '../plugins/logger';
@@ -27,7 +28,7 @@ const sequelize = new Sequelize({
   }
 });
 
-sequelize.addModels([Users, Sessions, Stocks]);
+sequelize.addModels([Users, Sessions, Stocks, Transactions]);
 
 sequelize
   .authenticate()
