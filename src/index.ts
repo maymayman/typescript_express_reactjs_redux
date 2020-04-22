@@ -9,6 +9,7 @@ import AuthRouter from './routes/Auth';
 import heathCheckRouter from './routes/heath-check';
 import SessionRouter from './routes/Session';
 import StockRouter from './routes/Stock';
+import TransactionRouter from './routes/Transaction';
 import UserRouter from './routes/User';
 
 const app = express();
@@ -51,6 +52,8 @@ app.use('/auth', AuthRouter);
 app.use('/sessions', SessionRouter);
 // Stock
 app.use('/stocks', StockRouter);
+// Transaction
+app.use('/transactions', TransactionRouter);
 
 // catch 404 and forward to error handler
 app.use(

@@ -4,6 +4,7 @@ import * as Joi from 'joi';
 import * as _ from 'lodash';
 import { schemasValidationSession } from './Session';
 import { schemasValidationStock } from './Stock';
+import { schemasValidationTransaction } from './Transaction';
 import { schemasValidationUser } from './User';
 interface IValidations {
   schema?: Joi.ObjectSchema;
@@ -13,7 +14,8 @@ interface IValidations {
 const schemasValidation = {
   users: schemasValidationUser,
   sessions: schemasValidationSession,
-  stocks: schemasValidationStock
+  stocks: schemasValidationStock,
+  transactions: schemasValidationTransaction
 };
 
 const validation = (options: IValidations): void => {

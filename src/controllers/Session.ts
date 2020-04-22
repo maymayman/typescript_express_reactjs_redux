@@ -56,4 +56,4 @@ export default {
 
     return res.json(result);
   }
-}
+};
