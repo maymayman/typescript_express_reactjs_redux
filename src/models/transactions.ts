@@ -1,4 +1,3 @@
-import * as createError from 'http-errors';
 import {
   AllowNull,
   AutoIncrement,
@@ -13,61 +12,7 @@ import {
   Table,
   Unique
 } from 'sequelize-typescript';
-import { ERROR_CODES, HTTP_ERRORS } from '../constants';
 import { Stocks } from './Stock';
-
-const { BadRequest } = createError;
-
-const {
-  TRANSACTION_DUPLICATE_EXCHANGE_DATE,
-  TRANSACTION_DUPLICATE_STOCK_ID
-} = ERROR_CODES;
-
-interface IDailyStockPricesFieldValidateDup {
-  instance: Transactions;
-  field: 'stock_id' | 'exchange_date';
-  error: string;
-}
-const duplicateFields = {
-  stock_id: {
-    field: 'stock_id',
-    error: HTTP_ERRORS[TRANSACTION_DUPLICATE_STOCK_ID].MESSAGE
-  },
-  exchange_date: {
-    field: 'exchange_date',
-    error: HTTP_ERRORS[TRANSACTION_DUPLICATE_EXCHANGE_DATE].MESSAGE
-  }
-};
-
-const validateDuplicate = async (
-  options: IDailyStockPricesFieldValidateDup
-): Promise<void> => {
-  const { instance, field, error } = options;
-  if (instance.changed(field) && instance.previous(field) !== instance[field]) {
-    const query: object = { where: { [field]: instance[field] } };
-    const transaction = await Transactions.findOne(query);
-
-    if (transaction) throw new BadRequest(error);
-  }
-
-  return;
-};
-const validateDuplicateFields = async (
-  instance: Transactions
-): Promise<void> => {
-  try {
-    const keys = Object.keys(duplicateFields);
-
-    for (const key of keys) {
-      const { field, error } = duplicateFields[key];
-      await validateDuplicate({ instance, field, error });
-    }
-
-    return;
-  } catch (error) {
-    throw error;
-  }
-};
 
 @Table({ tableName: 'transactions' })
 export class Transactions extends Model<Transactions> {
@@ -137,11 +82,5 @@ export class Transactions extends Model<Transactions> {
     const now = new Date();
 
     instance.set('updated_at', now);
-  }
-
-  @BeforeCreate
-  @BeforeUpdate
-  static async beforeSaveInstance(instance: Transactions) {
-    await validateDuplicateFields(instance);
   }
 }
