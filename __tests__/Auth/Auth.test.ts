@@ -86,7 +86,7 @@ afterAll(() => {
             username :"",
             password:"12345678"
         }
-        const result = await request.post('/auth/login').send(body);
+        const result = await request.post('/api/auth/login').send(body);
         expect(result.status).toEqual(400);
         if (result.error) {
          expect(result.error.text).toMatchSnapshot();
@@ -98,7 +98,7 @@ afterAll(() => {
         password :"duchihihi"
       }
   
-      const result = await request.post('/auth/login').send(body);
+      const result = await request.post('/api/auth/login').send(body);
       expect(result.status).toEqual(404);
     })
     it('POST LOGIN - login with password invalid',async ()=>{
@@ -107,7 +107,7 @@ afterAll(() => {
         password :"duchihihi"
       }
       
-      const result = await request.post('/auth/login').send(body);
+      const result = await request.post('/api/auth/login').send(body);
       expect(result.status).toEqual(400);
     })
     it("POST LOGIN - login is success",async ()=>{
@@ -116,7 +116,7 @@ afterAll(() => {
         password: '12345678'
       }
       
-      const result = await request.post('/auth/login').send(body);
+      const result = await request.post('/api/auth/login').send(body);
       expect(result.status).toEqual(200);
       expect(result.body.token).toEqual('1231231ads');
       expect(result.body.user.id).toEqual(1);
@@ -124,7 +124,7 @@ afterAll(() => {
   })
   describe('PUT LOGOUT -  auth/logout ',()=>{
     it('PUT LOGOUT - logout is success ',async ()=>{
-        const result = await request.put('/auth/logout/1');
+        const result = await request.put('/api/auth/logout/1');
 
         expect(result.status).toEqual(200);
         expect(result.body).toEqual({
@@ -137,7 +137,7 @@ afterAll(() => {
         })
     })
     it('PUT LOGOUT - logout failed', async ()=>{
-        const result = await request.put('/auth/logout/2');
+        const result = await request.put('/api/auth/logout/2');
 
         expect(result.status).toEqual(400);
     })

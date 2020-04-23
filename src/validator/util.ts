@@ -48,8 +48,8 @@ export default async (req: Request, res: Response, next: NextFunction) => {
   try {
     const method = req.method;
     const body = req.body;
-    const url = _.trim(req.baseUrl, '/');
-    const schemas = schemasValidation[url];
+    const url = _.trim(req.baseUrl, '/').split('/');
+    const schemas = schemasValidation[url[1]];
 
     await validator(schemas[method], body, method);
 
