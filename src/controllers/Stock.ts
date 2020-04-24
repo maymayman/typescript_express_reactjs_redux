@@ -6,13 +6,13 @@ import * as Models from '../models';
 const Stocks = Models.default.Stocks;
 
 export default {
-  post: async (req: Request, res: Response) => {
+  create: async (req: Request, res: Response) => {
     const stock = new Stocks(req.body);
     const result = await stock.save();
 
     return res.json(result);
   },
-  get: async (req: Request, res: Response) => {
+  findById: async (req: Request, res: Response) => {
     const id = req.params.id;
     const stock = await Stocks.findByPk(id);
 
@@ -24,7 +24,7 @@ export default {
 
     return res.json(stock);
   },
-  put: async (req: Request, res: Response) => {
+  update: async (req: Request, res: Response) => {
     const stock = await Stocks.findByPk(req.params.id);
 
     if (!stock) {
@@ -49,5 +49,11 @@ export default {
     const result = await stock.destroy();
 
     return res.json(result);
+  },
+  getList: async (req: Request, res: Response) => {
+    const code = req.query.code;
+    const arrStock = await Stocks.findAll({ where: { stock_code: code } });
+
+    return res.json(arrStock);
   }
 };
