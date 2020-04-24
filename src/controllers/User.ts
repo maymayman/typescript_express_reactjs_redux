@@ -7,13 +7,13 @@ import { ERROR_CODES, HTTP_ERRORS } from '../constants';
 const Users = Models.default.Users;
 
 export default {
-  post: async (req: Request, res: Response) => {
+  create: async (req: Request, res: Response) => {
     const User = new Users(req.body);
     const result = await User.save();
 
     return res.json(result);
   },
-  put: async (req: Request, res: Response) => {
+  update: async (req: Request, res: Response) => {
     const id = req.params.id;
     const user = await Users.findByPk(id);
 
@@ -28,7 +28,7 @@ export default {
 
     return res.json(result);
   },
-  get: async (req: Request, res: Response) => {
+  findById: async (req: Request, res: Response) => {
     const id = req.params.id;
     const user = await Users.findByPk(id);
 
