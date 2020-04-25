@@ -6,7 +6,7 @@ import * as morgan from 'morgan';
 import { MORGAN_LOG_FORMAT } from './constants';
 import logger from './plugins/logger';
 import heathCheckRouter from './routes/heath-check';
-import apiRoutes from './routes/index';
+import routes from './routes/index';
 
 const app = express();
 
@@ -41,8 +41,8 @@ app.get('/heath-check', heathCheckRouter);
 app.get('/', (_req: express.Request, res: express.Response) =>
   res.send('Permission denied')
 );
-// path api for all routes
-app.use('/api', apiRoutes);
+// path all routes
+app.use('/', routes);
 
 // catch 404 and forward to error handler
 app.use(

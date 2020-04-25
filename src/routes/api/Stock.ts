@@ -1,8 +1,8 @@
 import * as express from 'express';
 
-import controller from '../controllers/Stock';
-import { asyncController } from '../plugins/utility';
-import Validator from '../validator/util';
+import controller from '../../controllers/Stock';
+import { asyncController } from '../../plugins/utility';
+import Validator from '../../validator/util';
 
 const router = express.Router();
 const { post, get, put, destroy } = controller;
