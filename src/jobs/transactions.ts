@@ -13,7 +13,3 @@ const transactionCrawlOption: cron.CronJobParameters = {
 };
 
 export const transactionCrawl = new CronJob(transactionCrawlOption);
-
-// export default {
-//   transactionCrawl
-// };
