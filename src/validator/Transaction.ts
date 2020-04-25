@@ -1,7 +1,7 @@
 import * as Joi from 'joi';
 
 export const schemasValidationTransaction = {
-  POST: Joi.object({
+  create: Joi.object({
     stock_id: Joi.string().required(),
     close_price: Joi.number().required(),
     open_price: Joi.number().required(),
@@ -10,7 +10,7 @@ export const schemasValidationTransaction = {
     volume: Joi.number().required(),
     exchange_date: Joi.date().required()
   }),
-  PUT: Joi.object({
+  update: Joi.object({
     stock_id: Joi.string().optional(),
     close_price: Joi.number().optional(),
     open_price: Joi.number().optional(),

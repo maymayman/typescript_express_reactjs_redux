@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import * as createError from 'http-errors';
 import * as _ from 'lodash';
 
-export const asyncController = fn => (
+export const asyncMiddleware = fn => (
   req: Request,
   res: Response,
   next: NextFunction
