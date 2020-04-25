@@ -11,7 +11,13 @@ const Sessions = Models.default.Sessions;
 const SECRET_KEY = process.env.SECRET_KEY || 'My_secret_key';
 const EXPIRE_TOKEN_TIME = process.env.EXPIRE_TOKEN_TIME || '7 days';
 const { USER_NOT_FOUND } = ERROR_CODES;
-const validateLogin = async (username: string, password: string) => {
+
+interface ILoginData {
+  username?: string;
+  password?: string;
+}
+const validateLoginInput = async (data: ILoginData) => {
+  const { username, password } = data;
   if (!username || !password) {
     throw new createError.BadRequest(
       HTTP_ERRORS[ERROR_CODES.INVALID_USERNAME_OR_PASSWORD].MESSAGE
@@ -25,7 +31,7 @@ export default {
   login: async (req: Request, res: Response) => {
     const { username, password } = req.body;
 
-    await validateLogin(username, password);
+    await validateLoginInput({ username, password });
 
     const user = await Users.findOne({
       where: { username },
