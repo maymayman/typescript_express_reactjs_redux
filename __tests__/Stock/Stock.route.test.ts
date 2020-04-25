@@ -46,6 +46,11 @@ jest.mock('../../src/models/', () => ({
                 stock_price:1000
             })
         }).mockResolvedValueOnce(null);;
+        static findAll = jest.fn().mockResolvedValueOnce([{
+            stock_name:"VTbank",
+            stock_code:"VT1",
+            stock_price:1000
+        }]).mockResolvedValueOnce([])
         constructor() {
         } 
       }
@@ -129,5 +134,20 @@ describe("DELETE /stocks/:id",()=>{
     it('DELETE /stocks/:id - destroy stock by id but not found', async ()=>{
         const result = await request.delete('/api/stocks/3');
         expect(result.status).toEqual(404);
+    })
+})
+describe("GET /stocks?code=fpt",()=>{
+    it('GET /stocks?where={"stock_code":"FPT"} - get list stocks is success',async ()=>{
+        const result = await request.get('/api/stocks?code=fpt');
+
+        expect(result.status).toEqual(200);
+        expect(result.body).toEqual([{
+            ...successStockData
+        }])
+    })
+    it('GET /stocks?where={"stock_code":"FPT"} - get list return array null',async ()=>{
+        const result = await request.get('/api/stocks?code=VP');
+        expect(result.status).toEqual(200);
+        expect(result.body).toEqual([]);
     })
 })
