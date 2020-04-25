@@ -15,6 +15,12 @@ const { USER_NOT_FOUND } = ERROR_CODES;
 export default {
   login: async (req: Request, res: Response) => {
     const { username, password } = req.body;
+
+    if (!username || !password) {
+      const err = HTTP_ERRORS[ERROR_CODES.INVALID_USERNAME_OR_PASSWORD].MESSAGE;
+
+      throw new createError.BadRequest(err);
+    }
     const user = await Users.findOne({
       where: { username },
       attributes: ['username', 'password', 'id']
