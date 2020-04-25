@@ -135,7 +135,7 @@ describe('POST /users', () => {
       email: 'abc12@gmail.com'
     };
 
-    const result = await request.post('/users').send(userInfo);
+    const result = await request.post('/api/users').send(userInfo);
     
     expect(result.status).toEqual(400);
     if (result.error) {
@@ -150,7 +150,7 @@ describe('POST /users', () => {
       email: 'abc12@gmail.com'
     };
 
-    const result = await request.post('/users').send(userInfo);
+    const result = await request.post('/api/users').send(userInfo);
     
     expect(result.status).toEqual(200);
     expect(result.body.username).toEqual(userInfo.username);
@@ -161,26 +161,26 @@ describe('POST /users', () => {
 
 describe('GET /users',()=>{
   it('GET /users/:id - get user by id is success',async () =>{
-    const result = await request.get('/users/1');
+    const result = await request.get('/api/users/1');
     
     expect(result.status).toEqual(200);
     expect(result.body).toEqual({ ...successUserData })
   });
   it('GET /users/:id - get user by id returns null',async ()=>{
-    const result = await request.get('/users/2');
+    const result = await request.get('/api/users/2');
    
     expect(result.status).toEqual(404);
   })
 });
 describe('DELETE /user', ()=>{
    it('DELETE /user/:id - delete user by id is success',async ()=>{
-    const result = await request.delete('/users/1');
+    const result = await request.delete('/api/users/1');
 
     expect(result.status).toEqual(200);
     expect(result.body).toEqual({ ...successUserData })
   });
    it('Delete /users/:id - delete user by id return null',async ()=>{
-    const result = await request.delete('/users/3');
+    const result = await request.delete('/api/users/3');
     
     expect(result.body).toEqual({ message: 'User Not Found.' })
     expect(result.status).toEqual(404);
@@ -194,7 +194,7 @@ describe('PUT /user/:id', ()=>{
       phone: '093094192',
       email: 'abc12@gmail.com'
     };
-    const result = await request.put('/users/1').send(userInfo);
+    const result = await request.put('/api/users/1').send(userInfo);
    
     expect(result.body.username).toEqual(userInfo.username);
     expect(result.body.password).toEqual(userInfo.password);
@@ -206,7 +206,7 @@ describe('PUT /user/:id', ()=>{
       phone: '093094192',
       email: 'abc12@gmail.com'
     };
-    const result = await request.put('/users/2').send(userInfo);
+    const result = await request.put('/api/users/2').send(userInfo);
     expect(result.body).toEqual({ message: 'User Not Found.' });
     expect(result.status).toEqual(404);
   })
@@ -214,7 +214,7 @@ describe('PUT /user/:id', ()=>{
     const userInfo = {
       username :""
     }
-    const result = await request.put('/users/1').send(userInfo);
+    const result = await request.put('/api/users/1').send(userInfo);
     expect(result.status).toEqual(400);
     if (result.error) {
       expect(result.error.text).toMatchSnapshot();
@@ -224,7 +224,7 @@ describe('PUT /user/:id', ()=>{
     const userInfo = {
       username :null
     }
-    const result = await request.put('/users/1').send(userInfo);
+    const result = await request.put('/api/users/1').send(userInfo);
     expect(result.status).toEqual(400);
   })
 })

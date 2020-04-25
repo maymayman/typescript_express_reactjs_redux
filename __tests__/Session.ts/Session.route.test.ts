@@ -97,7 +97,7 @@ describe('POST Session',()=>{
         const sessions = {
             session :"TOKEN_SS"
         };
-        const result = await request.post('/sessions').send(sessions);
+        const result = await request.post('/api/sessions').send(sessions);
 
         expect(result.status).toEqual(400);
         if (result.error) {
@@ -110,7 +110,7 @@ describe('POST Session',()=>{
             session:"TOKEN_SS"
         }
 
-        const result = await request.post('/sessions').send(sessions);
+        const result = await request.post('/api/sessions').send(sessions);
         expect(result.status).toEqual(200);
         expect(result.body).toEqual({
             id: 20,
@@ -125,12 +125,12 @@ describe('POST Session',()=>{
 
 describe("GET SESSIONS",()=>{
     it('GET /session/:id get session but that null or not found',async ()=>{
-        const result = await request.get('/sessions/10');
+        const result = await request.get('/api/sessions/10');
 
         expect(result.status).toEqual(404);
     });
     it('GET /session/:id get session is success',async ()=>{
-        const result = await request.get('/sessions/20');
+        const result = await request.get('/api/sessions/20');
 
         expect(result.status).toEqual(200);
         expect(result.body).toEqual({
@@ -149,7 +149,7 @@ describe('PUT Session',()=>{
         const sessions ={
             user_id:"15" 
         }
-        const result = await request.put('/sessions/1').send(sessions);
+        const result = await request.put('/api/sessions/1').send(sessions);
         expect(result.status).toEqual(500);
         if(result.error){
             expect(result.error.text).toMatchSnapshot();
@@ -160,7 +160,7 @@ describe('PUT Session',()=>{
             user_id:"1",
             session:"TOKEN_SS"
         }
-        const result = await request.put('/sessions/17').send(sessions);
+        const result = await request.put('/api/sessions/17').send(sessions);
 
         expect(result.status).toEqual(404);
     })
@@ -170,7 +170,7 @@ describe('PUT Session',()=>{
             session:"TOKEN_SS"
         }
 
-        const result = await request.put('/sessions/1').send(sessions);
+        const result = await request.put('/api/sessions/1').send(sessions);
 
         expect(result.status).toEqual(200);
         expect(result.body).toEqual({
@@ -185,12 +185,12 @@ describe('PUT Session',()=>{
 })
 describe("DELETE SESSIONS",()=>{
     it('DELETE /session/:id - not found user',async ()=>{
-        const result = await request.delete('/sessions/1');
+        const result = await request.delete('/api/sessions/1');
 
         expect(result.status).toEqual(404);
     });
     it('DELETE /session/:id - delete user is success',async ()=>{
-        const result = await request.delete('/sessions/2');
+        const result = await request.delete('/api/sessions/2');
 
         expect(result.status).toEqual(200);
         expect(result.body).toEqual({

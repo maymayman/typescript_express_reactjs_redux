@@ -5,12 +5,8 @@ import * as morgan from 'morgan';
 
 import { MORGAN_LOG_FORMAT } from './constants';
 import logger from './plugins/logger';
-import AuthRouter from './routes/Auth';
 import heathCheckRouter from './routes/heath-check';
-import SessionRouter from './routes/Session';
-import StockRouter from './routes/Stock';
-import TransactionRouter from './routes/Transaction';
-import UserRouter from './routes/User';
+import routes from './routes/index';
 
 const app = express();
 
@@ -45,15 +41,8 @@ app.get('/heath-check', heathCheckRouter);
 app.get('/', (_req: express.Request, res: express.Response) =>
   res.send('Permission denied')
 );
-app.use('/users', UserRouter);
-app.use('/auth', AuthRouter);
-
-// Session
-app.use('/sessions', SessionRouter);
-// Stock
-app.use('/stocks', StockRouter);
-// Transaction
-app.use('/transactions', TransactionRouter);
+// path all routes
+app.use('/', routes);
 
 // catch 404 and forward to error handler
 app.use(

@@ -111,7 +111,7 @@ describe('POST /transactions ',()=>{
             volume: "1234",
             exchange_date: "2020-04-20T13:19:05.555Z"
         };
-        const result = await request.post('/transactions').send(transaction);
+        const result = await request.post('/api/transactions').send(transaction);
         expect(result.status).toEqual(400);
         if (result.error) {
         expect(result.error.text).toMatchSnapshot();
@@ -127,7 +127,7 @@ describe('POST /transactions ',()=>{
             volume: "1234",
             exchange_date: "2020-04-20T13:19:05.555Z",
         };
-        const result = await request.post('/transactions').send(transaction);
+        const result = await request.post('/api/transactions').send(transaction);
         expect(result.status).toEqual(200);
         expect(result.body).toEqual({...successTransactionData})
     })
@@ -137,7 +137,7 @@ describe('PUT /transactions/:id ',()=>{
         const transaction = {
             volume: "1234",
         };
-        const result = await request.put('/transactions/1').send(transaction);
+        const result = await request.put('/api/transactions/1').send(transaction);
         expect(result.status).toEqual(200);
         expect(result.body).toEqual({...successTransactionData});
     });
@@ -146,29 +146,29 @@ describe('PUT /transactions/:id ',()=>{
             close_price: "21212.121",
             open_price: "12345.12",
         }
-        const result = await request.put('/transactions/2').send(transaction);
+        const result = await request.put('/api/transactions/2').send(transaction);
         expect(result.status).toEqual(404);
     })
 })
 describe('GET /transactions/:id ',()=>{
     it('GET /transactions/:id - get by id is success',async()=>{
-        const result = await request.get('/transactions/3');
+        const result = await request.get('/api/transactions/3');
         expect(result.status).toEqual(200);
         expect(result.body).toEqual({...successTransactionData});
     })
     it('GET /transactions/:id - get transaction by id is not found',async()=>{
-        const result = await request.get('/transactions/4');
+        const result = await request.get('/api/transactions/4');
         expect(result.status).toEqual(404);
     })
 });
 describe('DELETE /transactions/:id ',()=>{
     it('DELETE /transaction/:id - delete transaction is success',async()=>{
-        const result = await request.delete('/transactions/5');
+        const result = await request.delete('/api/transactions/5');
         expect(result.status).toEqual(200);
         expect({...successTransactionData});
     });
     it('DELETE transactions/:id - delete transaction by id is not found',async ()=>{
-        const result = await request.delete('/transactions/6');
+        const result = await request.delete('/api/transactions/6');
         expect(result.status).toEqual(404);
     })
 })

@@ -63,7 +63,7 @@ describe('POST STOCK',()=>{
             stock_name:"viettel",
             stock_price:100.11
         }
-        const result = await request.post('/stocks').send(stock);
+        const result = await request.post('/api/stocks').send(stock);
 
         expect(result.status).toEqual(400);
         if (result.error) {
@@ -76,7 +76,7 @@ describe('POST STOCK',()=>{
             stock_name:"viettel",
             stock_price:100.11
         }
-        const result = await request.post('/stocks').send(stock);
+        const result = await request.post('/api/stocks').send(stock);
         expect(result.status).toEqual(200);
         expect(result.body).toEqual({
             stock_code:"132a3",
@@ -87,13 +87,13 @@ describe('POST STOCK',()=>{
 })
 describe('GET /stocks/id ',()=>{
     it('GET /stocks/id - find stock by id is success',async ()=>{
-        const result = await request.get('/stocks/2');
+        const result = await request.get('/api/stocks/2');
 
         expect(result.status).toEqual(200);
         expect(result.body.stock_code).toEqual('132a3');
     })
     it('GET stocks/id - get stock by id but not found', async ()=>{
-        const result = await request.get('/stocks/1');
+        const result = await request.get('/api/stocks/1');
 
         expect(result.status).toEqual(404);
     })
@@ -105,7 +105,7 @@ describe('PUT STOCK',()=>{
             stock_code:"VT1",
             stock_price:1000
         };
-        const result = await request.put('/stocks/4').send(stock);
+        const result = await request.put('/api/stocks/4').send(stock);
         expect(result.status).toEqual(200);
         expect(result.body).toEqual({...successStockData});
     })
@@ -115,19 +115,19 @@ describe('PUT STOCK',()=>{
             stock_code:"VT1",
             stock_price:1000
         }
-        const result = await request.put('/stocks/5').send(stock);
+        const result = await request.put('/api/stocks/5').send(stock);
         expect(result.status).toEqual(404);
     })
 })
 describe("DELETE /stocks/:id",()=>{
     it('DELETE /stocks/:id - destroy stock by id is success', async()=>{
-        const result = await request.delete('/stocks/3');
+        const result = await request.delete('/api/stocks/3');
 
         expect(result.status).toEqual(200);
         expect(result.body).toEqual({...successStockData});
     });
     it('DELETE /stocks/:id - destroy stock by id but not found', async ()=>{
-        const result = await request.delete('/stocks/3');
+        const result = await request.delete('/api/stocks/3');
         expect(result.status).toEqual(404);
     })
 })
