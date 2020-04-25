@@ -50,10 +50,10 @@ export default {
 
     return res.json(result);
   },
-  getList: async (req: Request, res: Response) => {
-    const code = req.query.code;
-    const arrStock = await Stocks.findAll({ where: { stock_code: code } });
+  find: async (req: Request, res: Response) => {
+    const where = req.query.where ? JSON.parse(req.query.where) : {};
+    const result = await Stocks.findAll({ where });
 
-    return res.json(arrStock);
+    return res.json(result);
   }
 };

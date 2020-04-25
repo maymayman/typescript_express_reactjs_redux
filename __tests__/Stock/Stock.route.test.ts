@@ -137,16 +137,16 @@ describe("DELETE /stocks/:id",()=>{
     })
 })
 describe("GET /stocks?code=fpt",()=>{
-    it('GET /stocks?code=fpt - get list stocks is success',async ()=>{
-        const result = await request.get('/stocks?code=fpt');
+    it('GET /stocks?where={"stock_code":"FPT"} - get list stocks is success',async ()=>{
+        const result = await request.get('/api/stocks?code=fpt');
 
         expect(result.status).toEqual(200);
         expect(result.body).toEqual([{
             ...successStockData
         }])
     })
-    it('GET /stocks?code=fpt - get list return array null',async ()=>{
-        const result = await request.get('/stocks?code=VP');
+    it('GET /stocks?where={"stock_code":"FPT"} - get list return array null',async ()=>{
+        const result = await request.get('/api/stocks?code=VP');
         expect(result.status).toEqual(200);
         expect(result.body).toEqual([]);
     })
