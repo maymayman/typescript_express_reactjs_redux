@@ -6,13 +6,13 @@ import * as Models from '../models';
 const Transactions = Models.default.Transactions;
 
 export default {
-  post: async (req: Request, res: Response) => {
+  create: async (req: Request, res: Response) => {
     const transaction = new Transactions(req.body);
     const result = await transaction.save();
 
     return res.json(result);
   },
-  put: async (req: Request, res: Response) => {
+  update: async (req: Request, res: Response) => {
     const id = req.params.id;
     const transtraction = await Transactions.findByPk(id);
 
@@ -27,7 +27,7 @@ export default {
 
     return res.json(result);
   },
-  get: async (req: Request, res: Response) => {
+  findByid: async (req: Request, res: Response) => {
     const id = req.params.id;
     const transtraction = await Transactions.findByPk(id);
 

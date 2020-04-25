@@ -5,11 +5,11 @@ import { asyncController } from '../../plugins/utility';
 import Validator from '../../validator/util';
 
 const router = express.Router();
-const { post, put, get, destroy } = controller;
+const { create, update, findByid, destroy } = controller;
 
-router.post('/', asyncController(Validator), asyncController(post));
-router.put('/:id', asyncController(Validator), asyncController(put));
-router.get('/:id', asyncController(get));
+router.post('/', asyncController(Validator), asyncController(create));
+router.put('/:id', asyncController(Validator), asyncController(update));
+router.get('/:id', asyncController(findByid));
 router.delete('/:id', asyncController(destroy));
 
 export default router;

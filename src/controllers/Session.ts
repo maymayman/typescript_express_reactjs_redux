@@ -7,14 +7,14 @@ import { ERROR_CODES, HTTP_ERRORS } from '../constants';
 const Sessions = Models.default.Sessions;
 
 export default {
-  post: async (req: Request, res: Response) => {
+  create: async (req: Request, res: Response) => {
     const session = new Sessions(req.body);
     const result = await session.save();
 
     return res.json(result);
   },
 
-  get: async (req: Request, res: Response) => {
+  findById: async (req: Request, res: Response) => {
     const id = req.params.id;
     const session = await Sessions.findByPk(id);
 
@@ -27,7 +27,7 @@ export default {
     return res.json(session);
   },
 
-  put: async (req: Request, res: Response) => {
+  update: async (req: Request, res: Response) => {
     const id = req.params.id;
     const session = await Sessions.findByPk(id);
 
