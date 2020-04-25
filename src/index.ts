@@ -8,6 +8,8 @@ import logger from './plugins/logger';
 import heathCheckRouter from './routes/heath-check';
 import routes from './routes/index';
 
+import { transactionCrawl } from './jobs';
+
 const app = express();
 
 app.use(morgan(MORGAN_LOG_FORMAT));
@@ -68,5 +70,13 @@ app.use(
     res.json(err);
   }
 );
+
+/***************************************************************************************
+ *                   START     RUN       JOBS                                          *
+ *                                                                                     *
+ ***************************************************************************************/
+
+// start run transactionCrawl
+transactionCrawl.start();
 
 export default app;
