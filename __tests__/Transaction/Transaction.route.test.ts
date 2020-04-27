@@ -93,6 +93,17 @@ jest.mock('../../src/models/', () => ({
                 created_at: "2020-04-21T13:30:24.086Z",
             })
         }).mockResolvedValueOnce(null);
+        static findAll = jest.fn().mockResolvedValueOnce([{
+            stock_id: "2",
+            close_price: "21212.121",
+            open_price: "12345.12",
+            high_price: "12124.13",
+            low_price: "12354.45",
+            volume: "1234",
+            exchange_date: "2020-04-20T13:19:05.555Z",
+            updated_at: "2020-04-21T13:30:24.086Z",
+            created_at: "2020-04-21T13:30:24.086Z",
+        }]).mockResolvedValueOnce([]);
         constructor() {
         } 
       }
@@ -170,5 +181,26 @@ describe('DELETE /transactions/:id ',()=>{
     it('DELETE transactions/:id - delete transaction by id is not found',async ()=>{
         const result = await request.delete('/api/transactions/6');
         expect(result.status).toEqual(404);
+    })
+})
+describe('GET /transactions?where={"stock_id":"1"}',()=>{
+    it('GET /transactions?where="stock_id":"1" - get list transactions is succsess',async()=>{
+        const result = await request.get('/api/transactions?where={"stock_id":"1"}');
+        expect(result.status).toEqual(200);
+        expect(result.body).toEqual([{
+            stock_id: "2",
+            close_price: "21212.121",
+            open_price: "12345.12",
+            high_price: "12124.13",
+            low_price: "12354.45",
+            volume: "1234",
+            exchange_date: "2020-04-20T13:19:05.555Z",
+            updated_at: "2020-04-21T13:30:24.086Z",
+            created_at: "2020-04-21T13:30:24.086Z"
+        }])
+    })
+    it('GET /transactions get list transactions return emty arr',async()=>{
+        const result = await request.get('/api/transactions');
+        expect(result.body).toEqual([]);
     })
 })
