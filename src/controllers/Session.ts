@@ -55,5 +55,11 @@ export default {
     const result = await session.destroy();
 
     return res.json(result);
+  },
+  find: async (req: Request, res: Response) => {
+    const where = req.query.where ? JSON.parse(req.query.where) : {};
+    const result = await Sessions.findAll({ where });
+
+    return res.json(result);
   }
 };
