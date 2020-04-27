@@ -98,7 +98,16 @@ jest.mock('../../src/models/', () => ({
             updated_at: "2020-02-25T13:00:59.256Z",
             created_at: "2020-02-25T13:00:59.256Z",
           })
-      }).mockResolvedValueOnce(null)
+      }).mockResolvedValueOnce(null);
+      static findAll = jest.fn().mockResolvedValueOnce([{
+        id: 1,
+        username: 'duc789',
+        password: '12345678',
+        phone: '093094192',
+        email: 'abc12@gmail.com',
+        updated_at: "2020-02-25T13:00:59.256Z",
+        created_at: "2020-02-25T13:00:59.256Z",
+      }]).mockResolvedValueOnce([]);
       constructor() {
         // this.save = jest.fn();
         // (this.save as jest.Mock).mockResolvedValueOnce({
@@ -226,5 +235,24 @@ describe('PUT /user/:id', ()=>{
     }
     const result = await request.put('/api/users/1').send(userInfo);
     expect(result.status).toEqual(400);
+  })
+})
+describe('GET /api/users?where={"username":"duc789"} ',()=>{
+  it('GET /api/users?where={"username":"duc789"} - get list users is success', async ()=>{
+    const result = await request.get('/api/users?where={"username":"ductran"}');
+    expect(result.status).toEqual(200);
+    expect(result.body).toEqual([{
+        id: 1,
+        username: 'duc789',
+        password: '12345678',
+        phone: '093094192',
+        email: 'abc12@gmail.com',
+        updated_at: "2020-02-25T13:00:59.256Z",
+        created_at: "2020-02-25T13:00:59.256Z",
+    }]);
+  })
+  it('GET /api/users - get list users return null',async()=>{
+    const result = await request.get('/api/users');
+    expect(result.body).toEqual([]);
   })
 })
