@@ -52,5 +52,11 @@ export default {
     const result = await transtraction.destroy();
 
     return res.json(result);
+  },
+  find: async (req: Request, res: Response) => {
+    const where = req.query.where ? JSON.parse(req.query.where) : {};
+    const result = await Transactions.findAll({ where });
+
+    return res.json(result);
   }
 };
