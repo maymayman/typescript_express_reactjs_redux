@@ -1,6 +1,6 @@
 import * as express from 'express';
 
-import Auth from '../../controllers/Auth';
+import Auth from '../../controllers/auth/Auth';
 import { asyncMiddleware } from '../../plugins/utility';
 import { validateLoginInput } from '../../validator/Auth';
 
