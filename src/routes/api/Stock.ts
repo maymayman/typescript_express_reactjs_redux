@@ -1,6 +1,6 @@
 import * as express from 'express';
 
-import controller from '../../controllers/Stock';
+import controller from '../../controllers/api/Stock';
 import { asyncMiddleware } from '../../plugins/utility';
 import Validator from '../../validator/util';
 

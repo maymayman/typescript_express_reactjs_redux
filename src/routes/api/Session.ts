@@ -1,6 +1,6 @@
 import * as express from 'express';
 
-import SessionController from '../../controllers/Session';
+import SessionController from '../../controllers/api/Session';
 import { asyncMiddleware } from '../../plugins/utility';
 import SessionValidator from '../../validator/util';
 

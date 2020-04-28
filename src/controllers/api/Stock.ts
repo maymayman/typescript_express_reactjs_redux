@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import * as createError from 'http-errors';
-import { ERROR_CODES, HTTP_ERRORS } from '../constants';
-import * as Models from '../models';
+import { ERROR_CODES, HTTP_ERRORS } from '../../constants';
+import * as Models from '../../models';
 
 const Stocks = Models.default.Stocks;
 
