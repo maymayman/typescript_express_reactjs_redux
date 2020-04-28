@@ -2,9 +2,9 @@ import { Request, Response } from 'express';
 import * as createError from 'http-errors';
 
 import * as jwt from 'jsonwebtoken';
-import { ERROR_CODES, HTTP_ERRORS } from '../constants';
-import * as Models from '../models';
-import { Users } from '../models/User';
+import { ERROR_CODES, HTTP_ERRORS } from '../../constants';
+import * as Models from '../../models';
+import { Users } from '../../models/User';
 
 // const Users = Models.default.Users;
 const Sessions = Models.default.Sessions;

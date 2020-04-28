@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
 import * as createError from 'http-errors';
-import * as Models from '../models';
+import * as Models from '../../models';
 
-import { ERROR_CODES, HTTP_ERRORS } from '../constants';
+import { ERROR_CODES, HTTP_ERRORS } from '../../constants';
 
 const Sessions = Models.default.Sessions;
 
