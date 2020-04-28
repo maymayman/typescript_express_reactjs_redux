@@ -5,6 +5,7 @@ import * as morgan from 'morgan';
 
 import { MORGAN_LOG_FORMAT } from './constants';
 import logger from './plugins/logger';
+import AuthRoutes from './routes/auth/Auth';
 import heathCheckRouter from './routes/heath-check';
 import routes from './routes/index';
 
@@ -45,6 +46,8 @@ app.get('/', (_req: express.Request, res: express.Response) =>
 );
 // path all routes
 app.use('/', routes);
+// auth routes
+app.use('/auth', AuthRoutes);
 
 // catch 404 and forward to error handler
 app.use(

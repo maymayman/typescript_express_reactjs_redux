@@ -1,48 +1,18 @@
 import { NextFunction, Request, Response } from 'express';
 import * as createError from 'http-errors';
-import * as Joi from 'joi';
-import * as _ from 'lodash';
+import { ERROR_CODES, HTTP_ERRORS } from '../constants';
 
-interface IValidations {
-  schema?: Joi.ObjectSchema;
-  data: object;
-}
-const schemasValidation = {
-  post: Joi.object({
-    username: Joi.string().required(),
-    password: Joi.string().required()
-  })
-};
-
-const validation = (options: IValidations): void => {
-  const { schema, data } = options;
-
-  if (!schema) return;
-
-  const { error } = schema.validate(data);
-
-  if (error) {
-    const errorMess = _.get(error, 'details[0].message', 'Bad Request!');
-    throw new createError.BadRequest(errorMess);
+export const validateLoginInput = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { username, password } = req.body;
+  if (!username || !password) {
+    throw new createError.BadRequest(
+      HTTP_ERRORS[ERROR_CODES.INVALID_USERNAME_OR_PASSWORD].MESSAGE
+    );
   }
 
-  return;
-};
-
-export default async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const method = req.method;
-    const body = req.body;
-    const validations = {
-      POST: () => validation({ schema: schemasValidation.post, data: body })
-    };
-
-    if (validations[method]) {
-      validations[method].call();
-    }
-
-    next();
-  } catch (err) {
-    throw err;
-  }
+  return next();
 };
