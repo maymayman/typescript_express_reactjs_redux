@@ -81,7 +81,14 @@ jest.mock('../../src/models/', () => ({
                 created_at: "2020-03-22T09:01:39.910Z",
                 expried_at: "2020-03-29T09:01:39.910Z",
             })
-        })
+        });
+        static findAll = jest.fn().mockResolvedValueOnce([{id: 20,
+            user_id: 2,
+            session: "TOKEN_SS",
+            updated_at: "2020-03-22T09:01:39.910Z",
+            created_at: "2020-03-22T09:01:39.910Z",
+            expried_at: "2020-03-29T09:01:39.910Z"}]).
+            mockResolvedValueOnce([]);
         constructor() {
         } 
       }
@@ -202,5 +209,21 @@ describe("DELETE SESSIONS",()=>{
             expried_at: "2020-03-29T09:01:39.910Z",
         })
     })
-}) 
+})
+describe('GET api/sessions?where={"user_id":"2"}',()=>{
+    it('GET api/sessions?where="user_id":"2" - get list session is success',async ()=>{
+        const result = await request.get('/api/sessions?where={"user_id":"2"}');
+        expect(result.body).toEqual([{id: 20,
+            user_id: 2,
+            session: "TOKEN_SS",
+            updated_at: "2020-03-22T09:01:39.910Z",
+            created_at: "2020-03-22T09:01:39.910Z",
+            expried_at: "2020-03-29T09:01:39.910Z"
+        }])
+    })
+    it('GET api/session - get list session not found params',async()=>{
+        const result = await request.get('/api/sessions');
+        expect(result.body).toEqual([]);
+    })
+})
 

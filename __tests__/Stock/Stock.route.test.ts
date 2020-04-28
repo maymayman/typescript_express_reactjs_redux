@@ -143,7 +143,7 @@ describe("DELETE /stocks/:id",()=>{
 })
 describe("GET /stocks?code=fpt",()=>{
     it('GET /stocks?where={"stock_code":"FPT"} - get list stocks is success',async ()=>{
-        const result = await request.get('/api/stocks?code=fpt');
+        const result = await request.get('/api/stocks?where={"stock_code":"VT1"}');
 
         expect(result.status).toEqual(200);
         expect(result.body).toEqual([{
