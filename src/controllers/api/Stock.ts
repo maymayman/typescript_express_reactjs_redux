@@ -55,10 +55,5 @@ export default {
     const result = await Stocks.findAll({ where });
 
     return res.json(result);
-  },
-  findAll: async (req: Request, res: Response) => {
-    const result = await Stocks.findAll();
-
-    return res.json(result);
   }
 };

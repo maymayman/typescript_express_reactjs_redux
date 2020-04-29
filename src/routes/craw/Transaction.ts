@@ -1,6 +1,6 @@
 import * as express from 'express';
 
-import controller from '../../controllers/api/Stock';
+import controller from '../../controllers/job/Transactions';
 import { asyncMiddleware } from '../../plugins/utility';
 
 const router = express.Router();
