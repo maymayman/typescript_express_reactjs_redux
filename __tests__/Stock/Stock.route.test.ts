@@ -55,6 +55,10 @@ jest.mock('../../src/models/', () => ({
             stock_name:"VTbank",
             stock_code:"VT1",
             stock_price:1000
+        }]).mockResolvedValueOnce([{
+            stock_name:"VTbank",
+            stock_code:"VT1",
+            stock_price:1000
         }])
         constructor() {
         } 
@@ -159,5 +163,15 @@ describe("GET /stocks?code=fpt",()=>{
         const result = await request.get('/api/stocks');
         expect(result.status).toEqual(200);
         expect(result.body).toEqual([{...successStockData}]);
+    })
+})
+describe('GET /job/transaction/crawl',()=>{
+    it('GET /job/transaction/crawl - get all stocks is success',async ()=>{
+        const result = await request.get('/job/transaction/crawl');
+        expect(result.body).toEqual([{
+            stock_name:"VTbank",
+            stock_code:"VT1",
+            stock_price:1000
+        }])
     })
 })
