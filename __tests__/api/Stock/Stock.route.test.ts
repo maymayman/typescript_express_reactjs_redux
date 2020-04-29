@@ -1,5 +1,5 @@
 import * as supertest from 'supertest';
-import app from '../../src';
+import app from '../../../src';
 
 const request = supertest(app);
 
@@ -8,7 +8,7 @@ const successStockData={
     stock_code:"VT1",
     stock_price:1000,
 };
-jest.mock('../../src/models/', () => ({
+jest.mock('../../../src/models/', () => ({
     default: {
       Stocks: class {
         public save = jest.fn().mockResolvedValueOnce({

@@ -1,6 +1,6 @@
 // import * as httpMocks from 'node-mocks-http';
 import * as supertest from 'supertest';
-import app from '../../src';
+import app from '../../../src';
 
 const successUserData = {
   id: 1,
@@ -13,7 +13,7 @@ const successUserData = {
 };
 
 const request = supertest(app);
-jest.mock('../../src/models/', () => ({
+jest.mock('../../../src/models/', () => ({
   default: {
     Users: class {
       //public save;

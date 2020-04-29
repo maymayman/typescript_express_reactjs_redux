@@ -1,5 +1,5 @@
 import * as supertest from 'supertest';
-import app from '../../src';
+import app from '../../../src';
 
 const request = supertest(app);
 jest.mock('bcrypt',()=>({
@@ -11,7 +11,7 @@ jest.mock('jsonwebtoken',()=>({
     sign : jest.fn().mockResolvedValueOnce('1231231ads')
     })
 )
-jest.mock('../../src/models/User', () => ({
+jest.mock('../../../src/models/User', () => ({
       Users: class {
          static findOne = jest.fn().mockResolvedValueOnce(null).
          mockResolvedValueOnce({
@@ -36,7 +36,7 @@ jest.mock('../../src/models/User', () => ({
       }
   })
 );
-jest.mock('../../src/models/',()=>({
+jest.mock('../../../src/models/',()=>({
   default:{
     Sessions:class{
       public save = jest.fn().mockResolvedValueOnce({

@@ -1,9 +1,9 @@
 import * as supertest from 'supertest';
-import app from '../../src';
+import app from '../../../src';
 
 const request = supertest(app);
 
-jest.mock('../../src/models/', () => ({
+jest.mock('../../../src/models/', () => ({
     default: {
       Sessions: class {
         public save = jest.fn().mockResolvedValueOnce({
