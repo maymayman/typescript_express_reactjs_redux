@@ -4,7 +4,7 @@ import * as Models from '../../models';
 const Stocks = Models.default.Stocks;
 
 export default {
-  findAll: async (req: Request, res: Response) => {
+  crawl: async (req: Request, res: Response) => {
     const result = await Stocks.findAll();
 
     return res.json(result);

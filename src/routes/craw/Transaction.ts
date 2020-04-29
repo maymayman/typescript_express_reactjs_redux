@@ -5,8 +5,8 @@ import { asyncMiddleware } from '../../plugins/utility';
 
 const router = express.Router();
 
-const { findAll } = controller;
+const { crawl } = controller;
 
-router.get('/crawl', asyncMiddleware(findAll));
+router.get('/crawl', asyncMiddleware(crawl));
 
 export default router;
