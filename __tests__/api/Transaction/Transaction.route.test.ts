@@ -1,5 +1,5 @@
 import * as supertest from 'supertest';
-import app from '../../src';
+import app from '../../../src';
 
 const request = supertest(app);
 
@@ -15,7 +15,7 @@ const successTransactionData={
     created_at: "2020-04-21T13:30:24.086Z"
 };
 
-jest.mock('../../src/models/', () => ({
+jest.mock('../../../src/models/', () => ({
     default: {
       Transactions: class {
         public save = jest.fn().mockResolvedValueOnce({
