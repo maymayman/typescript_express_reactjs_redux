@@ -55,14 +55,10 @@ export default {
     const stock = await Stocks.findAll();
     const startDate = req.query.startDate
       ? moment(req.query.startDate).format('YYYY-MM-DDD')
-      : moment()
-          .subtract(0, 'days')
-          .format('YYYY-MM-DDD');
+      : moment().format('YYYY-MM-DDD');
     const endDate = req.query.endDate
       ? moment(req.query.endDate).format('YYYY-MM-DDD')
-      : moment()
-          .subtract(0, 'days')
-          .format('YYYY-MM-DDD');
+      : moment().format('YYYY-MM-DDD');
 
     stock.forEach(async element => {
       await crawlByStockCode({
