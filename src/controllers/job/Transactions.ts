@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import * as moment from 'moment';
 import * as rp from 'request-promise';
 import * as Models from '../../models';
 
@@ -52,8 +53,16 @@ const crawlByStockCode = async options => {
 export default {
   crawl: async (req: Request, res: Response) => {
     const stock = await Stocks.findAll();
-    const startDate = req.query.startDate;
-    const endDate = req.query.endDate;
+    const startDate = req.query.startDate
+      ? moment(req.query.startDate).format('YYYY-MM-DDD')
+      : moment()
+          .subtract(0, 'days')
+          .format('YYYY-MM-DDD');
+    const endDate = req.query.endDate
+      ? moment(req.query.endDate).format('YYYY-MM-DDD')
+      : moment()
+          .subtract(0, 'days')
+          .format('YYYY-MM-DDD');
 
     stock.forEach(async element => {
       await crawlByStockCode({
