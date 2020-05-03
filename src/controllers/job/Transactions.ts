@@ -1,14 +1,27 @@
 import { Request, Response } from 'express';
 import * as moment from 'moment';
-import * as rp from 'request-promise';
+import * as request from 'request-promise';
 import * as Models from '../../models';
-
-const Stocks = Models.default.Stocks;
+import { Stocks } from '../../models/Stock';
 
 interface IUrlCrawl {
-  stockCode: string;
   startDate: string;
   endDate: string;
+  stockCode: string;
+}
+interface IcrawlByStockCode {
+  stock: Stocks;
+  startDate: string;
+  endDate: string;
+}
+interface ITransactionPayload {
+  stock_id: number;
+  close_price: number;
+  open_price: number;
+  high_price: number;
+  low_price: number;
+  volume: number;
+  exchange_date: string;
 }
 const urlCrawl = (options: IUrlCrawl): string => {
   const { startDate, endDate, stockCode } = options;
@@ -16,58 +29,101 @@ const urlCrawl = (options: IUrlCrawl): string => {
     process.env.ENDPOINT_CRAWL_URL ||
     'https://svr2.fireant.vn/api/Data/Markets/HistoricalQuotes';
 
-  return `${endpoint}/symbol=${stockCode}&startDate=${startDate}&endDate=${endDate};`;
+  return `${endpoint}?symbol=${stockCode}&startDate=${startDate}&endDate=${endDate}`;
 };
-const crawlByStockCode = async options => {
-  const { element, startDate, endDate } = options;
-  const urlByStockCode = urlCrawl({
+
+const insertTransaction = async (transaction: ITransactionPayload) => {
+  try {
+    const queryTransaction = await Models.default.Transactions.findOne({
+      where: {
+        stock_id: transaction.stock_id,
+        exchange_date: transaction.exchange_date
+      }
+    });
+    if (!queryTransaction) {
+      const urlRequest = process.env.DOMAIN_URL
+        ? `${process.env.DOMAIN_URL}/api/transactions`
+        : 'http://localhost:3000/api/transactions';
+
+      return await request({
+        method: 'POST',
+        url: urlRequest,
+        body: transaction,
+        json: true
+      });
+    }
+
+    return true;
+  } catch (err) {
+    throw err;
+  }
+};
+const insertTransactions = (transactions: ITransactionPayload[]) => {
+  return transactions.map(transaction => {
+    return insertTransaction(transaction);
+  });
+};
+const formatDataCrawl = (
+  transactions: any,
+  stockID: number
+): ITransactionPayload[] => {
+  return transactions
+    .map(element => {
+      return {
+        stock_id: stockID,
+        close_price: element.Close || 0,
+        open_price: element.Open || 0,
+        high_price: element.High || 0,
+        low_price: element.Low || 0,
+        volume: element.Volume || 0,
+        exchange_date: element.Date || ''
+      };
+    })
+    .filter(
+      el =>
+        el.stock_id &&
+        el.close_price &&
+        el.open_price &&
+        el.high_price &&
+        el.low_price &&
+        el.volume &&
+        el.exchange_date
+    );
+};
+const crawlByStockCode = async (options: IcrawlByStockCode) => {
+  const { stock, startDate, endDate } = options;
+  const urlCrawlTransaction = urlCrawl({
     startDate,
     endDate,
-    stockCode: element.stock_code
+    stockCode: stock.stock_code
   });
-  const transactions = await rp({
-    uri: urlByStockCode,
-    headers: {
-      'User-Agent': 'Request-Promise'
-    },
+  const transactions = await request({
+    uri: urlCrawlTransaction,
+    headers: { 'User-Agent': 'Request-Promise' },
     json: true
   });
-  transactions.forEach(async transaction => {
-    await rp({
-      method: 'POST',
-      url: 'http://localhost:3000/api/transactions',
-      body: {
-        stock_id: element.id.toString(),
-        close_price: transaction.Close,
-        open_price: transaction.Open,
-        high_price: transaction.High,
-        low_price: transaction.Low,
-        volume: transaction.Volume,
-        exchange_date: transaction.Date
-      },
-      json: true
-    });
-  });
+  const formatTransaction = formatDataCrawl(transactions, stock.id);
+
+  const result = insertTransactions(formatTransaction);
+
+  return Promise.all(result);
 };
 
 export default {
   crawl: async (req: Request, res: Response) => {
-    const stock = await Stocks.findAll();
+    const allStock: Stocks[] = await Stocks.findAll();
     const startDate = req.query.startDate
-      ? moment(req.query.startDate).format('YYYY-MM-DDD')
-      : moment().format('YYYY-MM-DDD');
+      ? moment(req.query.startDate).format('YYYY-MM-DD')
+      : moment().format('YYYY-MM-DD');
     const endDate = req.query.endDate
-      ? moment(req.query.endDate).format('YYYY-MM-DDD')
-      : moment().format('YYYY-MM-DDD');
+      ? moment(req.query.endDate).format('YYYY-MM-DD')
+      : moment().format('YYYY-MM-DD');
 
-    stock.forEach(async element => {
-      await crawlByStockCode({
-        element,
-        startDate,
-        endDate
-      });
+    const promises = await allStock.map(stock => {
+      return crawlByStockCode({ stock, startDate, endDate });
     });
+    const result = await Promise.all(promises);
 
-    return res.json(stock);
+    return res.json(result);
   }
 };
