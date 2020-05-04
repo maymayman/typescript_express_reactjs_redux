@@ -56,6 +56,17 @@ const insertTransactions = (transactions: ITransactionPayload[]) => {
     return insertTransaction(transaction);
   });
 };
+const filterData = (el: ITransactionPayload) => {
+  return (
+    el.stock_id &&
+    el.close_price &&
+    el.open_price &&
+    el.high_price &&
+    el.low_price &&
+    el.volume &&
+    el.exchange_date
+  );
+};
 const formatDataCrawl = (
   transactions: any,
   stockID: number
@@ -72,16 +83,7 @@ const formatDataCrawl = (
         exchange_date: element.Date || ''
       };
     })
-    .filter(
-      el =>
-        el.stock_id &&
-        el.close_price &&
-        el.open_price &&
-        el.high_price &&
-        el.low_price &&
-        el.volume &&
-        el.exchange_date
-    );
+    .filter(filterData);
 };
 const crawlByStockCode = async (options: IcrawlByStockCode) => {
   const { stock, startDate, endDate } = options;
@@ -95,7 +97,10 @@ const crawlByStockCode = async (options: IcrawlByStockCode) => {
     headers: { 'User-Agent': 'Request-Promise' },
     json: true
   });
-  const formatTransaction = formatDataCrawl(transactions, stock.id);
+  const formatTransaction = formatDataCrawl(
+    transactions,
+    stock.id
+  );
 
   const result = insertTransactions(formatTransaction);
 
