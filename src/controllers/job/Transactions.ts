@@ -41,16 +41,9 @@ const insertTransaction = async (transaction: ITransactionPayload) => {
       }
     });
     if (!queryTransaction) {
-      const urlRequest = process.env.DOMAIN_URL
-        ? `${process.env.DOMAIN_URL}/api/transactions`
-        : 'http://localhost:3000/api/transactions';
+      const classTransaction = new Models.default.Transactions(transaction);
 
-      return await request({
-        method: 'POST',
-        url: urlRequest,
-        body: transaction,
-        json: true
-      });
+      return await classTransaction.save();
     }
 
     return true;
