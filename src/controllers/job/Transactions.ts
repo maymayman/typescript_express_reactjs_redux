@@ -23,6 +23,10 @@ interface ITransactionPayload {
   volume: number;
   exchange_date: string;
 }
+interface IformatDate {
+  date?: string;
+  format?: string;
+}
 const urlCrawl = (options: IUrlCrawl): string => {
   const { startDate, endDate, stockCode } = options;
   const endpoint =
@@ -97,25 +101,32 @@ const crawlByStockCode = async (options: IcrawlByStockCode) => {
     headers: { 'User-Agent': 'Request-Promise' },
     json: true
   });
-  const formatTransaction = formatDataCrawl(
-    transactions,
-    stock.id
-  );
+  const formatTransaction = formatDataCrawl(transactions, stock.id);
 
   const result = insertTransactions(formatTransaction);
 
   return Promise.all(result);
 };
+const formatDate = ({ date, format }: IformatDate) => {
+  const formatForm = format || 'YYYY-MM-DD';
+  if (date) {
+    return moment().format(formatForm);
+  }
+
+  return moment(date).format(formatForm);
+};
 
 export default {
   crawl: async (req: Request, res: Response) => {
     const allStock: Stocks[] = await Stocks.findAll();
-    const startDate = req.query.startDate
-      ? moment(req.query.startDate).format('YYYY-MM-DD')
-      : moment().format('YYYY-MM-DD');
-    const endDate = req.query.endDate
-      ? moment(req.query.endDate).format('YYYY-MM-DD')
-      : moment().format('YYYY-MM-DD');
+    const startDate = formatDate({
+      date: req.query.startDate,
+      format: req.query.format
+    });
+    const endDate = formatDate({
+      date: req.query.endDate,
+      format: req.query.format
+    });
 
     const promises = await allStock.map(stock => {
       return crawlByStockCode({ stock, startDate, endDate });
