@@ -2,7 +2,7 @@ import * as Joi from 'joi';
 
 export const schemasValidationTransaction = {
   create: Joi.object({
-    stock_id: Joi.string().required(),
+    stock_id: Joi.number().required(),
     close_price: Joi.number().required(),
     open_price: Joi.number().required(),
     high_price: Joi.number().required(),
