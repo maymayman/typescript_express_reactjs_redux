@@ -4,14 +4,20 @@ import * as path from 'path';
 
 import logger from '../src/plugins/logger';
 
+import { 
+  MY_SQL_DATABASE_NAME, 
+  MY_SQL_HOST, 
+  MY_SQL_PASSWORD, 
+  MY_SQL_PORT, 
+  MY_SQL_USER 
+} from '../config';
+
 const migrateArgs = minimist(process.argv.slice(2));
-const host = process.env.MY_SQL_HOST || 'localhost';
-const user = process.env.MY_SQL_USER || 'root';
-const password = process.env.MY_SQL_PASSWORD || 'my-secret-pw';
-const database = process.env.MY_SQL_DATABASE_NAME || 'stock_develop';
-const port = process.env.MY_SQL_PORT
-  ? parseInt(process.env.MY_SQL_PORT, 10)
-  : 3306;
+const host = MY_SQL_HOST;
+const user = MY_SQL_USER;
+const password = MY_SQL_PASSWORD;
+const database = MY_SQL_DATABASE_NAME;
+const port = MY_SQL_PORT;
 
 const importer = mysqlImport.config({
   host,

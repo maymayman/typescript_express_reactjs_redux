@@ -1,20 +1,25 @@
-import { Dialect } from 'sequelize';
 import { Sequelize } from 'sequelize-typescript';
 import { Sessions } from './Session';
 import { Stocks } from './Stock';
 import { Transactions } from './transactions';
 import { Users } from './User';
 
+import {
+  MY_SQL_DATABASE_NAME,
+  MY_SQL_HOST,
+  MY_SQL_PASSWORD,
+  MY_SQL_PORT,
+  MY_SQL_USER,
+  SQL_DIALECT
+} from '../../config';
 import logger from '../plugins/logger';
 
-const host = process.env.MY_SQL_HOST || 'localhost';
-const username = process.env.MY_SQL_USER || 'root';
-const password = process.env.MY_SQL_PASSWORD || 'my-secret-pw';
-const database = process.env.MY_SQL_DATABASE_NAME || 'stock_develop';
-const dialect = (process.env.SQL_DIALECT as Dialect) || 'mysql';
-const port = process.env.MY_SQL_PORT
-  ? parseInt(process.env.MY_SQL_PORT, 10)
-  : 3306;
+const host = MY_SQL_HOST;
+const username = MY_SQL_USER;
+const password = MY_SQL_PASSWORD;
+const database = MY_SQL_DATABASE_NAME;
+const dialect = SQL_DIALECT;
+const port = MY_SQL_PORT;
 
 const sequelize = new Sequelize({
   host,
