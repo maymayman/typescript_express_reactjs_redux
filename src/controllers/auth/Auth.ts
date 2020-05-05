@@ -6,10 +6,9 @@ import { ERROR_CODES, HTTP_ERRORS } from '../../constants';
 import * as Models from '../../models';
 import { Users } from '../../models/User';
 
-// const Users = Models.default.Users;
+import { EXPIRE_TOKEN_TIME, SECRET_KEY } from '../../../config';
+
 const Sessions = Models.default.Sessions;
-const SECRET_KEY = process.env.SECRET_KEY || 'My_secret_key';
-const EXPIRE_TOKEN_TIME = process.env.EXPIRE_TOKEN_TIME || '7 days';
 const { USER_NOT_FOUND } = ERROR_CODES;
 
 export default {
