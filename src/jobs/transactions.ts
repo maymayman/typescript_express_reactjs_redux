@@ -9,6 +9,7 @@ let startWasDate = moment()
   .subtract(10, 'years')
   .format('YYYY-MM-DD');
 let endWasDate = moment()
+  .subtract(10, 'years')
   .add(10, 'days')
   .format('YYYY-MM-DD');
 
