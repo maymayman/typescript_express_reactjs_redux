@@ -55,7 +55,16 @@ export default {
   },
   find: async (req: Request, res: Response) => {
     const where = req.query.where ? JSON.parse(req.query.where) : {};
-    const result = await Transactions.findAll({ where });
+    const limit = req.query.limit ? Number(req.query.limit) : 1;
+    const offset = req.query.offset ? Number(req.query.offset) : 0;
+    const sortBy = req.query.sortBy || 'exchange_date';
+    const sort = req.query.sort || 'DESC';
+    const result = await Transactions.findAll({
+      where,
+      offset,
+      limit,
+      order: [[sortBy, sort]]
+    });
 
     return res.json(result);
   }
