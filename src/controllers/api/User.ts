@@ -6,6 +6,14 @@ import * as Models from '../../models';
 import { DEFAULT_QUERY, ERROR_CODES, HTTP_ERRORS } from '../../constants';
 
 const Users = Models.default.Users;
+const {
+  QUERY_WHRERE,
+  QUERY_LIMIT,
+  QUERY_OFFSET,
+  QUERY_SORT,
+  QUERY_SORT_BY,
+  HEXADECIMAL
+} = DEFAULT_QUERY;
 
 export default {
   create: async (req: Request, res: Response) => {
@@ -59,15 +67,15 @@ export default {
     const where =
       req.query.where && _.isString(req.query.where)
         ? JSON.parse(req.query.where)
-        : DEFAULT_QUERY.QUERY_WHRERE;
+        : QUERY_WHRERE;
     const limit = req.query.limit
-      ? Number(req.query.limit)
-      : DEFAULT_QUERY.QUERY_LIMIT;
+      ? parseInt(req.query.limit, HEXADECIMAL)
+      : QUERY_LIMIT;
     const offset = req.query.offset
-      ? Number(req.query.offset)
-      : DEFAULT_QUERY.QUERY_OFFSET;
-    const sortBy = req.query.sortBy || DEFAULT_QUERY.QUERY_SORT_BY;
-    const sort = req.query.sort || DEFAULT_QUERY.QUERY_SORT;
+      ? parseInt(req.query.offset, HEXADECIMAL)
+      : QUERY_OFFSET;
+    const sortBy = req.query.sortBy || QUERY_SORT_BY;
+    const sort = req.query.sort || QUERY_SORT;
     const result = await Users.findAll({
       where,
       offset,
