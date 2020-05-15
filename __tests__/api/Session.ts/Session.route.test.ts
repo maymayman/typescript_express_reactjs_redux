@@ -88,7 +88,15 @@ jest.mock('../../../src/models/', () => ({
             updated_at: "2020-03-22T09:01:39.910Z",
             created_at: "2020-03-22T09:01:39.910Z",
             expried_at: "2020-03-29T09:01:39.910Z"}]).
-            mockResolvedValueOnce([]);
+            mockResolvedValueOnce([])
+            .mockResolvedValueOnce([{
+                id: 20,
+                user_id: 2,
+                session: "TOKEN_SS",
+                updated_at: "2020-03-22T09:01:39.910Z",
+                created_at: "2020-03-22T09:01:39.910Z",
+                expried_at: "2020-03-29T09:01:39.910Z"
+            }])
         constructor() {
         } 
       }
@@ -224,6 +232,18 @@ describe('GET api/sessions?where={"user_id":"2"}',()=>{
     it('GET api/session - get list session not found params',async()=>{
         const result = await request.get('/api/sessions');
         expect(result.body).toEqual([]);
+    })
+    it('GET api/sessions?limit=1&offset=0 - GET list sessions have limit and offset variable',async()=>{
+        const result = await request.get('/api/sessions?limit=1&offset=1');
+        expect(result.status).toEqual(200);
+        expect(result.body).toEqual([{
+            id: 20,
+            user_id: 2,
+            session: "TOKEN_SS",
+            updated_at: "2020-03-22T09:01:39.910Z",
+            created_at: "2020-03-22T09:01:39.910Z",
+            expried_at: "2020-03-29T09:01:39.910Z"
+        }])
     })
 })
 

@@ -1,9 +1,17 @@
 import { Request, Response } from 'express';
 import * as createError from 'http-errors';
-import { ERROR_CODES, HTTP_ERRORS } from '../../constants';
+import { DEFAULT_QUERY, ERROR_CODES, HTTP_ERRORS } from '../../constants';
 import * as Models from '../../models';
 
 const Transactions = Models.default.Transactions;
+const {
+  QUERY_WHRERE,
+  QUERY_LIMIT,
+  QUERY_OFFSET,
+  QUERY_SORT,
+  QUERY_SORT_BY,
+  HEXADECIMAL
+} = DEFAULT_QUERY;
 
 export default {
   create: async (req: Request, res: Response) => {
@@ -54,11 +62,15 @@ export default {
     return res.json(result);
   },
   find: async (req: Request, res: Response) => {
-    const where = req.query.where ? JSON.parse(req.query.where) : {};
-    const limit = req.query.limit ? Number(req.query.limit) : 1;
-    const offset = req.query.offset ? Number(req.query.offset) : 0;
-    const sortBy = req.query.sortBy || 'exchange_date';
-    const sort = req.query.sort || 'DESC';
+    const where = req.query.where ? JSON.parse(req.query.where) : QUERY_WHRERE;
+    const limit = req.query.limit
+      ? parseInt(req.query.limit, HEXADECIMAL)
+      : QUERY_LIMIT;
+    const offset = req.query.offset
+      ? parseInt(req.query.offset, HEXADECIMAL)
+      : QUERY_OFFSET;
+    const sortBy = req.query.sortBy || QUERY_SORT_BY;
+    const sort = req.query.sort || QUERY_SORT;
     const result = await Transactions.findAll({
       where,
       offset,

@@ -2,9 +2,17 @@ import { Request, Response } from 'express';
 import * as createError from 'http-errors';
 import * as Models from '../../models';
 
-import { ERROR_CODES, HTTP_ERRORS } from '../../constants';
+import { DEFAULT_QUERY, ERROR_CODES, HTTP_ERRORS } from '../../constants';
 
 const Users = Models.default.Users;
+const {
+  QUERY_WHRERE,
+  QUERY_LIMIT,
+  QUERY_OFFSET,
+  QUERY_SORT,
+  QUERY_SORT_BY,
+  HEXADECIMAL
+} = DEFAULT_QUERY;
 
 export default {
   create: async (req: Request, res: Response) => {
@@ -55,8 +63,21 @@ export default {
     return res.json(result);
   },
   find: async (req: Request, res: Response) => {
-    const where = req.query.where ? JSON.parse(req.query.where) : {};
-    const result = await Users.findAll({ where });
+    const where = req.query.where ? JSON.parse(req.query.where) : QUERY_WHRERE;
+    const limit = req.query.limit
+      ? parseInt(req.query.limit, HEXADECIMAL)
+      : QUERY_LIMIT;
+    const offset = req.query.offset
+      ? parseInt(req.query.offset, HEXADECIMAL)
+      : QUERY_OFFSET;
+    const sortBy = req.query.sortBy || QUERY_SORT_BY;
+    const sort = req.query.sort || QUERY_SORT;
+    const result = await Users.findAll({
+      where,
+      offset,
+      limit,
+      order: [[sortBy, sort]]
+    });
 
     return res.json(result);
   }
