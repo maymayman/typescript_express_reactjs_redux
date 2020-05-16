@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import * as createError from 'http-errors';
 import * as Joi from 'joi';
 import * as _ from 'lodash';
+import { schemasValidationCrawl } from './crawl';
 import { schemasValidationSession } from './Session';
 import { schemasValidationStock } from './Stock';
 import { schemasValidationTransaction } from './Transaction';
@@ -30,7 +31,8 @@ const schemasValidation = {
   users: schemasValidationUser,
   sessions: schemasValidationSession,
   stocks: schemasValidationStock,
-  transactions: schemasValidationTransaction
+  transactions: schemasValidationTransaction,
+  crawl: schemasValidationCrawl
 };
 
 const mapFuncName = (req: Request): string => {
@@ -60,9 +62,11 @@ export default async (req: Request, res: Response, next: NextFunction) => {
   try {
     const method = req.method;
     const data = method === EnumMethodName.GET ? req.query : req.body;
-    const url = _.trim(req.baseUrl, '/').split('/');
-    const schemas = schemasValidation[url[1]];
-
+    const url =
+      req.originalUrl.split('/')[1] === 'api'
+        ? _.trim(req.baseUrl, '/').split('/')[1]
+        : req.originalUrl.split('/')[3].split('?')[0];
+    const schemas = schemasValidation[url];
     const funcName = mapFuncName(req);
 
     await validation({ data, schema: schemas[funcName] });
