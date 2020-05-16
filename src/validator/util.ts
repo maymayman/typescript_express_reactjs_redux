@@ -1,7 +1,6 @@
 import * as createError from 'http-errors';
 import * as Joi from 'joi';
 import * as _ from 'lodash';
-
 interface IValidations {
   schema?: Joi.ObjectSchema;
   data: object;
