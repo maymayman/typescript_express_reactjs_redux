@@ -1,6 +1,8 @@
 import { Request, Response } from 'express';
+import * as createError from 'http-errors';
 import * as moment from 'moment';
 import * as request from 'request-promise';
+import { ERROR_CODES, HTTP_ERRORS } from '../../constants';
 import * as Models from '../../models';
 import { Stocks } from '../../models/Stock';
 
@@ -109,7 +111,7 @@ const crawlByStockCode = async (options: IcrawlByStockCode) => {
 };
 const formatDate = ({ date, format }: IformatDate) => {
   const formatForm = format || 'YYYY-MM-DD';
-  if (date) {
+  if (!date) {
     return moment().format(formatForm);
   }
 
@@ -118,7 +120,13 @@ const formatDate = ({ date, format }: IformatDate) => {
 
 export default {
   crawl: async (req: Request, res: Response) => {
-    const allStock: Stocks[] = await Stocks.findAll();
+    const stock: Stocks = await Stocks.findOne({ where: req.body });
+
+    if (!stock) {
+      throw new createError.NotFound(
+        HTTP_ERRORS[ERROR_CODES.STOCK_NOT_FOUND].MESSAGE
+      );
+    }
     const startDate = formatDate({
       date: req.query.startDate,
       format: req.query.format
@@ -128,9 +136,8 @@ export default {
       format: req.query.format
     });
 
-    const promises = await allStock.map(stock => {
-      return crawlByStockCode({ stock, startDate, endDate });
-    });
+    const promises = await crawlByStockCode({ stock, startDate, endDate });
+
     const result = await Promise.all(promises);
 
     return res.json(result);

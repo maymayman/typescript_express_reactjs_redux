@@ -14,7 +14,7 @@ const successData ={
     updated_at: "2020-05-04T07:43:27.328Z",
     created_at: "2020-05-04T07:43:27.328Z"
 }
-jest.mock('request-promise').fn().mockResolvedValue({
+jest.mock('request-promise',()=>(jest.fn().mockResolvedValue([{
     Symbol: "FPT",
     Close: 50700.0,
     Open: 51500.0,
@@ -23,9 +23,8 @@ jest.mock('request-promise').fn().mockResolvedValue({
     Volume: 1419750.0,
     Value: 0.0,
     Date: "2020-04-27T00:00:00Z",
-    OpenInt: 0.0
-                
-})
+    OpenInt: 0.0      
+}])))
 jest.mock('../../src/models/',()=>({
     default: {
         Transactions:class {
@@ -62,22 +61,22 @@ jest.mock('../../src/models/',()=>({
 }))
 jest.mock('../../src/models/Stock',()=>({
     Stocks:class {
-        static findAll = jest.fn().mockResolvedValueOnce([{
+        static findOne = jest.fn().mockResolvedValueOnce({
             id:1,
             stock_name:"FPT",
             stock_code:"FPT",
             stock_price:1000,
-        }]).mockResolvedValueOnce([{
+        }).mockResolvedValueOnce({
             id:1,
             stock_name:"FPT",
             stock_code:"FPT",
             stock_price:1000,
-        }]).mockResolvedValueOnce([{
+        }).mockResolvedValueOnce({
             id:1,
             stock_name:"FPT",
             stock_code:"FPT",
             stock_price:1000,
-        }])
+        })
         }
     })
 )
@@ -86,10 +85,10 @@ afterAll(() => {
 });
 describe('GET /job/transaction/crawl',()=>{
     it('GET /job/transaction/crawl - crawl Transaction call api is success',async()=>{
-        const result = await request.get('/job/transaction/crawl?&startDate=2020-04-25&endDate=2020-05-01');
+        const result = await request.post('/job/transaction/crawl?&startDate=2020-04-25&endDate=2020-05-01').send({stock_code:'FPT'});
         expect(result.status).toEqual(200);
         expect(result.body).toEqual(
-            [
+            
                 [
                     {
                         id: 127,
@@ -104,15 +103,14 @@ describe('GET /job/transaction/crawl',()=>{
                         created_at: "2020-05-04T07:43:27.328Z"
                     }
                 ]
-            ]
+            
         )
     })
     it('GET /job/transaction/crawl - crawl Transaction call api with start and end date today is success',async()=>{
-        const result = await request.get('/job/transaction/crawl');
+        const result = await request.post('/job/transaction/crawl').send({stock_code:'FPT'});
          expect(result.status).toEqual(200);
          expect(result.body).toEqual(
-             [
-                 [
+             [ 
                      {
                         id: 127,
                         stock_id: 1,
@@ -125,15 +123,14 @@ describe('GET /job/transaction/crawl',()=>{
                         updated_at: "2020-05-04T07:43:27.328Z",
                         created_at: "2020-05-04T07:43:27.328Z"
                     }
-                ]
             ]
         )
     })
     it('GET /job/transaction/crawl - crawl Transaction by the api call but transaction was  already exists',async()=>{
-        const result = await request.get('/job/transaction/crawl');
+        const result = await request.post('/job/transaction/crawl').send({stock_code:'FPT'});
         expect(result.status).toEqual(200);
         expect(result.body).toEqual(
-            [ [ true ] ]
+             [ true ] 
        )
     })
 })
