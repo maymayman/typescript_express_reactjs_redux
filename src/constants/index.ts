@@ -11,4 +11,4 @@ const MORGAN_LOG_FORMATS = [
 export const MORGAN_LOG_FORMAT = MORGAN_LOG_FORMATS.join(' ');
 
 export { ERROR_CODES, HTTP_ERRORS } from './errors';
-export { DEFAULT_QUERY } from './query';
+export { QUERY_CONSTANT } from './query';

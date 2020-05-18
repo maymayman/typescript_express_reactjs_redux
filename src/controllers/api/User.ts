@@ -3,17 +3,10 @@ import * as createError from 'http-errors';
 import * as _ from 'lodash';
 import * as Models from '../../models';
 
-import { DEFAULT_QUERY, ERROR_CODES, HTTP_ERRORS } from '../../constants';
+import { ERROR_CODES, HTTP_ERRORS, QUERY_CONSTANT } from '../../constants';
 
 const Users = Models.default.Users;
-const {
-  QUERY_WHRERE,
-  QUERY_LIMIT,
-  QUERY_OFFSET,
-  QUERY_SORT,
-  QUERY_SORT_BY,
-  HEXADECIMAL
-} = DEFAULT_QUERY;
+const { WHRERE, LIMIT, OFFSET, SORT, SORT_BY, HEXADECIMAL } = QUERY_CONSTANT;
 
 export default {
   create: async (req: Request, res: Response) => {
@@ -67,15 +60,15 @@ export default {
     const where =
       req.query.where && _.isString(req.query.where)
         ? JSON.parse(req.query.where)
-        : QUERY_WHRERE;
+        : WHRERE;
     const limit = req.query.limit
       ? parseInt(req.query.limit, HEXADECIMAL)
-      : QUERY_LIMIT;
+      : LIMIT;
     const offset = req.query.offset
       ? parseInt(req.query.offset, HEXADECIMAL)
-      : QUERY_OFFSET;
-    const sortBy = req.query.sortBy || QUERY_SORT_BY;
-    const sort = req.query.sort || QUERY_SORT;
+      : OFFSET;
+    const sortBy = req.query.sortBy || SORT_BY;
+    const sort = req.query.sort || SORT;
     const result = await Users.findAll({
       where,
       offset,
