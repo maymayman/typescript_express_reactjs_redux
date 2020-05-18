@@ -91,18 +91,7 @@ describe('GET /job/transaction/crawl',()=>{
         expect(result.body).toEqual(
             [
                 [
-                    {
-                        id: 127,
-                        stock_id: 1,
-                        close_price: 50400,
-                        open_price: 50200,
-                        high_price: 50900,
-                        low_price: 49800,
-                        volume: 849590,
-                        exchange_date: "2020-05-04T00:00:00.000Z",
-                        updated_at: "2020-05-04T07:43:27.328Z",
-                        created_at: "2020-05-04T07:43:27.328Z"
-                    }
+                    true, true, true
                 ]
             ]
         )
@@ -112,19 +101,8 @@ describe('GET /job/transaction/crawl',()=>{
          expect(result.status).toEqual(200);
          expect(result.body).toEqual(
              [
-                 [
-                     {
-                        id: 127,
-                        stock_id: 1,
-                        close_price: 50400,
-                        open_price: 50200,
-                        high_price: 50900,
-                        low_price: 49800,
-                        volume: 849590,
-                        exchange_date: "2020-05-04T00:00:00.000Z",
-                        updated_at: "2020-05-04T07:43:27.328Z",
-                        created_at: "2020-05-04T07:43:27.328Z"
-                    }
+                [
+                    true
                 ]
             ]
         )
