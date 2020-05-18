@@ -2,6 +2,10 @@ import * as cors from 'cors';
 import * as express from 'express';
 import * as createError from 'http-errors';
 import * as morgan from 'morgan';
+import * as path from 'path';
+
+import { createStore } from 'redux';
+import reducers from './pages/reducers';
 
 import { MORGAN_LOG_FORMAT } from './constants';
 import logger from './plugins/logger';
@@ -12,6 +16,8 @@ import routes from './routes/index';
 import { transactionCrawl } from './jobs';
 
 import { ENABLE_JOB } from '../config';
+
+import { getAppMarkup, getHtml } from './pages/index';
 
 const app = express();
 
@@ -43,13 +49,23 @@ app.use(cors(options));
 // heathCheck
 app.get('/heath-check', heathCheckRouter);
 
-app.get('/', (_req: express.Request, res: express.Response) =>
-  res.send('Permission denied')
-);
 // path all routes
 app.use('/', routes);
 // auth routes
 app.use('/auth', AuthRoutes);
+
+// Serve static assets from the /public folder
+app.use('/public', express.static(path.join(__dirname, '../../public')));
+
+app.get('*', (req: express.Request, res: express.Response) => {
+  const initialState = { initialText: 'rendered on the server' };
+  const store = createStore(reducers, initialState);
+  const url = req.url;
+  const appMarkup = getAppMarkup({ url, store });
+  const html = getHtml({ appMarkup, initialState });
+
+  res.send(`<!doctype html>${html}`);
+});
 
 // catch 404 and forward to error handler
 app.use(

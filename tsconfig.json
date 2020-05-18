@@ -1,7 +1,9 @@
 {
   "compilerOptions": {
-    "target": "es6",
-    "lib": ["es2017"],
+    "target": "es5",
+    "lib": [
+      "es2017"
+    ],
     "module": "commonjs",
     "moduleResolution": "node",
     "noEmitHelpers": true,
@@ -26,12 +28,14 @@
     "typeRoots": [
       "node_modules/@types"
     ],
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "jsx": "react"
   },
   "files": [
     "./node_modules/@types/node/index.d.ts"
   ],
   "include": [
+    "src/pages/client.tsx",
     "index.ts",
     "migration/*.ts"
   ],
