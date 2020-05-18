@@ -1,10 +1,12 @@
-echo "lint                             : ===> check syntax"
-npm run lint:fix
-
 echo "install dependencies             : ===> check syntax"
+git checkout -- package-lock.json 
+git pull origin origin develop
 rm -rf node_modules
 rm -rf package-lock.json
 npm install
+
+echo "lint                             : ===> check syntax"
+npm run lint:fix
 
 echo "quality                          : ===> run unitest"
 npm run test:cov
