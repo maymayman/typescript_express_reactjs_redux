@@ -11,6 +11,8 @@ import routes from './routes/index';
 
 import { transactionCrawl } from './jobs';
 
+import { ENABLE_JOB } from '../config';
+
 const app = express();
 
 app.use(morgan(MORGAN_LOG_FORMAT));
@@ -80,6 +82,8 @@ app.use(
  ***************************************************************************************/
 
 // start run transactionCrawl
-transactionCrawl.start();
+if (ENABLE_JOB) {
+  transactionCrawl.start();
+}
 
 export default app;

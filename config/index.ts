@@ -12,3 +12,6 @@ export const SECRET_KEY = process.env.SECRET_KEY || 'My_secret_key';
 export const EXPIRE_TOKEN_TIME = process.env.EXPIRE_TOKEN_TIME
   ? parseInt(process.env.EXPIRE_TOKEN_TIME, 10) 
   : 30 * 24 * 60 * 60;
+export const ENABLE_JOB = process.env.ENABLE_JOB
+  ? parseInt(process.env.ENABLE_JOB, 10) 
+  : 0;
