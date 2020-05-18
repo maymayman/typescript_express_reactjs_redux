@@ -1,6 +1,6 @@
 echo "install dependencies             : ===> install dependencies"
 git checkout -- package-lock.json 
-git pull origin origin develop
+git pull origin develop
 rm -rf node_modules
 rm -rf package-lock.json
 npm install
