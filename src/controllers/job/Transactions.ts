@@ -1,8 +1,11 @@
 import { Request, Response } from 'express';
+import * as _ from 'lodash';
 import * as moment from 'moment';
 import * as request from 'request-promise';
 import * as Models from '../../models';
 import { Stocks } from '../../models/Stock';
+
+import { ParsedQs } from 'qs';
 
 interface IUrlCrawl {
   startDate: string;
@@ -24,8 +27,8 @@ interface ITransactionPayload {
   exchange_date: string;
 }
 interface IformatDate {
-  date?: string;
-  format?: string;
+  date?: string | string[] | ParsedQs | ParsedQs[];
+  format?: string | string[] | ParsedQs | ParsedQs[];
 }
 const urlCrawl = (options: IUrlCrawl): string => {
   const { startDate, endDate, stockCode } = options;
@@ -47,7 +50,7 @@ const insertTransaction = async (transaction: ITransactionPayload) => {
     if (!queryTransaction) {
       const classTransaction = new Models.default.Transactions(transaction);
 
-      return await classTransaction.save();
+      await classTransaction.save();
     }
 
     return true;
@@ -107,13 +110,11 @@ const crawlByStockCode = async (options: IcrawlByStockCode) => {
 
   return Promise.all(result);
 };
-const formatDate = ({ date, format }: IformatDate) => {
-  const formatForm = format || 'YYYY-MM-DD';
-  if (date) {
-    return moment().format(formatForm);
-  }
+const formatDate = ({ date, format }: IformatDate): string => {
+  const formatForm = format && _.isString(format) ? format : 'YYYY-MM-DD';
+  const momentDate = date && _.isString(date) ? moment(date) : moment();
 
-  return moment(date).format(formatForm);
+  return momentDate.format(formatForm);
 };
 
 export default {
