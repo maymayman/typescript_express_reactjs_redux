@@ -1,7 +1,7 @@
 import * as Joi from 'joi';
 
 export const schemasValidationCrawl = {
-  create: Joi.object({
+  POST: Joi.object({
     stock_code: Joi.string().required()
   })
 };
