@@ -8,7 +8,7 @@ module.exports = {
       MY_SQL_PASSWORD: "my-secret-pw",
       MY_SQL_DATABASE_NAME: "stock_develop",
       SQL_DIALECT: "mysql",
-      MY_SQL_PORT: 3307,
+      MY_SQL_PORT: 3306,
       SECRET_KEY: "stock_secret_key_development",
       EXPIRE_TOKEN_TIME: 365 * 24 * 60 * 60,
       ENABLE_JOB: 0,
