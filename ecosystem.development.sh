@@ -1,4 +1,4 @@
-echo "install dependencies             : ===> check syntax"
+echo "install dependencies             : ===> install dependencies"
 git checkout -- package-lock.json 
 git pull origin origin develop
 rm -rf node_modules
