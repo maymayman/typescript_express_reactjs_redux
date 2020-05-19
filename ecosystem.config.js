@@ -1,7 +1,7 @@
 module.exports = {
   apps : [{
     name: "STOCK_APP",
-    script: "./build/index.js",
+    script: "build/index.js",
     env: {
       NODE_ENV: "development",
       MY_SQL_HOST: "localhost",
