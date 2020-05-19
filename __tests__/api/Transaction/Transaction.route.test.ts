@@ -103,7 +103,18 @@ jest.mock('../../../src/models/', () => ({
             exchange_date: "2020-04-20T13:19:05.555Z",
             updated_at: "2020-04-21T13:30:24.086Z",
             created_at: "2020-04-21T13:30:24.086Z",
-        }]).mockResolvedValueOnce([]);
+        }]).mockResolvedValueOnce([])
+        .mockResolvedValueOnce([{
+            stock_id: "2",
+            close_price: "21212.121",
+            open_price: "12345.12",
+            high_price: "12124.13",
+            low_price: "12354.45",
+            volume: "1234",
+            exchange_date: "2020-04-20T13:19:05.555Z",
+            updated_at: "2020-04-21T13:30:24.086Z",
+            created_at: "2020-04-21T13:30:24.086Z"
+        }]);
         constructor() {
         } 
       }
@@ -203,4 +214,19 @@ describe('GET /transactions?where={"stock_id":"1"}',()=>{
         const result = await request.get('/api/transactions');
         expect(result.body).toEqual([]);
     })
+    it('GET /transactions?where="stock_id":"1"&limit=1&offset=0 - get list transactrion have limit and offset',async()=>{
+        const result = await request.get('/api/transactions?where={"stock_id":"1"}&limit=1&offset=2');
+        expect(result.status).toEqual(200);
+        expect(result.body).toEqual([{
+            stock_id: "2",
+            close_price: "21212.121",
+            open_price: "12345.12",
+            high_price: "12124.13",
+            low_price: "12354.45",
+            volume: "1234",
+            exchange_date: "2020-04-20T13:19:05.555Z",
+            updated_at: "2020-04-21T13:30:24.086Z",
+            created_at: "2020-04-21T13:30:24.086Z"
+        }])
+    } )
 })

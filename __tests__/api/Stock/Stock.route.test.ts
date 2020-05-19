@@ -55,6 +55,10 @@ jest.mock('../../../src/models/', () => ({
             stock_name:"VTbank",
             stock_code:"VT1",
             stock_price:1000
+        }]).mockResolvedValueOnce([{
+            stock_name:"VTbank",
+            stock_code:"VT1",
+            stock_price:1000
         }])
         constructor() {
         } 
@@ -159,5 +163,10 @@ describe("GET /stocks?code=fpt",()=>{
         const result = await request.get('/api/stocks');
         expect(result.status).toEqual(200);
         expect(result.body).toEqual([{...successStockData}]);
+    })
+    it('GET /api/stocks?where={"stock_code":"VT1"}&limit=1&offset=0 - get list stock have variable limit and offset',async()=>{
+        const result = await request.get('/api/stocks?where={"stock_code":"VT1"}&limit=1&offset=0');
+        expect(result.status).toEqual(200);
+        expect(result.body).toEqual([{...successStockData}])
     })
 })

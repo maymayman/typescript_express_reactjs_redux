@@ -107,18 +107,17 @@ jest.mock('../../../src/models/', () => ({
         email: 'abc12@gmail.com',
         updated_at: "2020-02-25T13:00:59.256Z",
         created_at: "2020-02-25T13:00:59.256Z",
-      }]).mockResolvedValueOnce([]);
+      }]).mockResolvedValueOnce([])
+      .mockResolvedValueOnce([{
+        id: 1,
+        username: 'duc789',
+        password: '12345678',
+        phone: '093094192',
+        email: 'abc12@gmail.com',
+        updated_at: "2020-02-25T13:00:59.256Z",
+        created_at: "2020-02-25T13:00:59.256Z",
+      }])
       constructor() {
-        // this.save = jest.fn();
-        // (this.save as jest.Mock).mockResolvedValueOnce({
-        //   id: 1,
-        //   username: 'duc789',
-        //   password: '12345678',
-        //   phone: '093094192',
-        //   email: 'abc12@gmail.com',
-        //   updated_at: "2020-02-25T13:00:59.256Z",
-        //   created_at: "2020-02-25T13:00:59.256Z"
-        // })
       } 
     }
   }
@@ -254,5 +253,18 @@ describe('GET /api/users?where={"username":"duc789"} ',()=>{
   it('GET /api/users - get list users return null',async()=>{
     const result = await request.get('/api/users');
     expect(result.body).toEqual([]);
+  })
+  it('GET api/users?limit=1&offset=1 - GET list users have limit and offset variable',async()=>{
+    const result = await request.get('/api/users?limit=1&offset=2');
+    expect(result.status).toEqual(200);
+    expect(result.body).toEqual([{
+        id: 1,
+        username: 'duc789',
+        password: '12345678',
+        phone: '093094192',
+        email: 'abc12@gmail.com',
+        updated_at: "2020-02-25T13:00:59.256Z",
+        created_at: "2020-02-25T13:00:59.256Z",
+    }]);
   })
 })

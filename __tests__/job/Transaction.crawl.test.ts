@@ -14,18 +14,19 @@ const successData ={
     updated_at: "2020-05-04T07:43:27.328Z",
     created_at: "2020-05-04T07:43:27.328Z"
 }
-jest.mock('request-promise').fn().mockResolvedValue({
-    Symbol: "FPT",
-    Close: 50700.0,
-    Open: 51500.0,
-    High: 51500.0,
-    Low: 50500.0,
-    Volume: 1419750.0,
-    Value: 0.0,
-    Date: "2020-04-27T00:00:00Z",
-    OpenInt: 0.0
-                
-})
+jest.mock('request-promise',()=>(jest.fn().mockResolvedValue([{
+    "Symbol": "FPT",
+    "Close": 43276.534525167714,
+    "Open": 43959.398975268981,
+    "High": 43959.398975268981,
+    "Low": 43105.818412642395,
+    "Volume": 1419750.0,
+    "Value": 0.0,
+    "Date": "2020-04-27T00:00:00Z",
+    "OpenInt": 0.0
+    }])
+)
+)
 jest.mock('../../src/models/',()=>({
     default: {
         Transactions:class {
@@ -91,7 +92,7 @@ describe('GET /job/transaction/crawl',()=>{
         expect(result.body).toEqual(
             [
                 [
-                    true, true, true
+                    true
                 ]
             ]
         )
@@ -100,7 +101,7 @@ describe('GET /job/transaction/crawl',()=>{
         const result = await request.get('/job/transaction/crawl');
          expect(result.status).toEqual(200);
          expect(result.body).toEqual(
-             [
+            [
                 [
                     true
                 ]
