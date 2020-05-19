@@ -1,12 +1,10 @@
 import { Request, Response } from 'express';
 import * as createError from 'http-errors';
-import * as _ from 'lodash';
+import { ERROR_CODES, HTTP_ERRORS } from '../../constants';
 import * as Models from '../../models';
-
-import { ERROR_CODES, HTTP_ERRORS, QUERY_CONSTANT } from '../../constants';
+import { dataQuery } from './utill';
 
 const Sessions = Models.default.Sessions;
-const { WHRERE, LIMIT, OFFSET, SORT, SORT_BY, HEXADECIMAL } = QUERY_CONSTANT;
 
 export default {
   create: async (req: Request, res: Response) => {
@@ -59,18 +57,7 @@ export default {
     return res.json(result);
   },
   find: async (req: Request, res: Response) => {
-    const where =
-      req.query.where && _.isString(req.query.where)
-        ? JSON.parse(req.query.where)
-        : WHRERE;
-    const limit = req.query.limit
-      ? parseInt(req.query.limit, HEXADECIMAL)
-      : LIMIT;
-    const offset = req.query.offset
-      ? parseInt(req.query.offset, HEXADECIMAL)
-      : OFFSET;
-    const sortBy = req.query.sortBy || SORT_BY;
-    const sort = req.query.sort || SORT;
+    const { where, offset, limit, sortBy, sort } = dataQuery(req.query);
     const result = await Sessions.findAll({
       where,
       offset,
