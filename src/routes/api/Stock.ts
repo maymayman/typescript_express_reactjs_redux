@@ -2,7 +2,7 @@ import * as express from 'express';
 
 import controller from '../../controllers/api/Stock';
 import { asyncMiddleware } from '../../plugins/utility';
-import Validator from '../../validator/util';
+import Validator from '../../validator/api/index';
 
 const router = express.Router();
 const { create, findById, update, destroy, find } = controller;
