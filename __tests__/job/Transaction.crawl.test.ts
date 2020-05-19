@@ -78,7 +78,7 @@ jest.mock('../../src/models/Stock',()=>({
             stock_name:"FPT",
             stock_code:"FPT",
             stock_price:1000,
-        })
+        }).mockResolvedValueOnce(null);
         }
     })
 )
@@ -110,5 +110,9 @@ describe('GET /job/transaction/crawl',()=>{
         expect(result.body).toEqual(
              [ true ] 
        )
+    })
+    it('GET /job/transaction/crawl - crawl transaction but stock_code is not found', async ()=>{
+        const result = await request.post('/job/transaction/crawl').send({stock_code:'VP'});
+        expect(result.status).toEqual(404);
     })
 })
