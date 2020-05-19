@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
-import * as _ from 'lodash';
 import * as createError from 'http-errors';
+import * as _ from 'lodash';
 import * as moment from 'moment';
 import * as request from 'request-promise';
 import { ERROR_CODES, HTTP_ERRORS } from '../../constants';
@@ -121,7 +121,8 @@ const formatDate = ({ date, format }: IformatDate): string => {
 
 export default {
   crawl: async (req: Request, res: Response) => {
-    const stock: Stocks = await Stocks.findOne({ where: req.body });
+    const stock_code = req.body.stock_code;
+    const stock: Stocks = await Stocks.findOne({ where: { stock_code } });
 
     if (!stock) {
       throw new createError.NotFound(
