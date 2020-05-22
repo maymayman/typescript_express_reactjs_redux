@@ -118,26 +118,53 @@ const formatDate = ({ date, format }: IformatDate): string => {
 
   return momentDate.format(formatForm);
 };
+const checkTransaction = async (stock: Stocks) => {
+  const transaction = await Models.default.Transactions.findAll({
+    where: { stock_id: stock.id },
+    order: [['created_at', 'DESC']]
+  });
+  const startDate =
+    transaction.length === 0
+      ? formatDate({
+          date: moment()
+            .subtract(10, 'years')
+            .toString()
+        })
+      : formatDate({
+          date: moment(transaction[0].exchange_date)
+            .add(1, 'days')
+            .toString()
+        });
+  const endDate =
+    transaction.length === 0
+      ? formatDate({
+          date: moment()
+            .subtract(10, 'years')
+            .add(10, 'days')
+            .toString()
+        })
+      : formatDate({
+          date: moment(transaction[0].exchange_date)
+            .add(11, 'days')
+            .toString()
+        });
+
+  return { startDate, endDate };
+};
 
 export default {
   crawl: async (req: Request, res: Response) => {
     const stock_code = req.body.stock_code;
-    const stock: Stocks = await Stocks.findOne({ where: { stock_code } });
+    const stock: Stocks = await Stocks.findOne({
+      where: { stock_code }
+    });
 
     if (!stock) {
       throw new createError.NotFound(
         HTTP_ERRORS[ERROR_CODES.STOCK_NOT_FOUND].MESSAGE
       );
     }
-    const startDate = formatDate({
-      date: req.query.startDate,
-      format: req.query.format
-    });
-    const endDate = formatDate({
-      date: req.query.endDate,
-      format: req.query.format
-    });
-
+    const { startDate, endDate } = await checkTransaction(stock);
     const promises = await crawlByStockCode({ stock, startDate, endDate });
 
     const result = await Promise.all(promises);

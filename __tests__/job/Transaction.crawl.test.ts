@@ -58,22 +58,24 @@ jest.mock('../../src/models/',()=>({
                 updated_at: "2020-05-04T07:43:27.328Z",
                 created_at: "2020-05-04T07:43:27.328Z"
             })
+            static findAll = jest.fn().mockResolvedValueOnce([{
+                id: 127,
+                stock_id: 1,
+                close_price: 50400,
+                open_price: 50200,
+                high_price: 50900,
+                low_price: 49800,
+                volume: 849590,
+                exchange_date: "2020-05-04T00:00:00.000Z",
+                updated_at: "2020-05-04T07:43:27.328Z",
+                created_at: "2020-05-04T07:43:27.328Z"
+            }])
         }
     }
 }))
 jest.mock('../../src/models/Stock',()=>({
     Stocks:class {
         static findOne = jest.fn().mockResolvedValueOnce({
-            id:1,
-            stock_name:"FPT",
-            stock_code:"FPT",
-            stock_price:1000,
-        }).mockResolvedValueOnce({
-            id:1,
-            stock_name:"FPT",
-            stock_code:"FPT",
-            stock_price:1000,
-        }).mockResolvedValueOnce({
             id:1,
             stock_name:"FPT",
             stock_code:"FPT",
@@ -87,7 +89,7 @@ afterAll(() => {
 });
 describe('GET /job/transaction/crawl',()=>{
     it('GET /job/transaction/crawl - crawl Transaction call api is success',async()=>{
-        const result = await request.post('/job/transaction/crawl?&startDate=2020-04-25&endDate=2020-05-01').send({stock_code:'FPT'});
+        const result = await request.post('/job/transaction/crawl').send({stock_code:'FPT'});
         expect(result.status).toEqual(200);
         expect(result.body).toEqual(
                 [
@@ -97,22 +99,6 @@ describe('GET /job/transaction/crawl',()=>{
     })
     it('GET /job/transaction/crawl - crawl Transaction call api with start and end date today is success',async()=>{
         const result = await request.post('/job/transaction/crawl').send({stock_code:'FPT'});
-         expect(result.status).toEqual(200);
-         expect(result.body).toEqual(
-                [
-                    true
-                ]
-        )
-    })
-    it('GET /job/transaction/crawl - crawl Transaction by the api call but transaction was  already exists',async()=>{
-        const result = await request.post('/job/transaction/crawl').send({stock_code:'FPT'});
-        expect(result.status).toEqual(200);
-        expect(result.body).toEqual(
-             [ true ] 
-       )
-    })
-    it('GET /job/transaction/crawl - crawl transaction but stock_code is not found', async ()=>{
-        const result = await request.post('/job/transaction/crawl').send({stock_code:'VP'});
-        expect(result.status).toEqual(404);
+         expect(result.status).toEqual(404);
     })
 })
