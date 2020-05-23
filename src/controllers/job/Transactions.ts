@@ -118,7 +118,7 @@ const formatDate = ({ date, format }: IformatDate): string => {
 
   return momentDate.format(formatForm);
 };
-const checkTransaction = async (stock: Stocks) => {
+const getRangeDateTransactions = async (stock: Stocks) => {
   const transaction = await Models.default.Transactions.findAll({
     where: { stock_id: stock.id },
     order: [['created_at', 'DESC']]
@@ -138,8 +138,7 @@ const checkTransaction = async (stock: Stocks) => {
   const endDate =
     transaction.length === 0
       ? formatDate({
-          date: moment()
-            .subtract(10, 'years')
+          date: moment(startDate)
             .add(10, 'days')
             .toString()
         })
@@ -164,7 +163,7 @@ export default {
         HTTP_ERRORS[ERROR_CODES.STOCK_NOT_FOUND].MESSAGE
       );
     }
-    const { startDate, endDate } = await checkTransaction(stock);
+    const { startDate, endDate } = await getRangeDateTransactions(stock);
     const promises = await crawlByStockCode({ stock, startDate, endDate });
 
     const result = await Promise.all(promises);
