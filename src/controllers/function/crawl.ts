@@ -1,13 +1,19 @@
 import { Request, Response } from 'express';
 import * as createError from 'http-errors';
-import * as _ from 'lodash';
 import * as moment from 'moment';
 import * as request from 'request-promise';
-import { ERROR_CODES, HTTP_ERRORS } from '../../constants';
+import {
+  ERROR_CODES,
+  formatDate,
+  HTTP_ERRORS,
+  MOMENT_CONSTANT,
+  QUERY_CONSTANT
+} from '../../constants';
 import * as Models from '../../models';
 import { Stocks } from '../../models/Stock';
 
-import { ParsedQs } from 'qs';
+const { DAYS, YEARS, FORMAT } = MOMENT_CONSTANT;
+const { SORT_BY, SORT } = QUERY_CONSTANT;
 
 interface IUrlCrawl {
   startDate: string;
@@ -27,10 +33,6 @@ interface ITransactionPayload {
   low_price: number;
   volume: number;
   exchange_date: string;
-}
-interface IformatDate {
-  date?: string | string[] | ParsedQs | ParsedQs[];
-  format?: string | string[] | ParsedQs | ParsedQs[];
 }
 const urlCrawl = (options: IUrlCrawl): string => {
   const { startDate, endDate, stockCode } = options;
@@ -112,32 +114,27 @@ const crawlByStockCode = async (options: IcrawlByStockCode) => {
 
   return Promise.all(result);
 };
-const formatDate = ({ date, format }: IformatDate): string => {
-  const formatForm = format && _.isString(format) ? format : 'YYYY-MM-DD';
-  const momentDate = date && _.isString(date) ? moment(date) : moment();
-
-  return momentDate.format(formatForm);
-};
 const getRangeDateTransactions = async (stock: Stocks) => {
   const transaction = await Models.default.Transactions.findAll({
     where: { stock_id: stock.id },
-    order: [['created_at', 'DESC']]
+    order: [[SORT_BY, SORT]]
   });
+  const numberSubtract = process.env.NUMBER_SUBTRACT || 10;
   const startDate =
     transaction.length === 0
       ? formatDate({
           date: moment()
-            .subtract(10, 'years')
+            .subtract(numberSubtract, YEARS)
             .toString()
         })
       : formatDate({
           date: moment(transaction[0].exchange_date)
-            .add(1, 'days')
-            .toString()
+            .add(1, DAYS)
+            .format(FORMAT)
         });
   const endDate = formatDate({
     date: moment(startDate)
-      .add(10, 'days')
+      .add(10, DAYS)
       .toString()
   });
 

@@ -1,6 +1,6 @@
 import * as express from 'express';
 
-import controller from '../../controllers/job/Transactions';
+import controller from '../../controllers/function/crawl';
 import { asyncMiddleware } from '../../plugins/utility';
 import CrawlValidator from '../../validator/function/index';
 
