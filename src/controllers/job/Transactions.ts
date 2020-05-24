@@ -135,18 +135,11 @@ const getRangeDateTransactions = async (stock: Stocks) => {
             .add(1, 'days')
             .toString()
         });
-  const endDate =
-    transaction.length === 0
-      ? formatDate({
-          date: moment(startDate)
-            .add(10, 'days')
-            .toString()
-        })
-      : formatDate({
-          date: moment(transaction[0].exchange_date)
-            .add(11, 'days')
-            .toString()
-        });
+  const endDate = formatDate({
+    date: moment(startDate)
+      .add(10, 'days')
+      .toString()
+  });
 
   return { startDate, endDate };
 };
