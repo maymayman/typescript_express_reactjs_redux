@@ -15,3 +15,4 @@ export const EXPIRE_TOKEN_TIME = process.env.EXPIRE_TOKEN_TIME
 export const ENABLE_JOB = process.env.ENABLE_JOB
   ? parseInt(process.env.ENABLE_JOB, 10) 
   : 0;
+export const FUNCTION_CRAWL_URL = process.env.FUNCTION_CRAWL_URL || 'http://localhost:3000/function/crawl';
