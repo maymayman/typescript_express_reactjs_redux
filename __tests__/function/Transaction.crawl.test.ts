@@ -44,9 +44,7 @@ jest.mock('../../src/models/',()=>({
                 updated_at: "2020-05-04T07:43:27.328Z",
                 created_at: "2020-05-04T07:43:27.328Z"
             })
-            static findOne = jest.fn().mockResolvedValueOnce(null)
-            .mockResolvedValueOnce(null)
-            .mockResolvedValueOnce({
+            static findOne = jest.fn().mockResolvedValueOnce({
                 id: 127,
                 stock_id: 1,
                 close_price: 50400,
@@ -58,18 +56,7 @@ jest.mock('../../src/models/',()=>({
                 updated_at: "2020-05-04T07:43:27.328Z",
                 created_at: "2020-05-04T07:43:27.328Z"
             })
-            static findAll = jest.fn().mockResolvedValueOnce([{
-                id: 127,
-                stock_id: 1,
-                close_price: 50400,
-                open_price: 50200,
-                high_price: 50900,
-                low_price: 49800,
-                volume: 849590,
-                exchange_date: "2020-05-04T00:00:00.000Z",
-                updated_at: "2020-05-04T07:43:27.328Z",
-                created_at: "2020-05-04T07:43:27.328Z"
-            }])
+            .mockResolvedValueOnce(null)
         }
     }
 }))
@@ -89,7 +76,7 @@ afterAll(() => {
 });
 describe('GET /job/transaction/crawl',()=>{
     it('GET /job/transaction/crawl - crawl Transaction call api is success',async()=>{
-        const result = await request.post('/crawl/transaction').send({stock_code:'FPT'});
+        const result = await request.post('/function/crawl').send({stock_code:'FPT'});
         expect(result.status).toEqual(200);
         expect(result.body).toEqual(
                 [
@@ -98,7 +85,7 @@ describe('GET /job/transaction/crawl',()=>{
         )
     })
     it('GET /job/transaction/crawl - crawl Transaction call api with start and end date today is success',async()=>{
-        const result = await request.post('/crawl/transaction').send({stock_code:'FPT'});
+        const result = await request.post('/function/crawl').send({stock_code:'FPT'});
          expect(result.status).toEqual(404);
     })
 })

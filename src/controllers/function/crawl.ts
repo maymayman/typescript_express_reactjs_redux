@@ -13,7 +13,7 @@ import {
 import * as Models from '../../models';
 import { Stocks } from '../../models/Stock';
 
-const { DAYS, YEARS, FORMAT } = MOMENT_CONSTANT;
+const { DAYS, YEARS, FORMAT, ONE_DAYS, TEN_DAYS } = MOMENT_CONSTANT;
 const { SORT_BY, SORT } = QUERY_CONSTANT;
 
 interface IUrlCrawl {
@@ -116,25 +116,24 @@ const crawlByStockCode = async (options: IcrawlByStockCode) => {
   return Promise.all(result);
 };
 const getRangeDateTransactions = async (stock: Stocks) => {
-  const transaction = await Models.default.Transactions.findAll({
+  const transaction = await Models.default.Transactions.findOne({
     where: { stock_id: stock.id },
     order: [[SORT_BY, SORT]]
   });
-  const startDate =
-    transaction.length === 0
-      ? formatDate({
-          date: moment()
-            .subtract(NUMBER_SUBTRACT_MOMENT, YEARS)
-            .toString()
-        })
-      : formatDate({
-          date: moment(transaction[0].exchange_date)
-            .add(1, DAYS)
-            .format(FORMAT)
-        });
+  const startDate = !transaction
+    ? formatDate({
+        date: moment()
+          .subtract(NUMBER_SUBTRACT_MOMENT, YEARS)
+          .toString()
+      })
+    : formatDate({
+        date: moment(transaction.exchange_date)
+          .add(ONE_DAYS, DAYS)
+          .format(FORMAT)
+      });
   const endDate = formatDate({
     date: moment(startDate)
-      .add(10, DAYS)
+      .add(TEN_DAYS, DAYS)
       .toString()
   });
 

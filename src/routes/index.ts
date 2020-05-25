@@ -6,6 +6,6 @@ const router = express.Router();
 
 /* interface for Rest full api */
 router.use('/api', ApiRouter);
-router.use('/crawl', FunctionRouter);
+router.use('/function', FunctionRouter);
 
 export default router;
