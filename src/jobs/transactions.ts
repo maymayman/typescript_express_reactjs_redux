@@ -1,17 +1,15 @@
 import * as cron from 'cron';
 import * as request from 'request-promise';
+import { FUNCTION_CRAWL_URL } from '../../config';
 import { Stocks } from '../models/Stock';
 import logger from '../plugins/logger';
 import { EnumTimeZone } from './constants';
 
 const { CronJob } = cron;
 const callApiCrawl = (stock: Stocks) => {
-  const url =
-    process.env.POST_CRAWL_URL || 'http://localhost:3000/job/transaction/crawl';
-
   return request({
     method: 'POST',
-    uri: url,
+    uri: FUNCTION_CRAWL_URL,
     body: {
       stock_code: stock.stock_code
     },
