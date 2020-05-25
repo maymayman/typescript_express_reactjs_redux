@@ -10,7 +10,7 @@ export default async (req: Request, res: Response, next: NextFunction) => {
   try {
     const method = req.method;
     const data = method === EnumMethodName.GET ? req.query : req.body;
-    const url = req.originalUrl.split('/')[3].split('?')[0];
+    const url = req.originalUrl.split('/')[1];
     const schemas = schemasValidation[url];
 
     await validation({ data, schema: schemas[method] });

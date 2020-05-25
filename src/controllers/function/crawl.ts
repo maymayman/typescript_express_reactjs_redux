@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import * as createError from 'http-errors';
 import * as moment from 'moment';
 import * as request from 'request-promise';
+import { NUMBER_SUBTRACT_MOMENT } from '../../../config';
 import {
   ERROR_CODES,
   formatDate,
@@ -119,12 +120,11 @@ const getRangeDateTransactions = async (stock: Stocks) => {
     where: { stock_id: stock.id },
     order: [[SORT_BY, SORT]]
   });
-  const numberSubtract = process.env.NUMBER_SUBTRACT || 10;
   const startDate =
     transaction.length === 0
       ? formatDate({
           date: moment()
-            .subtract(numberSubtract, YEARS)
+            .subtract(NUMBER_SUBTRACT_MOMENT, YEARS)
             .toString()
         })
       : formatDate({

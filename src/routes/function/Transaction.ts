@@ -8,6 +8,6 @@ const router = express.Router();
 
 const { crawl } = controller;
 
-router.post('/crawl', asyncMiddleware(CrawlValidator), asyncMiddleware(crawl));
+router.post('/', asyncMiddleware(CrawlValidator), asyncMiddleware(crawl));
 
 export default router;

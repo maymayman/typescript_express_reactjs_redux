@@ -89,7 +89,7 @@ afterAll(() => {
 });
 describe('GET /job/transaction/crawl',()=>{
     it('GET /job/transaction/crawl - crawl Transaction call api is success',async()=>{
-        const result = await request.post('/job/transaction/crawl').send({stock_code:'FPT'});
+        const result = await request.post('/crawl/transaction').send({stock_code:'FPT'});
         expect(result.status).toEqual(200);
         expect(result.body).toEqual(
                 [
@@ -98,7 +98,7 @@ describe('GET /job/transaction/crawl',()=>{
         )
     })
     it('GET /job/transaction/crawl - crawl Transaction call api with start and end date today is success',async()=>{
-        const result = await request.post('/job/transaction/crawl').send({stock_code:'FPT'});
+        const result = await request.post('/crawl/transaction').send({stock_code:'FPT'});
          expect(result.status).toEqual(404);
     })
 })
