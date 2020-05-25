@@ -15,3 +15,5 @@ export const EXPIRE_TOKEN_TIME = process.env.EXPIRE_TOKEN_TIME
 export const ENABLE_JOB = process.env.ENABLE_JOB
   ? parseInt(process.env.ENABLE_JOB, 10) 
   : 0;
+export const NUMBER_SUBTRACT_MOMENT = process.env.NUMBER_SUBTRACT_MOMENT || 10;
+export const RANGE_DAY_CRAWL = process.env.RANGE_DAY_CRAWL || 10;

@@ -1,13 +1,20 @@
 import { Request, Response } from 'express';
 import * as createError from 'http-errors';
-import * as _ from 'lodash';
 import * as moment from 'moment';
 import * as request from 'request-promise';
-import { ERROR_CODES, HTTP_ERRORS } from '../../constants';
+import { NUMBER_SUBTRACT_MOMENT, RANGE_DAY_CRAWL } from '../../../config';
+import {
+  ERROR_CODES,
+  formatDate,
+  HTTP_ERRORS,
+  MOMENT_CONSTANT,
+  QUERY_CONSTANT
+} from '../../constants';
 import * as Models from '../../models';
 import { Stocks } from '../../models/Stock';
 
-import { ParsedQs } from 'qs';
+const { DAYS, YEARS, FORMAT } = MOMENT_CONSTANT;
+const { SORT_BY, SORT } = QUERY_CONSTANT;
 
 interface IUrlCrawl {
   startDate: string;
@@ -27,10 +34,6 @@ interface ITransactionPayload {
   low_price: number;
   volume: number;
   exchange_date: string;
-}
-interface IformatDate {
-  date?: string | string[] | ParsedQs | ParsedQs[];
-  format?: string | string[] | ParsedQs | ParsedQs[];
 }
 const urlCrawl = (options: IUrlCrawl): string => {
   const { startDate, endDate, stockCode } = options;
@@ -112,32 +115,44 @@ const crawlByStockCode = async (options: IcrawlByStockCode) => {
 
   return Promise.all(result);
 };
-const formatDate = ({ date, format }: IformatDate): string => {
-  const formatForm = format && _.isString(format) ? format : 'YYYY-MM-DD';
-  const momentDate = date && _.isString(date) ? moment(date) : moment();
+const getRangeDateTransactions = async (stock: Stocks) => {
+  const transaction = await Models.default.Transactions.findOne({
+    where: { stock_id: stock.id },
+    order: [[SORT_BY, SORT]]
+  });
+  const startDate = !transaction
+    ? formatDate({
+        date: moment()
+          .subtract(NUMBER_SUBTRACT_MOMENT, YEARS)
+          .toString()
+      })
+    : formatDate({
+        date: moment(transaction.exchange_date)
+          .add(1, DAYS)
+          .format(FORMAT)
+      });
+  const endDate = formatDate({
+    date: moment(startDate)
+      .add(RANGE_DAY_CRAWL, DAYS)
+      .toString()
+  });
 
-  return momentDate.format(formatForm);
+  return { startDate, endDate };
 };
 
 export default {
   crawl: async (req: Request, res: Response) => {
     const stock_code = req.body.stock_code;
-    const stock: Stocks = await Stocks.findOne({ where: { stock_code } });
+    const stock: Stocks = await Stocks.findOne({
+      where: { stock_code }
+    });
 
     if (!stock) {
       throw new createError.NotFound(
         HTTP_ERRORS[ERROR_CODES.STOCK_NOT_FOUND].MESSAGE
       );
     }
-    const startDate = formatDate({
-      date: req.query.startDate,
-      format: req.query.format
-    });
-    const endDate = formatDate({
-      date: req.query.endDate,
-      format: req.query.format
-    });
-
+    const { startDate, endDate } = await getRangeDateTransactions(stock);
     const promises = await crawlByStockCode({ stock, startDate, endDate });
 
     const result = await Promise.all(promises);

@@ -3,6 +3,6 @@ import TransactionsRouter from './Transaction';
 
 const router = express.Router();
 
-router.use('/transaction', TransactionsRouter);
+router.use('/crawl', TransactionsRouter);
 
 export default router;
