@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import * as createError from 'http-errors';
 import * as moment from 'moment';
 import * as request from 'request-promise';
-import { NUMBER_SUBTRACT_MOMENT } from '../../../config';
+import { NUMBER_SUBTRACT_MOMENT, RANGE_DAY_CRAWL } from '../../../config';
 import {
   ERROR_CODES,
   formatDate,
@@ -13,7 +13,7 @@ import {
 import * as Models from '../../models';
 import { Stocks } from '../../models/Stock';
 
-const { DAYS, YEARS, FORMAT, ONE_DAYS, TEN_DAYS } = MOMENT_CONSTANT;
+const { DAYS, YEARS, FORMAT } = MOMENT_CONSTANT;
 const { SORT_BY, SORT } = QUERY_CONSTANT;
 
 interface IUrlCrawl {
@@ -128,12 +128,12 @@ const getRangeDateTransactions = async (stock: Stocks) => {
       })
     : formatDate({
         date: moment(transaction.exchange_date)
-          .add(ONE_DAYS, DAYS)
+          .add(1, DAYS)
           .format(FORMAT)
       });
   const endDate = formatDate({
     date: moment(startDate)
-      .add(TEN_DAYS, DAYS)
+      .add(RANGE_DAY_CRAWL, DAYS)
       .toString()
   });
 
