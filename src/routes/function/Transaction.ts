@@ -2,12 +2,14 @@ import * as express from 'express';
 
 import controller from '../../controllers/function/crawl';
 import { asyncMiddleware } from '../../plugins/utility';
-import CrawlValidator from '../../validator/function/index';
+import Validator from '../../validator/function/index';
+import { crawlSchema } from '../../validator/function/Transaction';
 
 const router = express.Router();
 
 const { crawl } = controller;
+const crawlValidation = Validator({ schema: crawlSchema });
 
-router.post('/', asyncMiddleware(CrawlValidator), asyncMiddleware(crawl));
+router.post('/crawl', asyncMiddleware(crawlValidation), asyncMiddleware(crawl));
 
 export default router;
