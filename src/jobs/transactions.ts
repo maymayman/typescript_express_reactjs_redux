@@ -16,14 +16,41 @@ const callApiCrawl = (stock: Stocks) => {
     json: true
   });
 };
-const transactionCrawlOption: cron.CronJobParameters = {
-  cronTime: '* * 22 * * *',
-  onTick: async () => {
-    const stocks = await Stocks.findAll();
+const urlGetStock = (limit: number, offset: number): string => {
+  const endpoint =
+    process.env.ENDPOINT_GET_STOCKS_URL || 'http://localhost:3000/api/stocks';
+
+  return `${endpoint}?limit=${limit}&offset=${offset}`;
+};
+const callApiStock = async (url: string) => {
+  return request({
+    method: 'GET',
+    uri: url,
+    json: true
+  });
+};
+const loop = async (limit, offset) => {
+  const urlStocks = urlGetStock(limit, offset);
+  const stocks = await callApiStock(urlStocks);
+
+  if (stocks.length > 0) {
     const promises = stocks.map(stock => {
       return callApiCrawl(stock);
     });
     await Promise.all(promises);
+    const nextPage = offset + limit;
+    await loop(limit, nextPage);
+  }
+
+  return;
+};
+
+const transactionCrawlOption: cron.CronJobParameters = {
+  cronTime: '*/15 * * * * *',
+  onTick: async () => {
+    const limit = 5;
+    const offset = 0;
+    await loop(limit, offset);
     logger.info(`*** start schedule crawl transaction!`);
   },
   timeZone: EnumTimeZone.ASIA_HO_CHI_MINH
