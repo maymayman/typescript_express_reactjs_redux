@@ -74,9 +74,9 @@ jest.mock('../../src/models/Stock',()=>({
 afterAll(() => {
     jest.resetAllMocks();
 });
-describe('GET /job/transaction/crawl',()=>{
-    it('GET /job/transaction/crawl - crawl Transaction call api is success',async()=>{
-        const result = await request.post('/function/crawl').send({stock_code:'FPT'});
+describe('POST /job/transaction/crawl',()=>{
+    it('POST /function/transaction/crawl - crawl Transaction call api is success',async()=>{
+        const result = await request.post('/function/transaction/crawl').send({stock_code:'FPT'});
         expect(result.status).toEqual(200);
         expect(result.body).toEqual(
                 [
@@ -84,8 +84,8 @@ describe('GET /job/transaction/crawl',()=>{
                 ]
         )
     })
-    it('GET /job/transaction/crawl - crawl Transaction call api with start and end date today is success',async()=>{
-        const result = await request.post('/function/crawl').send({stock_code:'FPT'});
+    it('POST /function/transaction/crawl - crawl Transaction call api with start and end date today is success',async()=>{
+        const result = await request.post('/function/transaction/crawl').send({stock_code:'FPT'});
          expect(result.status).toEqual(404);
     })
 })

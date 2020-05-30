@@ -32,8 +32,9 @@ export default async (req: Request, res: Response, next: NextFunction) => {
   try {
     const method = req.method;
     const data = method === EnumMethodName.GET ? req.query : req.body;
-    const url = _.trim(req.baseUrl, '/').split('/');
-    const schemas = schemasValidation[url[1]];
+    const url = _.trim(req.originalUrl, '/').split('/');
+    const table = url[1].split('?')[0];
+    const schemas = schemasValidation[table];
 
     const funcName = mapFuncName(req);
 
