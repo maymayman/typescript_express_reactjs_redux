@@ -52,8 +52,48 @@ export class Transactions extends Model<Transactions> {
   low_price: number;
 
   @AllowNull(false)
-  @Column(DataType.BIGINT)
+  @Column(DataType.DECIMAL(19, 4))
+  /* tslint:disable-next-line:variable-name */
+  range_price: number;
+
+  @AllowNull(false)
+  @Column(DataType.DECIMAL(19, 4))
+  /* tslint:disable-next-line:variable-name */
+  total_value: number;
+
+  @AllowNull(false)
+  @Column(DataType.DECIMAL(19, 4))
+  /* tslint:disable-next-line:variable-name */
+  foreign_buy_value: number;
+
+  @AllowNull(false)
+  @Column(DataType.DECIMAL(19, 4))
+  /* tslint:disable-next-line:variable-name */
+  foreign_sell_value: number;
+
+  @AllowNull(false)
+  @Column(DataType.INTEGER)
   volume: number;
+
+  @AllowNull(false)
+  @Column(DataType.INTEGER)
+  /* tslint:disable-next-line:variable-name */
+  sell_volume: number;
+
+  @AllowNull(false)
+  @Column(DataType.INTEGER)
+  /* tslint:disable-next-line:variable-name */
+  buy_volume: number;
+
+  @AllowNull(false)
+  @Column(DataType.INTEGER)
+  /* tslint:disable-next-line:variable-name */
+  foreign_sell_volume: number;
+
+  @AllowNull(false)
+  @Column(DataType.INTEGER)
+  /* tslint:disable-next-line:variable-name */
+  foreign_buy_volume: number;
 
   @Unique
   @AllowNull(false)

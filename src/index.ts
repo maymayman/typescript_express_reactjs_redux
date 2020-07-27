@@ -13,9 +13,9 @@ import AuthRoutes from './routes/auth/Auth';
 import heathCheckRouter from './routes/heath-check';
 import routes from './routes/index';
 
-import { transactionCrawl } from './jobs';
+import { transactionCrawlEveryDay } from './jobs';
 
-import { ENABLE_JOB } from '../config';
+// import { ENABLE_JOB } from '../config';
 
 import { getAppMarkup, getHtml } from './pages/index';
 
@@ -98,8 +98,8 @@ app.use(
  ***************************************************************************************/
 
 // start run transactionCrawl
-if (ENABLE_JOB) {
-  transactionCrawl.start();
-}
+// if (ENABLE_JOB) {
+transactionCrawlEveryDay.start();
+// }
 
 export default app;
