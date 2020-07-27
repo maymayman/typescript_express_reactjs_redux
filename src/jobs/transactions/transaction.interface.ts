@@ -1,0 +1,34 @@
+export interface ITransactionCrawl {
+  PriceHigh: number;
+  PriceLow: number;
+  PriceOpen: number;
+  PriceAverage: number;
+  PriceClose: number;
+  PricePreviousClose: number;
+  PriceBasic: number;
+  TotalVolume: number;
+  DealVolume: number;
+  Volume: number;
+  PutthroughVolume: number;
+  TotalTrade: number;
+  TotalValue: number;
+  PutthroughValue: number;
+  BuyForeignQuantity: number;
+  BuyForeignValue: number;
+  SellForeignQuantity: number;
+  SellForeignValue: number;
+  BuyCount: number;
+  BuyQuantity: number;
+  SellCount: number;
+  SellQuantity: number;
+  BuyAvg: number;
+  SellAvg: number;
+  AdjRatio: number;
+  AdjClose: number;
+  AdjOpen: number;
+  AdjHigh: number;
+  AdjLow: number;
+  CurrentForeignRoom: number;
+  Shares: number;
+  Date: string;
+}

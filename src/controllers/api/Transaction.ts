@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import * as createError from 'http-errors';
 import { ERROR_CODES, HTTP_ERRORS } from '../../constants';
 import * as Models from '../../models';
+import { dataQuery } from './utill';
 
 const Transactions = Models.default.Transactions;
 
@@ -54,8 +55,13 @@ export default {
     return res.json(result);
   },
   find: async (req: Request, res: Response) => {
-    const where = req.query.where ? JSON.parse(req.query.where) : {};
-    const result = await Transactions.findAll({ where });
+    const { where, offset, limit, sortBy, sort } = dataQuery(req.query);
+    const result = await Transactions.findAll({
+      where,
+      offset,
+      limit,
+      order: [[sortBy, sort]]
+    });
 
     return res.json(result);
   }
