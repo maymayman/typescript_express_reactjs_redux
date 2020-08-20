@@ -20,7 +20,7 @@
   "license": "ISC",
   "dependencies": {
     "app-root-path": "3.0.0",
-    "bcrypt": "^3.0.8",
+    "bcrypt": "^5.0.0",
     "cors": "^2.8.5",
     "cron": "1.8.2",
     "express": "^4.17.1",
